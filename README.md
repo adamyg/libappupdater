@@ -1,16 +1,17 @@
 # libappupdater
 
-<p align="center">Windows application updater library, similar to Sparkle and WinSparke. The library checks for updates from a remote server or file-system, which inturn notifies the user of your apps' update and prompts an optional installation. This process can be executed periodically within your application with minimal user interaction.</p>
+<p align="center">Windows application updater library, similar to Sparkle and WinSparke. The library checks for updates from a remote server or file-system, which inturn notifies the user of your apps' update and prompts an optional installation. This process can be executed periodically within your application with limited user interaction.</p>
 
 <p align="center">It is a win32 native stand-alone library without any non-system external dependencies, permitting both GUI and console interaction.<p>
-<p align="center">Due to limited dependencies supports MSVC 2008+ and OpenWatcom and run on Windows XP or greater.
+<p align="center">Due to minimal external dependencies supports MSVC 2008+ and OpenWatcom and run on Windows XP or greater.
 Other toolchains should be possible with minimal effort.</p>
 
 ## License
 
       MIT License
 
-      Copyright (c) 2012 - 2021 Adam Young
+      libappupdater, Copyright (c) 2012 - 2021 Adam Young
+      https://github.com/adamyg/libappupdater
 
       Permission is hereby granted, free of charge, to any person obtaining a copy
       of this software and associated documentation files (the "Software"), to deal
