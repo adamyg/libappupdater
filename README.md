@@ -10,7 +10,7 @@ Other toolchains should be possible with minimal effort.</p>
 
       MIT License
 
-      Copyright (c) 2012 - 2021 Adam Young
+      libappupdater, Copyright (c) 2012 - 2021 Adam Young
 
       Permission is hereby granted, free of charge, to any person obtaining a copy
       of this software and associated documentation files (the "Software"), to deal
