@@ -6,6 +6,10 @@
 <p align="center">Due to minimal external dependencies supports MSVC 2008+ and OpenWatcom and run on Windows XP or greater.
 Other toolchains should be possible with minimal effort.</p>
 
+![Prompt Dialog](art/Prompt_Example.png)
+
+![Install Dialog](art/Install_Example.png)
+
 ## License
 
       MIT License
