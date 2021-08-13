@@ -11,6 +11,7 @@ Other toolchains should be possible with minimal effort.</p>
       MIT License
 
       libappupdater, Copyright (c) 2012 - 2021 Adam Young
+      https://github.com/adamyg/libappupdater
 
       Permission is hereby granted, free of charge, to any person obtaining a copy
       of this software and associated documentation files (the "Software"), to deal
