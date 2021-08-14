@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+	<channel name="release">
+
+		<title>Application Change Channel</title>
+		<link>http://you.com/app/appcast.xml</link>
+		<description>Most recent changes with links to updates.</description>
+		<language>en</language>
+		<item>
+			<title>GRIEF 3.2.0 Build-8, minor release</title>
+			<sparkle:releaseNotesLink_test>https://master.dl.sourceforge.net/project/grief/README.txt?viasf=1</sparkle:releaseNotesLink_test>
+			<description><![CDATA[
+<style media="screen" type="text/css">
+body {
+	font: 80%/1.5em Verdana, Tahoma, arial, Sans-serif;
+	background: #ECECEA;
+	color: #333;
+}
+h1 {
+	font: Bold 150% Verdana, 'Trebuchet MS', Sans-serif;
+	color: #558C89;
+	text-align: center;
+	border-bottom: 1px solid #000000;
+}
+h2 {
+	font: Bold 120% Verdana, 'Trebuchet MS', Sans-serif;
+	color: #74AFAD;
+	border-width: 0px;
+}
+p {
+	margin: 0;
+	padding: 10px 0 0 0;
+}
+ul {
+	list-style-type: circle;
+	padding: 0px;
+	margin: 0px;
+}
+</style>
+<html><body>
+	<h1>Change Log</h1>
+	<p>
+	The major changes in each recent <i>GRIEF</i> release are listed below. A more specific
+	list of changes and fixes can be found in the detailed change logs.
+	</p>
+	<dl>
+	<dt><b>Version 3.2.0, Build-8 (18th Dec 2014)</b>
+	<dd><ul>
+		<li>GRIEF Updater 1.0.1 integrated.</li>
+		</ul><p>
+	<dt><b>Version 3.2.0, Build-7 (12th Nov 2014)</b>
+	<dd><ul>
+		<li>Initial release public.</li>
+		</ul>
+	</dl>
+<body></html>
+ ]]>
+			</description>
+			<published>1419119197</published>
+			<pubDate>Sat, 20 Dec 2014 23:46:37 +0000</pubDate>
+			<sparkle:criticalUpdate version="3.0.0.0"></sparkle:criticalUpdate>
+			<updater:tags>
+			</updater:tags>
+			<enclosure os="windows" url="file:///d:/grwin32-build8-setup.exe"
+				name="grwin32-build8-setup.exe"
+				version="3.2.0.8"
+				length="3857823"
+				md5Signature="b8ce01bd8a4fd6dc42d38d224f56ea7c"
+				shaSignature="9424538b40386ebb976dc2156501173384cdd63e"
+				type="application/octet-stream" />
+		</item>
+
+		<item>
+			<title>Version 2.0 (2 bugs fixed; 3 new features)</title>
+			<sparkle:releaseNotesLink>http://you.com/app/2.0.html</sparkle:releaseNotesLink>
+			<pubDate>Wed, 09 Jan 2006 19:20:11 +0000</pubDate>
+			<enclosure url="http://you.com/app/Your%20Great%20App%202.0.zip"
+				sparkle:version="2.0"
+				length="1623481"
+				type="application/octet-stream"
+				sparkle:dsaSignature="BAFJW4B6B1K1JyW30nbkBwainOzrN6EQuAh" />
+			<sparkle:minimumSystemVersion>10.7</sparkle:minimumSystemVersion>
+		</item>
+
+		<item>
+			<title>Version 1.5 (8 bugs fixed; 2 new features)</title>
+			<sparkle:releaseNotesLink>http://you.com/app/1.5.html</sparkle:releaseNotesLink>
+			<pubDate>Wed, 01 Jan 2006 12:20:11 +0000</pubDate>
+			<enclosure url="http://you.com/app/Your%20Great%20App%201.5.zip"
+				sparkle:version="1.5"
+				length="1472893"
+				type="application/octet-stream"
+				sparkle:dsaSignature="234818feCa1JyW30nbkBwainOzrN6EQuAh" />
+			<sparkle:minimumSystemVersion>10.7</sparkle:minimumSystemVersion>
+		</item>
+
+		<!-- Now here's an example of a version with a weird internal version number (like an SVN revision) but a human-readable external one. -->
+		<item>
+			<title>Version 1.4 (5 bugs fixed; 2 new features)</title>
+			<sparkle:releaseNotesLink>
+				http://you.com/app/1.4.html
+			</sparkle:releaseNotesLink>
+			<pubDate>Wed, 25 Dec 2005 12:20:11 +0000</pubDate>
+			<enclosure url="http://you.com/app/Your%20Great%20App%201.4.zip"
+				sparkle:version="241"
+				sparkle:shortVersionString="1.4"
+				sparkle:dsaSignature="MC0CFBfeCa1JyW30nbkBwainOzrN6EQuAh="
+				length="1472349" type="application/octet-stream" />
+			<sparkle:minimumSystemVersion>10.7</sparkle:minimumSystemVersion>
+		</item>
+
+	</channel>
+
+	<channel name="beta">
+	</channel>
+
+</manifest>
+

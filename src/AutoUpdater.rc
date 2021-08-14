@@ -1,0 +1,378 @@
+/* -*- mode: c; -*- */
+//  Microsoft Visual C++ generated resource script.
+//
+//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//
+//  Copyright (c) 2012 - 2021 Adam Young
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
+//
+
+#include "resource.h"
+
+#include "AutoRelease.h"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+
+#include <windows.h>
+#if !defined(IDC_STATIC)
+#define IDC_STATIC  -1
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_UPDATE_ABOUT DIALOGEX 0, 0, 217, 55
+STYLE DS_SETFONT | DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "About AutoUpdater"
+FONT 9, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    CONTROL         IDB_BITMAP2,IDC_STATIC,"Static",SS_BITMAP,6,6,24,24
+    LTEXT           "AutoUpdater Version 1.0.1",IDC_STATIC,50,15,104,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2012-2021",IDC_STATIC,50,27,104,8
+    DEFPUSHBUTTON   "OK",IDOK,160,7,50,16,WS_GROUP
+END
+
+IDD_INSTALL_DIALOG DIALOGEX 0, 0, 469, 258
+STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_OVERLAPPEDWINDOW | WS_EX_ACCEPTFILES | WS_EX_TRANSPARENT | WS_EX_APPWINDOW
+CAPTION "AutoUpdater"
+FONT 9, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Install",IDC_INSTALL_NOW,389,234,67,16
+    PUSHBUTTON      "Skip Version",IDC_INSTALL_SKIP,54,234,65,16
+    EDITTEXT        IDC_INSTALL_ACTION,54,6,359,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_INSTALL_SUMMARY,54,20,358,30,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    PUSHBUTTON      "Remind Me Later",IDC_INSTALL_LATER,310,234,69,16
+    EDITTEXT        IDC_INSTALL_NOTES,54,73,402,120,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL
+    EDITTEXT        IDC_INSTALL_RNTITLE,54,54,352,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    PUSHBUTTON      "Ok",IDOK,217,234,66,16
+    CONTROL         IDB_BITMAP2,IDC_STATIC,"Static",SS_BITMAP,9,11,32,30
+    CONTROL         "Automatically check for updates.",IDC_INSTALL_AUTO,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,54,215,123,10
+    EDITTEXT        IDC_INSTALL_RESULT,49,198,359,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+END
+
+IDD_PROGRESS_DIALOG DIALOGEX 0, 0, 295, 78
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_WINDOWEDGE
+FONT 10, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    PUSHBUTTON      "Cancel",IDCANCEL,241,59,50,14
+    CONTROL         "",IDC_PROGRESS_BAR,"msctls_progress32",PBS_MARQUEE | WS_BORDER,16,57,214,8
+    EDITTEXT        IDC_PROGRESS_TEXT1,48,6,243,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_PROGRESS_TEXT2,48,24,243,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_PROGRESS_TEXT3,48,41,243,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         IDB_BITMAP3,IDC_STATIC,"Static",SS_BITMAP,0,6,43,39
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION AUTORELEASE_VERSION
+ PRODUCTVERSION AUTORELEASE_VERSION
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", ""
+            VALUE "FileDescription", "libautoupdater"
+#if defined(AUTORELEASE_BUILD_DATE)
+            VALUE "FileVersion", AUTORELEASE_FILEVERSION ", Build:" AUTORELEASE_BUILD_DATE "-" AUTORELEASE_BUILD_DATE
+#else
+            VALUE "FileVersion", AUTORELEASE_FILEVERSION
+#endif
+            VALUE "InternalName", "libautoupdater.dll"
+            VALUE "LegalCopyright", "(c) 2012-2021 Adam Young, All rights reserved."
+				"This is free software; see the source for copying conditions. "
+				"There is NO warranty; not even for MERCHANTABILITY "
+				"or FITNESS FOR A PARTICULAR PURPOSE. "
+            VALUE "OriginalFilename", AUTORELEASE_FILENAME
+            VALUE "ProductName", "Application Updater"
+            VALUE "ProductVersion", AUTORELEASE_FILEVERSION
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_INSTALL_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_UPDATE_ABOUT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PROGRESS_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0,
+    0, 0, 0, 0,
+    100, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_UPDATE_ABOUT, DIALOG
+    BEGIN
+    END
+
+    IDD_INSTALL_DIALOG, DIALOG
+    BEGIN
+        VERTGUIDE, 389
+        VERTGUIDE, 428
+    END
+
+    IDD_PROGRESS_DIALOG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 291
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 73
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_ABOUTBOX            "&About AutoUpdater..."
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral (Sys. Default) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUSD)
+LANGUAGE LANG_NEUTRAL, SUBLANG_SYS_DEFAULT
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROMPT_DIALOG DIALOGEX 0, 0, 331, 75
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | DS_CENTERMOUSE | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_WINDOWEDGE
+CAPTION "AutoUpdater"
+FONT 9, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Check Automatically",IDC_CHECK_AUTO,132,54,79,14
+    PUSHBUTTON      "Do Not Check",IDC_CHECK_NO,252,54,71,14
+    CONTROL         IDB_BITMAP2,IDC_STATIC,"Static",SS_BITMAP,7,7,32,30
+    PUSHBUTTON      "Check Once",IDC_CHECK_ONCE,54,54,66,14
+    EDITTEXT        IDC_PROMPT_TITLE,54,6,267,15,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_PROMPT_NOTES,54,24,267,24,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+END
+
+IDD_UPTODATE_DIALOG DIALOGEX 0, 0, 317, 75
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | DS_CENTERMOUSE | WS_POPUP | WS_VISIBLE | WS_CAPTION
+EXSTYLE WS_EX_WINDOWEDGE
+CAPTION "AutoUpdater"
+FONT 9, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    PUSHBUTTON      "OK",IDOK,120,54,71,14
+    CONTROL         IDB_BITMAP2,IDC_STATIC,"Static",SS_BITMAP,7,7,32,30
+    EDITTEXT        IDC_UPTODATE_TITLE,54,6,257,15,ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_UPTODATE_NOTES,54,24,253,25,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_PROMPT_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_UPTODATE_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_PROMPT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 324
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 68
+    END
+
+    IDD_UPTODATE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 68
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Neutral (Sys. Default) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United Kingdom) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""windows.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_APPLICATION_SYSTEM  ICON            "..\\art\\applications-system.ico"
+
+IDI_SOFTWARE_AVAILABLE  ICON            "..\\art\\software-update-available.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_SOFTWARE_UPDATE48   BITMAP          "..\\art\\software-update-available-48.bmp"
+
+IDB_SOFTWARE_UPDATE64   BITMAP          "..\\art\\software-update-available-64.bmp"
+
+IDB_APPLICATION_SYSTEM48 BITMAP         "..\\art\\applications-system-48.bmp"
+
+IDB_APPLICATION_SYSTEM64 BITMAP         "..\\art\\applications-system-64.bmp"
+
+#endif    // English (United Kingdom) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

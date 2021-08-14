@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AutoUpdater", "AutoUpdater.vs90.vcproj", "{9C67A1BE-A52A-46CC-8C03-8548C53FCF2E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B8AD3730-CB63-8A4B-36BA-F9E4827A4E4D} = {B8AD3730-CB63-8A4B-36BA-F9E4827A4E4D}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libappupdater", "libappupdater.vs90.vcproj", "{B8AD3730-CB63-8A4B-36BA-F9E4827A4E4D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C67A1BE-A52A-46CC-8C03-8548C53FCF2E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9C67A1BE-A52A-46CC-8C03-8548C53FCF2E}.Debug|Win32.Build.0 = Debug|Win32
+		{9C67A1BE-A52A-46CC-8C03-8548C53FCF2E}.Release|Win32.ActiveCfg = Release|Win32
+		{9C67A1BE-A52A-46CC-8C03-8548C53FCF2E}.Release|Win32.Build.0 = Release|Win32
+		{B8AD3730-CB63-8A4B-36BA-F9E4827A4E4D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B8AD3730-CB63-8A4B-36BA-F9E4827A4E4D}.Debug|Win32.Build.0 = Debug|Win32
+		{B8AD3730-CB63-8A4B-36BA-F9E4827A4E4D}.Release|Win32.ActiveCfg = Release|Win32
+		{B8AD3730-CB63-8A4B-36BA-F9E4827A4E4D}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

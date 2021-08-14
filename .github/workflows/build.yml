@@ -1,0 +1,20 @@
+name: build
+on: [push]
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ilammy/msvc-dev-cmd@v1
+    - uses: microsoft/setup-msbuild@v1.0.2
+    - name: Compiling
+      shell: cmd
+      run: |
+        msbuild AutoUpdater.vs160.sln /property:Configuration=Release
+        msbuild AutoUpdater.vs160.sln /property:Configuration=Debug
+        msbuild AutoUpdater.vs160.sln /property:Configuration=Release /p:Platform=x64
+        msbuild AutoUpdater.vs160.sln /property:Configuration=Debug   /p:Platform=x64

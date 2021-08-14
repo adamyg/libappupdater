@@ -1,0 +1,8 @@
+Debug.vs*
+Release.vs*
+Makefile
+AppUpdater.aps
+*.vs*.opendb
+*.vs*.db
+*.vs*.user
+sav
