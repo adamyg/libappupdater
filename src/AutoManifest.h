@@ -1,10 +1,10 @@
 #ifndef AUTOMANIFEST_H_INCLUDED
 #define AUTOMANIFEST_H_INCLUDED
-//  $Id: AutoManifest.h,v 1.7 2021/08/14 05:23:47 cvsuser Exp $
+//  $Id: AutoManifest.h,v 1.8 2021/08/14 15:38:10 cvsuser Exp $
 //
 //  AutoUpdater: application manifest.
 //
-//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
 //  Copyright (c) 2012 - 2021 Adam Young
 //

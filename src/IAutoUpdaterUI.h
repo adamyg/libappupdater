@@ -1,10 +1,10 @@
 #ifndef IAUTOUPDATERUI_H_INCLUDED
 #define IAUTOUPDATERUI_H_INCLUDED
-//  $Id: IAutoUpdaterUI.h,v 1.4 2021/08/14 05:23:48 cvsuser Exp $
+//  $Id: IAutoUpdaterUI.h,v 1.5 2021/08/14 15:38:10 cvsuser Exp $
 //
 //  IAutoUpdaterUI: ui interface.
 //
-//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
 //  Copyright (c) 2012 - 2021 Adam Young
 //

@@ -1,10 +1,10 @@
 #ifndef AUTOUPDATER_H_INCLUDED
 #define AUTOUPDATER_H_INCLUDED
-//  $Id: AutoUpdater.h,v 1.11 2021/08/14 05:23:48 cvsuser Exp $
+//  $Id: AutoUpdater.h,v 1.13 2021/08/14 15:40:18 cvsuser Exp $
 //
 //  AutoUpdater: application interface.
 //
-//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
 //  Copyright (c) 2012 - 2021 Adam Young
 //
@@ -59,6 +59,20 @@ class IInstallNow {
 public:
     void operator()(const std::string &message) {
         (*this)(message.c_str());
+    }
+    void message(const char *format, ...) {
+        char buffer[1024];
+        va_list ap;
+        
+        va_start(ap, format);
+#if defined(_MSC_VER)
+        int ret = _snprintf(buffer, sizeof(buffer), format, ap);
+#else
+        int ret = std::snprintf(buffer, sizeof(buffer), format, ap);
+#endif        
+        if (ret < 0 || ret >= sizeof(buffer)) buffer[sizeof(buffer)-1] = 0;
+        (*this)(buffer);
+        va_end(ap);
     }
     virtual void operator()(const char *message) = 0;
     virtual HWND GetParent() = 0;

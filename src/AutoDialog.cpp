@@ -1,8 +1,8 @@
-//  $Id: AutoDialog.cpp,v 1.11 2021/08/14 05:23:47 cvsuser Exp $
+//  $Id: AutoDialog.cpp,v 1.12 2021/08/14 15:38:09 cvsuser Exp $
 //
 //  AutoUpdater: dialog interface
 //
-//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
 //  Copyright (c) 2012 - 2021 Adam Young
 //

@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.18 2021/08/14 05:23:48 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.20 2021/08/14 15:38:10 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //
@@ -37,7 +37,7 @@
 //
 //      Note: All values are of the REG_SZ type, regardless of usage.
 //
-//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
 //  Copyright (c) 2012 - 2021 Adam Young
 //
@@ -127,12 +127,12 @@ public:
     }
 
     // RAII
-    void SetDialog(IAutoUpdaterUI *dialog) {    
+    void SetDialog(IAutoUpdaterUI *dialog) {
         d_uibind.reset(new AutoDialogUI);
         d_dialog = d_uibind.get();
     }
 
-    IAutoUpdaterUI *GetDialog() const {    
+    IAutoUpdaterUI *GetDialog() const {
         return d_dialog;
     }
 
@@ -158,6 +158,7 @@ public:
     HWND                d_hTopWnd;              // top window.
     std::string         d_tempdir;              // temporary working directory.
     std::string         d_tempfile;             // temporary working download file.
+    std::string         d_lasterror;            // last reported error, if any.
 };
 
 
@@ -173,7 +174,7 @@ AutoUpdater::~AutoUpdater()
 }
 
 
-static void 
+static void
 function_reference()
 {
 }
@@ -182,7 +183,6 @@ function_reference()
 HINSTANCE
 AutoUpdater::ModuleHandle()
 {
-//#if defined(__WATCOMC__)
     static HMODULE hm = NULL;
     if (0 == hm) {
         if (::GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
@@ -192,10 +192,6 @@ AutoUpdater::ModuleHandle()
         assert(false);
     }
     return hm;
-//#else
-//  EXTERN_C IMAGE_DOS_HEADER __ImageBase;
-//  return (HINSTANCE)&__ImageBase;
-//#endif
 }
 
 
@@ -241,7 +237,7 @@ AutoUpdater::HostURL() const
 }
 
 
-void                
+void
 AutoUpdater::EnableDialog()
 {
     d_impl->SetDialog(new AutoDialogUI);
@@ -250,7 +246,7 @@ AutoUpdater::EnableDialog()
 
 void
 AutoUpdater::EnableConsole()
-{ 
+{
     d_impl->SetDialog(new AutoConsoleUI);
 }
 
@@ -323,17 +319,26 @@ AutoUpdater::Execute(enum ExecuteMode mode, bool interactive)
                 ret = 1;
             }
 
-        } catch (std::exception &e) {
+            if (! d_impl->d_lasterror.empty()) {
+                d_impl->d_dialog->ErrorMessage(d_impl->d_lasterror.c_str());
+                ret = -1;
+            }
+
+        } catch (const std::exception &e) {
             std::string msg;
-            msg += "An error occurred during updater operations\n\n";
+            msg += "An error occurred during updater operations\n";
             msg += e.what();
+
             LOG<LOG_ERROR>() << msg << LOG_ENDL;
-            d_impl->d_dialog->WarningMessage(msg.c_str());
+            d_impl->d_dialog->ErrorMessage(msg.c_str());
+            ret = -1;
 
         } catch (...) {
             const char *msg = "An unknown error occurred during updater operations\n";
+
             LOG<LOG_ERROR>() << msg << LOG_ENDL;
             d_impl->d_dialog->ErrorMessage(msg);
+            ret = -1;
         }
 
         d_impl->CleanTemp();
@@ -487,16 +492,18 @@ AutoUpdater::IsAvailable(bool interactive)
 
     int ret = -1;
     try {                                       // guard progress dialog.
-        Updater::AutoManifest &d_manifest = d_impl->d_manifest; 
+        Updater::AutoManifest &d_manifest = d_impl->d_manifest;
         StringDownloadSink manifest, description;
         Download inet;
 
-        if (inet.get(feed_url, manifest, DownloadFlags()) &&
-                inet.completion()) {
+        if (inet.get(feed_url, manifest, DownloadFlags())) {
 
-            if (! d_manifest.Load(manifest.data,
-                        Config::GetChannel(), Config::GetOSLabel())) {
-                LOG<LOG_WARN>() << "channel/label not available" << LOG_ENDL;
+            if (! inet.completion()) {          // manifest available.
+                d_impl->d_lasterror.assign("Unable to download manifest");
+
+            } else if (! d_manifest.Load(manifest.data,
+                            Config::GetChannel(), Config::GetOSLabel())) {
+                d_impl->d_lasterror.assign("Channel/label not available");
                 ret = -2;                       // channel not available.
 
             } else if (! ProgressCancelled()) {
@@ -524,20 +531,23 @@ AutoUpdater::IsAvailable(bool interactive)
             }
         }
 
-    } catch (std::exception &e) {
+    } catch (const std::exception &e) {
         LOG<LOG_ERROR>() << "IsAvailable: exception : " << e.what() << LOG_ENDL;
+        d_impl->d_lasterror.assign(e.what());
         ProgressStop();
-        throw e;
+        ret = -1;
 
     } catch (...) {
         LOG<LOG_ERROR>() << "IsAvailable: unhandled exception" << LOG_ENDL;
+        d_impl->d_lasterror.assign("unhandled exception");
         ProgressStop();
-        throw;
+        ret = -1;
     }
 
     if (interactive && ProgressStop()) {
-        return -1;                              // user cancelled
+        ret = -1;                               // user cancelled
     }
+
     return ret;                                 // channel not available
 
 }
@@ -546,7 +556,7 @@ AutoUpdater::IsAvailable(bool interactive)
 bool
 AutoUpdater::IsSkipped()
 {
-    Updater::AutoManifest &d_manifest = d_impl->d_manifest; 
+    Updater::AutoManifest &d_manifest = d_impl->d_manifest;
     std::string skipped;
 
     if (Config::ReadConfigValue(KEY_SKIPVERSION, skipped) && skipped.length()) {
@@ -597,7 +607,7 @@ AutoUpdater::IsSkipped()
 bool
 AutoUpdater::InstallNow(IInstallNow &updater, bool interactive)
 {
-    const Updater::AutoManifest &d_manifest = d_impl->d_manifest; 
+    const Updater::AutoManifest &d_manifest = d_impl->d_manifest;
     const std::string &targetName = GetTargetName();
     const int exeDirect = TRUE;                 // TODO: configuration option.
 
@@ -656,7 +666,11 @@ AutoUpdater::InstallNow(IInstallNow &updater, bool interactive)
                     ::CloseHandle(pi.hProcess);
                     d_impl->RetainTemp();
                 } else {
-                    throw SysException("Unable to execute installer.");
+                    const char *msg = "Unable to execute installer";
+                    if (interactive) {
+                        updater.message("ERROR - %s", msg);
+                    }
+                    throw SysException(msg);
                 }
 
             } else {
@@ -665,27 +679,36 @@ AutoUpdater::InstallNow(IInstallNow &updater, bool interactive)
                     d_impl->RetainTemp();
                 } else {
                     if (ERROR_CANCELLED == GetLastError()) {
-                        throw SysException("Unable to execute installer.");
+                        const char *msg = "Unable to execute installer";
+                        if (interactive) {
+                            updater.message("ERROR - %s", msg);
+                        }
+                        throw SysException(msg);
                     }
                 }
             }
             return true;                        // complete.
 
         } else {
+            const char *msg = "Installer verification failure.";
             if (interactive) {
-                updater("ERROR - Installer verification failure.");
-            } else {
-                throw SysException("Application verification failure.");
+                updater.message("ERROR - %s", msg);
             }
+            d_impl->d_lasterror.assign(msg);
         }
 
     } else if (! getfile) {
-        if (interactive) {
-            if (wasCancelled) {
+        if (wasCancelled) {
+            if (interactive) {
                 updater("Install cancelled.");
-            } else {
-                updater("ERROR - Installer download failure <" + d_manifest.attributeURL + ">");
             }
+
+        } else {
+            const char *msg = "Unable to download installer";
+            if (interactive) {
+                updater.message("ERROR - %s", msg);
+            }
+            d_impl->d_lasterror.assign(msg);
         }
     }
 
@@ -703,7 +726,7 @@ AutoUpdater::Manifest() const
 const std::string&
 AutoUpdater::GetTargetName()
 {
-    const Updater::AutoManifest &d_manifest = d_impl->d_manifest; 
+    const Updater::AutoManifest &d_manifest = d_impl->d_manifest;
     char temppath[MAX_PATH+1] = {0};
     size_t len;
 
@@ -883,7 +906,7 @@ AutoUpdater::InstallSkip()
 enum PromptResponse
 AutoUpdater::PromptDialog()
 {
-    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {  
+    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {
         return dialog->PromptDialog(*this);
     }
     return PROMPT_AUTO;
@@ -893,7 +916,7 @@ AutoUpdater::PromptDialog()
 int
 AutoUpdater::InstallDialog()
 {
-    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {  
+    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {
         return dialog->InstallDialog(*this);
     }
     return -1;
@@ -903,7 +926,7 @@ AutoUpdater::InstallDialog()
 void
 AutoUpdater::UptoDateDialog()
 {
-    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {  
+    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {
         dialog->UptoDateDialog(*this);
     }
 }
@@ -912,7 +935,7 @@ AutoUpdater::UptoDateDialog()
 void
 AutoUpdater::ProgressStart(HWND parent, bool indeterminate, const char *msg)
 {
-    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {  
+    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {
         dialog->ProgressStart(*this, parent, indeterminate, msg);
     }
 }
@@ -921,7 +944,7 @@ AutoUpdater::ProgressStart(HWND parent, bool indeterminate, const char *msg)
 void
 AutoUpdater::ProgressUpdate(int percentage, int total)
 {
-    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {  
+    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {
         dialog->ProgressUpdate(percentage, total);
     }
 }
@@ -930,7 +953,7 @@ AutoUpdater::ProgressUpdate(int percentage, int total)
 bool
 AutoUpdater::ProgressCancelled()
 {
-    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {  
+    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {
         return dialog->ProgressCancelled();
     }
     return true;
@@ -940,8 +963,9 @@ AutoUpdater::ProgressCancelled()
 bool
 AutoUpdater::ProgressStop()
 {
-    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {  
+    if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {
         return dialog->ProgressStop();
     }
     return true;
 }
+

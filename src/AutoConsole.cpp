@@ -1,8 +1,8 @@
-//  $Id: AutoConsole.cpp,v 1.6 2021/08/14 05:23:47 cvsuser Exp $
+//  $Id: AutoConsole.cpp,v 1.8 2021/08/14 15:38:09 cvsuser Exp $
 //
 //  AutoUpdater: console interface.
 //
-//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
 //  Copyright (c) 2012 - 2021 Adam Young
 //
@@ -78,8 +78,10 @@ AutoConsoleUI::PromptDialog(AutoUpdater &owner)
     std::cout
         << "Allow "
         << owner.AppName()
-        << " to automatically check for updates?\n" 
+        << " to automatically check for updates?\n"
         << "Alternatively check once and select at a later time [O(once), Y(es), N(o)]";
+    std::cout.flush();
+    std::fflush(stdout);
 
     enum PromptResponse rsp = PROMPT_NO;
     while (1) {
@@ -90,21 +92,21 @@ AutoConsoleUI::PromptDialog(AutoUpdater &owner)
         }
 
         if ('o' == ch || 'O' == ch) {           // once
-            std::cout << "\nchecking once ...\n"; 
+            std::cout << "\nchecking once ...\n";
             rsp = PROMPT_ONCE;
             break;
 
         } else if ('y' == ch || 'Y' == ch) {    // yes
-            std::cout << "\nchecking automatically ...\n"; 
+            std::cout << "\nchecking automatically ...\n";
             rsp = PROMPT_AUTO;
             break;
 
-        } else if ('n' == ch || 'N' == ch || 0x1b == ch) { 
+        } else if ('n' == ch || 'N' == ch || 0x1b == ch) {
             break;                              // no/escape
         }
     }
 
-    std::cout << '\n'; 
+    std::cout << '\n';
     return rsp;
 }
 
@@ -127,7 +129,7 @@ AutoConsoleUI::InstallDialog(AutoUpdater &owner)
         << " is now available (you have "
         << owner.AppVersion()
         << ")\n";
-    
+
     // prompt
     const bool is_critical =                    // disable skip if critical
         owner.Manifest().IsCriticalUpdate(owner.AppVersion());
@@ -136,6 +138,8 @@ AutoConsoleUI::InstallDialog(AutoUpdater &owner)
         << "Would you like to install it now? [Y(es), L(ater)"
             << (is_critical ? "" : ", S(kip)")
         << "]";
+    std::cout.flush();
+    std::fflush(stdout);
 
     while (1) {
         const int ch = _getch();
@@ -147,14 +151,14 @@ AutoConsoleUI::InstallDialog(AutoUpdater &owner)
         if ('y' == ch || 'Y' == ch) {           // yes
             CConsoleUpdater updater(*this);
 
-            std::cout << "\ninstalling now ...\n\n"; 
+            std::cout << "\ninstalling now ...\n\n";
             if (owner.InstallNow(updater, true)) {
                 return 1;
             }
 
         } else if ('s' == ch || 'S' == ch) {    // skip
             if (is_critical) continue;
-            std::cout << "\nskipping release ...\n\n"; 
+            std::cout << "\nskipping release ...\n\n";
             owner.InstallSkip();
             return 0;
 
@@ -167,7 +171,7 @@ AutoConsoleUI::InstallDialog(AutoUpdater &owner)
             //  --- show release notes ---
 
         } else if (0x1b == ch) {                // cancel
-            std::cout << '\n'; 
+            std::cout << '\n';
             break;
         }
     }
@@ -188,14 +192,16 @@ AutoConsoleUI::UptoDateDialog(AutoUpdater &owner)
 void
 AutoConsoleUI::WarningMessage(const char *message)
 {
-    ::MessageBoxA(NULL, message, "AutoUpdater", MB_ICONWARNING|MB_OK);
+  //::MessageBoxA(NULL, message, "AutoUpdater", MB_ICONWARNING|MB_OK);
+    std::cout << "WARNING: " << message << std::endl;
 }
 
 
 void
 AutoConsoleUI::ErrorMessage(const char *message)
 {
-    ::MessageBoxA(NULL, message, "AutoUpdater", MB_ICONERROR|MB_OK);
+  //::MessageBoxA(NULL, message, "AutoUpdater", MB_ICONERROR|MB_OK);
+    std::cout << "ERROR: " << message << std::endl;
 }
 
 
@@ -223,7 +229,7 @@ AutoConsoleUI::ProgressUpdate(int percentage, int total)
 }
 
 
-bool        
+bool
 AutoConsoleUI::ProgressCancelled()
 {
     TProgressBar *progress;
@@ -249,3 +255,4 @@ AutoConsoleUI::ProgressStop()
 }
 
 //end
+

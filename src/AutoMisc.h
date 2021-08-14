@@ -1,10 +1,10 @@
 #ifndef AUTOMISC_H_INCLUDED
 #define AUTOMISC_H_INCLUDED
-//  $Id: AutoMisc.h,v 1.5 2021/08/14 05:23:47 cvsuser Exp $
+//  $Id: AutoMisc.h,v 1.6 2021/08/14 15:38:10 cvsuser Exp $
 //
 //  AutoUpdater: misc definitions and functionality
 //
-//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
 //  Copyright (c) 2012 - 2021 Adam Young
 //

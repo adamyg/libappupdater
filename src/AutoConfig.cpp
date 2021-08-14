@@ -1,8 +1,8 @@
-//  $Id: AutoConfig.cpp,v 1.14 2021/08/14 05:43:49 cvsuser Exp $
+//  $Id: AutoConfig.cpp,v 1.15 2021/08/14 15:38:09 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
-//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
 //  Copyright (c) 2012 - 2021 Adam Young
 //

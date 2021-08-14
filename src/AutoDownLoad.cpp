@@ -1,8 +1,8 @@
-//  $Id: AutoDownLoad.cpp,v 1.13 2021/08/14 05:23:47 cvsuser Exp $
+//  $Id: AutoDownLoad.cpp,v 1.15 2021/08/14 15:38:09 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
-//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
 //  Copyright (c) 2012 - 2021 Adam Young
 //
@@ -151,6 +151,7 @@ public:
 private:
     ~DownloadContext();
     bool execute();
+    void InternetError(const char *message, const DWORD ret = GetLastError());
 
 private:
     static unsigned int __cdecl threadproc(void *param);
@@ -498,7 +499,7 @@ DownloadContext::execute()
     session_handle =
         InternetOpenA(user_agent.c_str(), INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL,  0);
     if (! session_handle) {
-        throw SysException("Opening internet connection");
+        InternetError("Opening internet connection");
     }
 
     DWORD http2_option = HTTP_PROTOCOL_FLAG_HTTP2;
@@ -519,7 +520,7 @@ DownloadContext::execute()
     char canonical_url[2000] = {0};
     DWORD nSize = sizeof(canonical_url);
     if (! InternetCanonicalizeUrlA(url.c_str(), canonical_url, &nSize, ICU_BROWSER_MODE)) {
-        throw SysException("Invalid URL");
+        InternetError("Canonicalizing URL");
     }
 
     session_handle.set_callback(callback);
@@ -529,8 +530,15 @@ again:
     request_handle =
         ::InternetOpenUrlA(session_handle, canonical_url, NULL, -1, dwFlags, (DWORD_PTR)this);
     if (! request_handle) {
-        if (ERROR_IO_PENDING != GetLastError()) {
-            throw SysException("Opening internet connection");
+        const DWORD ret = GetLastError();
+        if (ERROR_IO_PENDING != ret) {
+            std::string msg;
+            msg += "Opening URL <", msg += canonical_url, msg += ">";
+            if (ERROR_INVALID_HANDLE == ret) {
+                msg += "\nUnable to connect";
+                throw AppException(msg);
+            }
+            InternetError(msg.c_str(), ret);
         }
     }
 
@@ -539,7 +547,7 @@ again:
     // status
     DWORD http_res = 0, http_res_len = sizeof(http_res);
     if (! HttpQueryInfo(request_handle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, &http_res, &http_res_len, 0)) {
-        throw SysException("Reading internet connection");
+        InternetError("Reading internet connection");
 
     } else if (http_res >= 400) {               // error, decode and report
         DWORD http_msg_len = 0;
@@ -599,6 +607,32 @@ again:
     }
 
     return true;
+}
+
+
+//static
+void
+DownloadContext::InternetError(const char *message, const DWORD ret)
+{
+    if (ERROR_INTERNET_EXTENDED_ERROR == ret) {
+        char buffer[256] = {0};
+        DWORD err, buflen = sizeof(buffer);
+
+        ::InternetGetLastResponseInfoA(&err, buffer, &buflen);
+        do {
+            char *p = buffer + strlen(buffer) - 1;
+            if (*p == '\n' || *p == '\r') {
+                *p = '\0';
+                continue; //next
+            }
+        } while(0);
+
+        std::string msg;
+        msg += message, msg += " : ", msg += buffer;
+        throw AppException(msg);
+    }
+
+    throw SysException(ret, message);
 }
 
 

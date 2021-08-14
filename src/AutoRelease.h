@@ -1,7 +1,7 @@
 #ifndef AUTORELEASE_H_INCLUDED
 #define AUTORELEASE_H_INCLUDED
 //
-//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
 //  Copyright (c) 2012 - 2021 Adam Young
 //
@@ -29,28 +29,28 @@
 
 #if defined(_MSC_VER)
 #if   (_MSC_VER >= 1920)                        /* (Visual Studio 2019 / MSVC++ 16.x) */
-#define AUTORELEASE_FILENAME        "libautoupdater.vs160.dll"
+#define AUTORELEASE_FILENAME        "libappupdater.vs160.dll"
 #elif (_MSC_VER >= 1910)                        /* (Visual Studio 2017 / MSVC++ 15.x) */
-#define AUTORELEASE_FILENAME        "libautoupdater.vs150.dll"
+#define AUTORELEASE_FILENAME        "libappupdater.vs150.dll"
 #elif (_MSC_VER >= 1900)                        /* (Visual Studio 2015 / MSVC++ 14.0) */
-#define AUTORELEASE_FILENAME        "libautoupdater.vs140.dll"
+#define AUTORELEASE_FILENAME        "libappupdater.vs140.dll"
 #elif (_MSC_VER >= 1800)                        /* (Visual Studio 2013 / MSVC++ 12.0) */
-#define AUTORELEASE_FILENAME        "libautoupdater.vs120.dll"
+#define AUTORELEASE_FILENAME        "libappupdater.vs120.dll"
 #elif (_MSC_VER >= 1700)                        /* (Visual Studio 2012 / MSVC++ 11.0) */
-#define AUTORELEASE_FILENAME        "libautoupdater.vs110.dll"
+#define AUTORELEASE_FILENAME        "libappupdater.vs110.dll"
 #elif (_MSC_VER >= 1600)                        /* (Visual Studio 2010 / MSVC++ 10.0) */
-#define AUTORELEASE_FILENAME        "libautoupdater.vs110.dll"
+#define AUTORELEASE_FILENAME        "libappupdater.vs110.dll"
 #elif (_MSC_VER >= 1500)                        /* (Visual Studio 2008 / MSVC++ 9.0)  */
-#define AUTORELEASE_FILENAME        "libautoupdater.vs90.dll"
+#define AUTORELEASE_FILENAME        "libappupdater.vs90.dll"
 #else
-#define AUTORELEASE_FILENAME        "libautoupdater.vs.dll"
+#define AUTORELEASE_FILENAME        "libappupdater.vs.dll"
 #endif
 
 #elif defined(__WATCOMC__)
-#define AUTORELEASE_FILENAME        "libautoupdater.owc.dll"
+#define AUTORELEASE_FILENAME        "libappupdater.owc.dll"
 
 #else
-#define AUTORELEASE_FILENAME        "libautoupdater.dll"
+#define AUTORELEASE_FILENAME        "libappupdater.dll"
 #endif
 
 #endif  /*AUTORELEASE_H_INCLUDED*/

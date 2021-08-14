@@ -1,8 +1,8 @@
-//  $Id: AutoLogger.cpp,v 1.12 2021/08/14 05:23:47 cvsuser Exp $
+//  $Id: AutoLogger.cpp,v 1.13 2021/08/14 15:38:10 cvsuser Exp $
 //
 //  AutoUpdater: logger.
 //
-//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
 //  Copyright (c) 2012 - 2021 Adam Young
 //
