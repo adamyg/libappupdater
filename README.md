@@ -1,3 +1,5 @@
+![Latest Build](https://github.com/adamyg/libappupdater/actions/workflows/build/badge.svg)
+
 # libappupdater
 
 <p align="center">Windows application updater library, similar to Sparkle and WinSparke. The library checks for updates from a remote server or file-system, which inturn notifies the user of your apps' update and prompts an optional installation. This process can be executed periodically within your application with limited user interaction.</p>
