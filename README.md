@@ -1,4 +1,4 @@
-![Latest Build](https://github.com/adamyg/libappupdater/actions/workflows/build/badge.svg)
+![Latest Build](https://github.com/adamyg/libappupdater/actions/workflows/build.yml/badge.svg)
 
 # libappupdater
 
