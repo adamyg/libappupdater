@@ -35,6 +35,10 @@
 #include <ole2.h>
 #endif
 #include <Exdisp.h>
+
+#if defined(__WATCOMC__)
+#pragma disable_message(146) /* unexpected storage class specifier found */
+#endif
 #include <Mshtml.h>
 
 #if !defined(WINDOWS_MEAN_AND_LEAN)

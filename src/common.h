@@ -56,8 +56,10 @@
 #pragma disable_message(136)                    /* Comparison equivalent to 'unsigned == 0' */
 #pragma disable_message(303)                    /* Parameter 'enc' has been defined, but not referenced */
 #endif
+#pragma disable_message(13)                     /* Unreachable code */
 #pragma disable_message(201)                    /* Unreachable code */
 #pragma disable_message(202)                    /* Symbol 'xxx' has been defined, but not referenced */
+#pragma disable_message(367)                    /* Conditional expression in if statement is always true */
 #endif
 
 #if defined(__WATCOMC__) && (__WATCOMC__ <= 1300) && !defined(__WATCOMC__NOTHROW__)

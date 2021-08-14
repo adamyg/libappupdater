@@ -2,6 +2,10 @@
    See the file COPYING for copying permission.
 */
 
+#if defined(__WATCOMC__)
+#pragma disable_message(201) /* Unreachable code */
+#endif
+
 /* This file is included! */
 #ifdef XML_TOK_IMPL_C
 
