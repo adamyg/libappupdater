@@ -49,6 +49,9 @@
 #ifdef _WIN32
 #  include "winconfig.h"
 #endif
+#if defined(__WATCOMC__)
+#pragma disable_message(201) /* Unreachable code */
+#endif
 
 #include <expat_config.h>
 

@@ -89,6 +89,9 @@
 #ifdef _WIN32
 #  include "winconfig.h"
 #endif
+#if defined(__WATCOMC__)
+#pragma disable_message(201) /* Unreachable code */
+#endif
 
 #include <expat_config.h>
 
@@ -822,6 +825,35 @@ writeRandomBytes_arc4random(void *target, size_t count) {
 #endif /* defined(HAVE_ARC4RANDOM) && ! defined(HAVE_ARC4RANDOM_BUF) */
 
 #ifdef _WIN32
+
+#if defined(__WATCOMC__)
+typedef BOOLEAN (WINAPI *RtlGenRandom_t)(void *, ULONG);
+
+static BOOLEAN WINAPI
+local_RtlGenRandom(void *buffer, ULONG len)
+{
+    unsigned char *data = (unsigned char *)buffer;
+    while (len-- ) {
+        *data++ = (unsigned char) rand();
+    }
+    return TRUE;
+}
+
+static BOOLEAN
+rand_s(unsigned int *val)
+{
+    static RtlGenRandom_t func = NULL;
+    if (NULL == func) { // RtlGenRandom(), XP+
+        // RtlGenRandom(), a.k.a. SystemFunction036.
+        // http://msdn.microsoft.com/en-us/library/windows/desktop/aa387694.aspx
+        func = (RtlGenRandom_t) GetProcAddress(LoadLibraryW(L"advapi32.dll"), "SystemFunction036");
+        if (NULL == func) {
+            func = local_RtlGenRandom;
+        }
+    }
+    return func(val, sizeof(val));
+}
+#endif //__WATCOMC__
 
 /* Provide declaration of rand_s() for MinGW-32 (not 64, which has it),
    as it didn't declare it in its header prior to version 5.3.0 of its
@@ -7252,6 +7284,7 @@ accountingReportStats(XML_Parser originParser, const char *epilog) {
     return;
   }
 
+  { /*WATCOMC*/
   const float amplificationFactor
       = accountingGetCurrentAmplification(rootParser);
   fprintf(stderr,
@@ -7260,6 +7293,7 @@ accountingReportStats(XML_Parser originParser, const char *epilog) {
           (void *)rootParser, rootParser->m_accounting.countBytesDirect,
           rootParser->m_accounting.countBytesIndirect,
           (double)amplificationFactor, epilog);
+  } 
 }
 
 static void
@@ -7279,6 +7313,7 @@ accountingReportDiff(XML_Parser rootParser,
           bytesMore, (account == XML_ACCOUNT_DIRECT) ? "DIR" : "EXP",
           levelsAwayFromRootParser, source_line, 10, "");
 
+  { /*WATCOMC*/
   const char ellipis[] = "[..]";
   const size_t ellipsisLength = sizeof(ellipis) /* because compile-time */ - 1;
   const unsigned int contextLength = 10;
@@ -7302,6 +7337,7 @@ accountingReportDiff(XML_Parser rootParser,
     }
   }
   fprintf(stderr, "\"\n");
+  }
 }
 
 static XML_Bool
@@ -7322,10 +7358,10 @@ accountingDiffTolerated(XML_Parser originParser, int tok, const char *before,
   if (account == XML_ACCOUNT_NONE)
     return XML_TRUE; /* because these bytes have been accounted for, already */
 
+  { /*WATCOMC*/
   unsigned int levelsAwayFromRootParser;
   const XML_Parser rootParser
       = getRootParserOf(originParser, &levelsAwayFromRootParser);
-  assert(! rootParser->m_parentParser);
 
   const int isDirect
       = (account == XML_ACCOUNT_DIRECT) && (originParser == rootParser);
@@ -7335,11 +7371,14 @@ accountingDiffTolerated(XML_Parser originParser, int tok, const char *before,
       = isDirect ? &rootParser->m_accounting.countBytesDirect
                  : &rootParser->m_accounting.countBytesIndirect;
 
+  assert(! rootParser->m_parentParser);
+
   /* Detect and avoid integer overflow */
   if (*additionTarget > (XmlBigCount)(-1) - (XmlBigCount)bytesMore)
     return XML_FALSE;
   *additionTarget += bytesMore;
 
+  { /*WATCOMC*/
   const XmlBigCount countBytesOutput
       = rootParser->m_accounting.countBytesDirect
         + rootParser->m_accounting.countBytesIndirect;
@@ -7357,6 +7396,8 @@ accountingDiffTolerated(XML_Parser originParser, int tok, const char *before,
   }
 
   return tolerated;
+  } /*WATCOMC*/
+  } /*WATCOMC*/
 }
 
 unsigned long long
@@ -7380,6 +7421,7 @@ entityTrackingReportStats(XML_Parser rootParser, ENTITY *entity,
   if (rootParser->m_entity_stats.debugLevel < 1)
     return;
 
+  { /*WATCOMC*/
 #  if defined(XML_UNICODE)
   const char *const entityName = "[..]";
 #  else
@@ -7395,6 +7437,7 @@ entityTrackingReportStats(XML_Parser rootParser, ENTITY *entity,
       (rootParser->m_entity_stats.currentDepth - 1) * 2, "",
       entity->is_param ? "%" : "&", entityName, action, entity->textLen,
       sourceLine);
+  } /*WATCOMC*/
 }
 
 static void
@@ -7966,15 +8009,19 @@ getDebugLevel(const char *variableName, unsigned long defaultDebugLevel) {
   if (valueOrNull == NULL) {
     return defaultDebugLevel;
   }
-  const char *const value = valueOrNull;
 
   errno = 0;
+
+  { /*WATCOMC*/
+  const char *const value = valueOrNull;
   char *afterValue = (char *)value;
   unsigned long debugLevel = strtoul(value, &afterValue, 10);
+
   if ((errno != 0) || (afterValue[0] != '\0')) {
     errno = 0;
     return defaultDebugLevel;
   }
 
   return debugLevel;
+  } /*WATCOMC*/
 }

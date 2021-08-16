@@ -1,4 +1,4 @@
-//  $Id: AutoLogger.cpp,v 1.13 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: AutoLogger.cpp,v 1.14 2021/08/16 15:16:39 cvsuser Exp $
 //
 //  AutoUpdater: logger.
 //
@@ -277,14 +277,15 @@ const char *
 Logger::Timestamp(char *buffer, size_t buflen)
 {
     time_t now = time(NULL);
-    struct tm tm;
+    struct tm tm = {0};
 
 #if defined(__WATCOMC__)
     _localtime(&now, &tm);
 #else
     _localtime64_s(&tm, &now);
 #endif
-    strftime(buffer, sizeof(buffer), "%c", &tm);
+ // strftime(buffer, sizeof(buflen), "%a %b %e %H:%M:%S %Y", &tm);
+    strftime(buffer, buflen, "%c", &tm);
     return buffer;
 }
 
