@@ -1,6 +1,6 @@
 #ifndef AUTOMANIFEST_H_INCLUDED
 #define AUTOMANIFEST_H_INCLUDED
-//  $Id: AutoManifest.h,v 1.8 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: AutoManifest.h,v 1.9 2021/08/16 12:50:32 cvsuser Exp $
 //
 //  AutoUpdater: application manifest.
 //
@@ -48,6 +48,7 @@ public:
     std::string     pubDate;                    // Human readable publish time-stamp.
     std::string     description;                // Release description.
     std::string     releaseNotesLink;           // Release notes.
+    std::string     releaseNotesContent;        // Loaded content.
 
     std::string     attributeURL;               // Download URL.
     std::string     attributeName;              // Public name.

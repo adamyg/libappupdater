@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.20 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.21 2021/08/16 12:50:32 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //
@@ -117,6 +117,10 @@ ConfigKeys[] = {
 
 using namespace Updater;
 
+/////////////////////////////////////////////////////////////////////////////////////////
+//  AutoUpdaterImpl
+//
+
 class AutoUpdaterImpl {
 public:
     AutoUpdaterImpl(IAutoUpdaterUI *dialog) : d_dialog(dialog) {
@@ -148,6 +152,18 @@ public:
         }
     }
 
+    const std::string &LastError() const {
+        return d_lasterror;
+    }
+
+    void SetLastError(const char *msg) {                    
+        d_lasterror.assign(msg);
+    }
+
+    void SetLastError(const std::string &msg) {
+        d_lasterror.assign(msg);
+    }
+
     Updater::AutoManifest d_manifest;           // current application manifest.
 #if defined(_MSC_VER) && (_MSC_VER_ <= 1500)
     std::tr1::shared_ptr <IAutoUpdaterUI> d_uibind;
@@ -161,6 +177,49 @@ public:
     std::string         d_lasterror;            // last reported error, if any.
 };
 
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//  AutoUpdaterSink
+//
+
+class AutoUpdaterSink : public FileDownloadSink {
+    AutoUpdaterSink(const AutoUpdaterSink &rsh);
+    AutoUpdaterSink& operator=(const AutoUpdaterSink &rsh);
+
+public:
+    AutoUpdaterSink(AutoUpdater &updater, const char *filename) :
+        FileDownloadSink(filename), updater_(updater), total_(0), completed_(0), percentage_(0) {
+    }
+
+    virtual void set_size(size_t size) {
+        FileDownloadSink::set_size(size); 
+        total_ = size;
+    }
+
+    virtual void append(const void *data, size_t length) {
+        FileDownloadSink::append(data, length);
+        completed_ += length;
+        if (total_) {
+            const int percentage = 
+                    (int)(((double)completed_ / total_) * 100.0);
+            if (percentage != percentage_) {
+                updater_.ProgressUpdate(completed_, total_);
+                percentage_ = percentage;
+            }
+        }   
+    }
+
+private:
+    AutoUpdater &updater_;
+    size_t total_;
+    size_t completed_;
+    int percentage_;
+};
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//  AutoUpdater
+//
 
 AutoUpdater::AutoUpdater(IAutoUpdaterUI *dialog) :
     d_impl(new AutoUpdaterImpl(dialog))
@@ -319,8 +378,8 @@ AutoUpdater::Execute(enum ExecuteMode mode, bool interactive)
                 ret = 1;
             }
 
-            if (! d_impl->d_lasterror.empty()) {
-                d_impl->d_dialog->ErrorMessage(d_impl->d_lasterror.c_str());
+            if (! d_impl->LastError().empty()) {
+                d_impl->d_dialog->ErrorMessage(d_impl->LastError().c_str());
                 ret = -1;
             }
 
@@ -493,17 +552,17 @@ AutoUpdater::IsAvailable(bool interactive)
     int ret = -1;
     try {                                       // guard progress dialog.
         Updater::AutoManifest &d_manifest = d_impl->d_manifest;
-        StringDownloadSink manifest, description;
+        StringDownloadSink manifest;
         Download inet;
 
         if (inet.get(feed_url, manifest, DownloadFlags())) {
 
             if (! inet.completion()) {          // manifest available.
-                d_impl->d_lasterror.assign("Unable to download manifest");
+                d_impl->SetLastError("Unable to download manifest");
 
-            } else if (! d_manifest.Load(manifest.data,
+            } else if (! d_manifest.Load(manifest.data(),
                             Config::GetChannel(), Config::GetOSLabel())) {
-                d_impl->d_lasterror.assign("Channel/label not available");
+                d_impl->SetLastError("Channel/label not available");
                 ret = -2;                       // channel not available.
 
             } else if (! ProgressCancelled()) {
@@ -522,8 +581,10 @@ AutoUpdater::IsAvailable(bool interactive)
                     ret = 1;
 
                     if (! d_manifest.releaseNotesLink.empty()) {
-                        if (! inet.get(d_manifest.releaseNotesLink, description) ||
+                        StringDownloadSink content(&d_manifest.releaseNotesContent);
+                        if (! inet.get(d_manifest.releaseNotesLink, content) ||
                                 ! inet.completion()) {
+                            d_impl->SetLastError("Unable to download release notes");
                             ret = -1;
                         }
                     }
@@ -533,13 +594,13 @@ AutoUpdater::IsAvailable(bool interactive)
 
     } catch (const std::exception &e) {
         LOG<LOG_ERROR>() << "IsAvailable: exception : " << e.what() << LOG_ENDL;
-        d_impl->d_lasterror.assign(e.what());
+        d_impl->SetLastError(e.what());
         ProgressStop();
         ret = -1;
 
     } catch (...) {
         LOG<LOG_ERROR>() << "IsAvailable: unhandled exception" << LOG_ENDL;
-        d_impl->d_lasterror.assign("unhandled exception");
+        d_impl->SetLastError("unhandled exception");
         ProgressStop();
         ret = -1;
     }
@@ -622,9 +683,10 @@ AutoUpdater::InstallNow(IInstallNow &updater, bool interactive)
         ProgressStart(updater.GetParent(), true, "Downloading update ...");
     }
 
+    AutoUpdaterSink filesink(*this, targetName.c_str());
     Download inet;                              // download.
 
-    bool getfile = inet.get(d_manifest.attributeURL, targetName.c_str());
+    bool getfile = inet.get(d_manifest.attributeURL, filesink);
     if (getfile) {
         getfile = inet.completion();
     }
@@ -674,7 +736,7 @@ AutoUpdater::InstallNow(IInstallNow &updater, bool interactive)
                 }
 
             } else {
-                if (((INT_PTR) ShellExecuteA(NULL, "open", targetName.c_str(),
+                if (((INT_PTR) ::ShellExecuteA(NULL, "open", targetName.c_str(),
                             d_manifest.installerArguments.c_str(), d_impl->d_tempdir.c_str(), SW_SHOWNORMAL)) >= 32) {
                     d_impl->RetainTemp();
                 } else {
@@ -694,7 +756,7 @@ AutoUpdater::InstallNow(IInstallNow &updater, bool interactive)
             if (interactive) {
                 updater.message("ERROR - %s", msg);
             }
-            d_impl->d_lasterror.assign(msg);
+            d_impl->SetLastError(msg);
         }
 
     } else if (! getfile) {
@@ -708,7 +770,7 @@ AutoUpdater::InstallNow(IInstallNow &updater, bool interactive)
             if (interactive) {
                 updater.message("ERROR - %s", msg);
             }
-            d_impl->d_lasterror.assign(msg);
+            d_impl->SetLastError(msg);
         }
     }
 
@@ -942,10 +1004,10 @@ AutoUpdater::ProgressStart(HWND parent, bool indeterminate, const char *msg)
 
 
 void
-AutoUpdater::ProgressUpdate(int percentage, int total)
+AutoUpdater::ProgressUpdate(int completed, int total)
 {
     if (IAutoUpdaterUI *dialog = d_impl->GetDialog()) {
-        dialog->ProgressUpdate(percentage, total);
+        dialog->ProgressUpdate(completed, total);
     }
 }
 

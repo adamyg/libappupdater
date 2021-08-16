@@ -1,6 +1,6 @@
 #ifndef AUTODOWNLOAD_H_INCLUDED
 #define AUTODOWNLOAD_H_INCLUDED
-//  $Id: AutoDownLoad.h,v 1.11 2021/08/14 15:38:09 cvsuser Exp $
+//  $Id: AutoDownLoad.h,v 1.12 2021/08/16 12:50:32 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
@@ -37,6 +37,7 @@ struct IDownloadSink {
     virtual void set_size(size_t size) = 0;
     virtual bool open() = 0;
     virtual void append(const void *data, size_t len) = 0;
+    virtual void close() = 0;
 };
 
 
@@ -45,11 +46,17 @@ class StringDownloadSink : public IDownloadSink {
     StringDownloadSink& operator=(const StringDownloadSink &rsh);
 
 public:
-    StringDownloadSink() {
+    StringDownloadSink() : data_(&t_destination) {
+    }
+
+    StringDownloadSink(std::string *destination) : data_(destination) {
+    }
+
+    virtual ~StringDownloadSink() {
     }
 
     virtual void set_size(size_t size) {
-        data.reserve(size);
+        data_->reserve(size);
     }
 
     virtual bool open() {
@@ -57,10 +64,38 @@ public:
     }
 
     virtual void append(const void *data, size_t len) {
-        this->data.append(reinterpret_cast<const char*>(data), len);
+        data_->append(reinterpret_cast<const char*>(data), len);
     }
 
-    std::string data;                       // payload.
+    virtual void close() {
+    }
+
+    const std::string &data() {
+        return *data_;
+    }
+
+private:
+    std::string t_destination;                  // local payload.
+    std::string *data_;
+};
+
+
+struct FileDownloadSink : public IDownloadSink {
+    FileDownloadSink(const FileDownloadSink &rsh);
+    FileDownloadSink& operator=(const FileDownloadSink &rsh);
+
+public:
+    FileDownloadSink(const char *filename = NULL);
+    virtual ~FileDownloadSink();
+
+    virtual bool open();
+    virtual void set_size(size_t size);
+    virtual void append(const void *data, size_t len);
+    virtual void close();
+
+    std::string filename_;
+    size_t filesize_;
+    HANDLE handle_;
 };
 
 

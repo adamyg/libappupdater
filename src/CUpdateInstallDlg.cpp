@@ -1,4 +1,4 @@
-//  $Id: CUpdateInstallDlg.cpp,v 1.15 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: CUpdateInstallDlg.cpp,v 1.16 2021/08/16 12:50:32 cvsuser Exp $
 //
 //  AutoUpdater: Install dialog.
 //
@@ -261,18 +261,23 @@ BrowserResizer(const RECT &rect, void *param)
 void
 CUpdateInstallDlg::ReleaseNotes()
 {
+    const Updater::AutoManifest& manifest = d_owner.Manifest();
+
     d_edit_title.SetWindowText(_T("Release Notes:"));
     d_edit_title.SetFont(d_bold);
+
 #if (0)
     if (useweb_) {
 #endif
 
         d_browser = new CSimpleBrowser();
         d_browser->CreateFromControl(GetSafeHwnd(), IDC_INSTALL_NOTES);
-        if (d_owner.Manifest().releaseNotesLink.empty()) {
-            d_browser->Content(Updater::to_wstring(d_owner.Manifest().description));
+        if (manifest.releaseNotesLink.empty()) {
+            d_browser->Content(Updater::to_wstring(manifest.description));
+        } else if (! manifest.releaseNotesContent.empty()) {
+            d_browser->Content(Updater::to_wstring(manifest.releaseNotesContent));
         } else {
-            d_browser->Navigate(Updater::to_wstring(d_owner.Manifest().releaseNotesLink));
+            d_browser->Navigate(Updater::to_wstring(manifest.releaseNotesLink));
         }
         AutoPull(IDC_INSTALL_NOTES, &BrowserResizer, (void *)d_browser);
 
@@ -280,13 +285,13 @@ CUpdateInstallDlg::ReleaseNotes()
     } else {
 #if defined(UNICODE)
         std::wstring text;
-        text = Updater::to_wstring(d_owner.Manifest().description);
+        text = Updater::to_wstring(manifest.description);
         for (size_t pos = 0; (pos = text.find(L"\n", pos)) != std::string::npos; pos += 2) {
             text.replace(pos, 1, L"\r\n");
         }
- #else
+#else
         std::string text;
-        text = d_owner.Manifest().description;
+        text = manifest.description;
         for (size_t pos = 0; (pos = text.find("\n", pos)) != std::string::npos; pos += 2) {
             text.replace(pos, 1, "\r\n");
         }

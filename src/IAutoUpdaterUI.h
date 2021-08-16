@@ -1,6 +1,6 @@
 #ifndef IAUTOUPDATERUI_H_INCLUDED
 #define IAUTOUPDATERUI_H_INCLUDED
-//  $Id: IAutoUpdaterUI.h,v 1.5 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: IAutoUpdaterUI.h,v 1.6 2021/08/16 12:50:32 cvsuser Exp $
 //
 //  IAutoUpdaterUI: ui interface.
 //
@@ -26,6 +26,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 //
+
+#include <string>
 
 class AutoUpdater;
 

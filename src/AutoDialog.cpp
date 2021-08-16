@@ -1,4 +1,4 @@
-//  $Id: AutoDialog.cpp,v 1.12 2021/08/14 15:38:09 cvsuser Exp $
+//  $Id: AutoDialog.cpp,v 1.13 2021/08/16 12:50:32 cvsuser Exp $
 //
 //  AutoUpdater: dialog interface
 //
@@ -156,11 +156,12 @@ AutoDialogUI::ProgressStart(AutoUpdater &owner, HWND parent, bool indeterminate,
 
 
 void
-AutoDialogUI::ProgressUpdate(int percentage, int total)
+AutoDialogUI::ProgressUpdate(int completed, int total)
 {
     IPROGRESSDIALOG *progress;
     if (NULL != (progress = (IPROGRESSDIALOG *)progress_)) {
-        progress->SetProgress(percentage, 100);
+        progress->SetProgress(completed, total);
+        //progress->SetProgress64():
     }
 }
 

@@ -1,6 +1,6 @@
 #ifndef AUTOUPDATER_H_INCLUDED
 #define AUTOUPDATER_H_INCLUDED
-//  $Id: AutoUpdater.h,v 1.13 2021/08/14 15:40:18 cvsuser Exp $
+//  $Id: AutoUpdater.h,v 1.14 2021/08/16 12:50:32 cvsuser Exp $
 //
 //  AutoUpdater: application interface.
 //
@@ -65,11 +65,7 @@ public:
         va_list ap;
         
         va_start(ap, format);
-#if defined(_MSC_VER)
-        int ret = _snprintf(buffer, sizeof(buffer), format, ap);
-#else
-        int ret = std::snprintf(buffer, sizeof(buffer), format, ap);
-#endif        
+        int ret = _snprintf(buffer, sizeof(buffer), format, ap);     
         if (ret < 0 || ret >= sizeof(buffer)) buffer[sizeof(buffer)-1] = 0;
         (*this)(buffer);
         va_end(ap);
@@ -159,6 +155,7 @@ private:
 
 private:
     friend class AutoUpdaterImpl;
+    friend class AutoUpdaterSink;
     AutoUpdaterImpl *   d_impl;                 // implementation.
 };
 

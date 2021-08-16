@@ -1,4 +1,4 @@
-//  $Id: AutoDownLoad.cpp,v 1.15 2021/08/14 15:38:09 cvsuser Exp $
+//  $Id: AutoDownLoad.cpp,v 1.17 2021/08/16 12:55:08 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
@@ -96,43 +96,6 @@ public:
 private:
     HINTERNET handle_;
     bool callback_;
-};
-
-
-struct FileDownloadSink : public IDownloadSink {
-    FileDownloadSink(const char *filename = NULL) :
-        filename_(filename?filename:""), filesize_(-1), hfile_(INVALID_HANDLE_VALUE) {
-    }
-
-    ~FileDownloadSink() {
-        if (INVALID_HANDLE_VALUE != hfile_) {
-            ::CloseHandle(hfile_);
-        }
-    }
-
-    virtual void set_size(size_t size) {
-        filesize_ = size;
-    }
-
-    virtual bool open() {
-        if (INVALID_HANDLE_VALUE == hfile_) {
-            hfile_ = ::CreateFileA(filename_.c_str(), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
-                            NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-        }
-        return (INVALID_HANDLE_VALUE != hfile_);
-    }
-
-    virtual void append(const void *data, size_t len) {
-        DWORD dwWriteSize = (DWORD)len, dwWriteNum = 0;
-        if (! ::WriteFile(hfile_, data, dwWriteSize, &dwWriteNum, NULL) ||
-                    dwWriteSize != dwWriteNum) {
-            throw SysException();
-        }
-    }
-
-    std::string filename_;
-    size_t filesize_;
-    HANDLE hfile_;
 };
 
 }   //namespace anon
@@ -246,6 +209,65 @@ Download::cancel()
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
+//  FileDownloadSink
+//
+
+FileDownloadSink::FileDownloadSink(const char *filename) :
+        filename_(filename?filename:""), filesize_(-1), handle_(INVALID_HANDLE_VALUE) 
+{
+}
+
+
+FileDownloadSink::~FileDownloadSink() 
+{
+    close();
+}
+
+
+//virtual
+void
+FileDownloadSink::set_size(size_t size) 
+{
+    filesize_ = size;
+}
+
+
+//virtual
+bool
+FileDownloadSink::open() 
+{
+    if (INVALID_HANDLE_VALUE == handle_) {
+        handle_ = ::CreateFileA(filename_.c_str(), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
+                        NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    }
+    return (INVALID_HANDLE_VALUE != handle_);
+}
+
+
+//virtual
+void
+FileDownloadSink::close()
+{
+    if (INVALID_HANDLE_VALUE != handle_) {
+        ::CloseHandle(handle_);
+        handle_ = INVALID_HANDLE_VALUE;
+    }
+}
+
+
+//virtual
+void
+FileDownloadSink::append(const void *data, size_t len) 
+{
+    DWORD dwWriteSize = (DWORD)len, dwWriteNum = 0;
+    if (! ::WriteFile(handle_, data, dwWriteSize, &dwWriteNum, NULL) ||
+                dwWriteSize != dwWriteNum) {
+        throw SysException("Writing download image");
+    }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
 //  DownloadContext
 //
 
@@ -306,7 +328,7 @@ DownloadContext::completion(bool pump)
     }
 
     for (bool done = false; !done;) {       // message pump loop.
-        if (MsgWaitForMultipleObjects(1, &t_trigger,
+        if (::MsgWaitForMultipleObjects(1, &t_trigger,
                     FALSE, 100, QS_ALLEVENTS) == WAIT_OBJECT_0) {
             CriticalSection::Guard guard(lock);
             if (INVALID_HANDLE_VALUE != completion_trigger) {
@@ -390,9 +412,6 @@ DownloadContext::threadproc(void *param)
     if (self) {
         try {
             self->success = self->execute();
-#if defined(_DEBUG)
-            ::Sleep(5 * 1000);
-#endif
             LOG<LOG_INFO>() << "Download: <" << self->url << "> complete" << LOG_ENDL;
         } catch (std::exception &e) {
             LOG<LOG_ERROR>() << "Download: <" << self->url << "> exception : " << e.what() << LOG_ENDL;
@@ -533,6 +552,7 @@ again:
         const DWORD ret = GetLastError();
         if (ERROR_IO_PENDING != ret) {
             std::string msg;
+
             msg += "Opening URL <", msg += canonical_url, msg += ">";
             if (ERROR_INVALID_HANDLE == ret) {
                 msg += "\nUnable to connect";
@@ -554,7 +574,7 @@ again:
 
         if (owner.enable_login_) {
             if (HTTP_STATUS_PROXY_AUTH_REQ == http_res) {
-                if (InternetErrorDlg(GetDesktopWindow(), request_handle, ERROR_INTERNET_INCORRECT_PASSWORD,
+                if (::InternetErrorDlg(GetDesktopWindow(), request_handle, ERROR_INTERNET_INCORRECT_PASSWORD,
                         FLAGS_ERROR_UI_FILTER_FOR_ERRORS |FLAGS_ERROR_UI_FLAGS_GENERATE_DATA |
                         FLAGS_ERROR_UI_FLAGS_CHANGE_OPTIONS, NULL) == ERROR_INTERNET_FORCE_RETRY) {
                     goto again;
@@ -562,7 +582,7 @@ again:
             }
 
             if (HTTP_STATUS_DENIED == http_res) {
-                if (InternetErrorDlg(GetDesktopWindow(), request_handle, ERROR_INTERNET_INCORRECT_PASSWORD,
+                if (::InternetErrorDlg(GetDesktopWindow(), request_handle, ERROR_INTERNET_INCORRECT_PASSWORD,
                         FLAGS_ERROR_UI_FILTER_FOR_ERRORS |FLAGS_ERROR_UI_FLAGS_GENERATE_DATA |
                         FLAGS_ERROR_UI_FLAGS_CHANGE_OPTIONS, NULL) == ERROR_INTERNET_FORCE_RETRY) {
                     goto again;
@@ -583,18 +603,57 @@ again:
         throw AppException("Unable to download component");
     }
 
+    // status
+    {   DWORD status_code = 0, status_code_len = sizeof(status_code);
+        if (::HttpQueryInfoA(request_handle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER,
+                    &status_code, &status_code_len, 0)) {
+            if (status_code < 200 || status_code >= 300) {
+                LOG<LOG_INFO>() << "Download: unexpected status_code=" << status_code << LOG_ENDL;
+            }
+        }
+    }
+
+    // context type
+    {   char content_type[1000] = {0};
+        DWORD content_type_len = sizeof(content_type);
+        if (::HttpQueryInfoA(request_handle, HTTP_QUERY_CONTENT_TYPE,
+                    content_type, &content_type_len, NULL)) {
+            LOG<LOG_INFO>() << "Download: content_type=" << content_type << LOG_ENDL;
+        }
+    }
+
     // context size, if available
-    DWORD content_length = 0, content_length_len = sizeof(content_length);
-    if (::HttpQueryInfo(request_handle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER,
-                &content_length, &content_length_len, 0)) {
-        // Content-Length: 200
-        //  Note: Wont reflect the size of any attachments.
-        sink.set_size(content_length);
+    {   char content_length[1000] = {0};
+        DWORD content_length_len = sizeof(content_length);
+        if (::HttpQueryInfoA(request_handle, HTTP_QUERY_CONTENT_LENGTH,
+                content_length, &content_length_len, NULL)) {
+            const int size = atoi(content_length);
+            if (size > 0) {
+                LOG<LOG_INFO>() << "Download: size=" << size << LOG_ENDL;
+                sink.set_size(size);
+            }
+        }
+    }
+
+    // last modified; if available
+    {   SYSTEMTIME last_modified = {0};
+        DWORD last_modified_len = sizeof(last_modified);
+        if (::HttpQueryInfoA(request_handle, HTTP_QUERY_LAST_MODIFIED | HTTP_QUERY_FLAG_SYSTEMTIME,
+                &last_modified, &last_modified_len, NULL)) {
+            char last_modified_sz[32];
+            FILETIME filetime = {0};
+
+            ::SystemTimeToFileTime(&last_modified, &filetime);
+            sprintf_s(last_modified_sz, sizeof(last_modified_sz), "%04u/%02u/%02u %02u:%02u",
+                last_modified.wYear, last_modified.wMonth, last_modified.wDay, last_modified.wHour, last_modified.wMinute);
+            LOG<LOG_INFO>() << "Download: last_modified=" << last_modified_sz << LOG_ENDL;
+        }
     }
 
     // read content
-    char buffer[8 * 1024] = {0};
+    char buffer[8 * 1024];
 
+    (void) memset(buffer, 0, sizeof(buffer));
     if (sink.open()) {
         for (;;) {
             DWORD read = 0;
@@ -604,6 +663,7 @@ again:
             if (0 == read) break;               // EOF
             sink.append(buffer, read);
         }
+        sink.close();
     }
 
     return true;
@@ -629,9 +689,12 @@ DownloadContext::InternetError(const char *message, const DWORD ret)
 
         std::string msg;
         msg += message, msg += " : ", msg += buffer;
+
+        LOG<LOG_ERROR>() << "Download: " << msg << LOG_ENDL;
         throw AppException(msg);
     }
 
+    LOG<LOG_ERROR>() << "Download: " << message << " : " << ret << LOG_ENDL;
     throw SysException(ret, message);
 }
 

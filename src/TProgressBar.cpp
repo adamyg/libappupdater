@@ -1,4 +1,4 @@
-//  $Id: TProgressBar.cpp,v 1.5 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: TProgressBar.cpp,v 1.6 2021/08/16 12:50:32 cvsuser Exp $
 //
 //  AutoUpdater: TProgressDialog.
 //
@@ -143,7 +143,9 @@ TProgressBar::SetProgress(unsigned complete, unsigned total)
     assert(references_);
 
     Updater::CriticalSection::Guard guard(lock_);
-    if ((complete_ = complete) > total) complete_ = total;
+    if ((complete_ = complete) > total) {
+        complete_ = total;
+    }
     total_ = total;
 }
 
@@ -168,11 +170,38 @@ TProgressBar::Stop()
 }
 
 
+static int
+progress(char *buffer, int buflen, int complete, int total) 
+{
+    const char *suffix[] = {"B", "KB", "MB", "GB", "TB"};
+
+    if (total > 0 && complete >= 0) {
+        const int percentage = 
+                (int)(((double)complete / total) * 100.0);
+        double unit = (double)(total);
+        int s = 0;
+
+        if (total > 1024) {
+            while ((total / 1024) > 0 && s < (_countof(suffix) - 1)) {
+                unit = total / 1024.0;
+                total /= 1024;
+                ++s;
+            }
+        }
+        return sprintf_s(buffer, buflen, " %d%% / %.02lf%s ", percentage, unit, suffix[s]);
+    }
+
+    buffer[0] = 0;
+    return 0;
+}
+
+
 void
 TProgressBar::Update()
 {
     static const char animation[] = "|/-\\";
     int console_width = ConsoleWidth();
+    char progress_buffer[32];
     unsigned index = 0;
     unsigned pos = 0;
 
@@ -206,6 +235,9 @@ TProgressBar::Update()
 
         // bar
         console_width = ConsoleWidth();
+
+        const int progress_len =
+                progress(progress_buffer, sizeof(progress_buffer), complete_, total_);
         int display_width = console_width - 4;
 
         if (! text_msg_.empty()) { //XXX
@@ -226,6 +258,12 @@ TProgressBar::Update()
                 std::cout << text_msg_ << ' ';
             }
             display_width -= text_width;
+        }
+
+        if (display_width > progress_len) {
+            display_width -= progress_len;
+        } else {
+            progress_buffer[0] = 0;
         }
 
         if (marquee_ || 0 == total_) {
@@ -260,7 +298,9 @@ TProgressBar::Update()
             }
         }
 
+        std::cout << progress_buffer;
         std::cout << animation[ ++index % (sizeof(animation)-1) ];
+
         if (cancelable_) {
             std::cout << " (ESC?)";
         }       

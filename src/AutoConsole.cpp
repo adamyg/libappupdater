@@ -1,4 +1,4 @@
-//  $Id: AutoConsole.cpp,v 1.8 2021/08/14 15:38:09 cvsuser Exp $
+//  $Id: AutoConsole.cpp,v 1.9 2021/08/16 12:50:32 cvsuser Exp $
 //
 //  AutoUpdater: console interface.
 //
@@ -220,11 +220,11 @@ AutoConsoleUI::ProgressStart(AutoUpdater &owner, HWND parent, bool indeterminate
 
 
 void
-AutoConsoleUI::ProgressUpdate(int percentage, int total)
+AutoConsoleUI::ProgressUpdate(int completed, int total)
 {
     TProgressBar *progress;
     if (NULL != (progress = (TProgressBar *)progress_)) {
-        progress->SetProgress(percentage, (total ? total : 100));
+        progress->SetProgress(completed, total);
     }
 }
 

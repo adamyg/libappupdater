@@ -1,4 +1,4 @@
-//  $Id: CProgressDialog.cpp,v 1.13 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: CProgressDialog.cpp,v 1.14 2021/08/16 12:50:32 cvsuser Exp $
 //
 //  AutoUpdater: Progress dialog.
 //
@@ -186,7 +186,7 @@ CProgressDialog::SetProgress(DWORD complete, DWORD total)
 
     {   CriticalSection::Guard guard(d_lock);
         hWnd = Window();
-        d_complete = complete; d_total = d_total;
+        d_complete = complete; d_total = total;
         d_dirty |= DIRTY_PROGRESS;
     }
 
@@ -234,6 +234,32 @@ CProgressDialog::Release()
 }
 
 
+static int
+progress(char *buffer, int buflen, int complete, int total) 
+{
+    const char *suffix[] = {"B", "KB", "MB", "GB", "TB"};
+
+    if (total > 0 && complete >= 0) {
+        const int percentage = 
+                (int)(((double)complete / total) * 100.0);
+        double unit = (double)(total);
+        int s = 0;
+
+        if (total > 1024) {
+            while ((total / 1024) > 0 && s < (_countof(suffix) - 1)) {
+                unit = total / 1024.0;
+                total /= 1024;
+                ++s;
+            }
+        }
+        return sprintf_s(buffer, buflen, "Downloaded %d%% of %.02lf%s ", percentage, unit, suffix[s]);
+    }
+
+    buffer[0] = 0;
+    return 0;
+}
+
+
 void
 CProgressDialog::Update(DWORD dirty)
 {
@@ -242,9 +268,21 @@ CProgressDialog::Update(DWORD dirty)
     if (dirty & DIRTY_TITLE) ::SetWindowTextW(d_hWnd, d_title.c_str());
     if (dirty & DIRTY_LINE1) ::SetDlgItemTextW(d_hWnd, IDC_PROGRESS_TEXT1, (d_cancelled ? L"" : d_lines[0].c_str()));
     if (dirty & DIRTY_LINE2) ::SetDlgItemTextW(d_hWnd, IDC_PROGRESS_TEXT2, (d_cancelled ? L"" : d_lines[1].c_str()));
-    if (dirty & DIRTY_LINE3) ::SetDlgItemTextW(d_hWnd, IDC_PROGRESS_TEXT3, (d_cancelled ? d_cancelmsg.c_str() : d_lines[2].c_str()));
+    if (dirty & DIRTY_LINE3) {
+        if (d_cancelled) {
+            ::SetDlgItemTextW(d_hWnd, IDC_PROGRESS_TEXT3, d_cancelmsg.c_str());
+        } else if (0 == d_total && 0 == d_complete) {
+            ::SetDlgItemTextW(d_hWnd, IDC_PROGRESS_TEXT3, d_lines[2].c_str());
+        }
+    }
 
     if (dirty & DIRTY_PROGRESS) {
+        char buffer[64];
+
+        if (!d_cancelled && progress(buffer, sizeof(buffer), d_complete, d_total)) {
+            ::SetDlgItemTextA(d_hWnd, IDC_PROGRESS_TEXT3, buffer);
+        }
+
         if (0 == (Flags() & PROGDLG_MARQUEEPROGRESS)) {
             ULONGLONG total = d_total, complete = d_complete;
             while (total >> 32) {
