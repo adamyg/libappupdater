@@ -12,6 +12,8 @@ Other toolchains should be possible with minimal effort.</p>
 
 ![Install Dialog](art/Install_Example.png)
 
+![Console Interface](art/Console_Example.png)
+
 ## License
 
       MIT License
