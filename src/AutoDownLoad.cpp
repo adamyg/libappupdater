@@ -1,4 +1,4 @@
-//  $Id: AutoDownLoad.cpp,v 1.17 2021/08/16 12:55:08 cvsuser Exp $
+//  $Id: AutoDownLoad.cpp,v 1.18 2021/08/17 13:01:25 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
@@ -435,7 +435,7 @@ bool
 DownloadContext::execute()
 {
     //  local resources
-    //  -------------------------------------------------
+    // ------------------------------------------------------------------------
 
     if (0 == url.find("\\\\.\\") || 0 == url.find("file:///")) {
         //
@@ -476,6 +476,7 @@ DownloadContext::execute()
                 sink.append(buffer, read);
                 result += read;
             }
+            sink.close();
         }
 
         LOG<LOG_DEBUG>() << "Download: size=" << result << LOG_ENDL;
@@ -484,7 +485,7 @@ DownloadContext::execute()
     }
 
     // remote resources
-    // ---------------------------------------------
+    // ------------------------------------------------------------------------
 
     // extract url components
     URL_COMPONENTSA uc = { sizeof(uc) };
@@ -565,15 +566,16 @@ again:
     ::WaitForSingleObject(callback_trigger, 0);
 
     // status
-    DWORD http_res = 0, http_res_len = sizeof(http_res);
-    if (! HttpQueryInfo(request_handle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, &http_res, &http_res_len, 0)) {
+    DWORD status_code = 0, status_code_len = sizeof(status_code);
+    if (! HttpQueryInfo(request_handle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, 
+            &status_code, &status_code_len, 0)) {
         InternetError("Reading internet connection");
 
-    } else if (http_res >= 400) {               // error, decode and report
+    } else if (status_code >= 400) {                // error, decode and report
         DWORD http_msg_len = 0;
 
         if (owner.enable_login_) {
-            if (HTTP_STATUS_PROXY_AUTH_REQ == http_res) {
+            if (HTTP_STATUS_PROXY_AUTH_REQ == status_code) {
                 if (::InternetErrorDlg(GetDesktopWindow(), request_handle, ERROR_INTERNET_INCORRECT_PASSWORD,
                         FLAGS_ERROR_UI_FILTER_FOR_ERRORS |FLAGS_ERROR_UI_FLAGS_GENERATE_DATA |
                         FLAGS_ERROR_UI_FLAGS_CHANGE_OPTIONS, NULL) == ERROR_INTERNET_FORCE_RETRY) {
@@ -581,7 +583,7 @@ again:
                 }
             }
 
-            if (HTTP_STATUS_DENIED == http_res) {
+            if (HTTP_STATUS_DENIED == status_code) {
                 if (::InternetErrorDlg(GetDesktopWindow(), request_handle, ERROR_INTERNET_INCORRECT_PASSWORD,
                         FLAGS_ERROR_UI_FILTER_FOR_ERRORS |FLAGS_ERROR_UI_FLAGS_GENERATE_DATA |
                         FLAGS_ERROR_UI_FLAGS_CHANGE_OPTIONS, NULL) == ERROR_INTERNET_FORCE_RETRY) {
@@ -601,16 +603,10 @@ again:
         }
 
         throw AppException("Unable to download component");
-    }
 
-    // status
-    {   DWORD status_code = 0, status_code_len = sizeof(status_code);
-        if (::HttpQueryInfoA(request_handle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER,
-                    &status_code, &status_code_len, 0)) {
-            if (status_code < 200 || status_code >= 300) {
-                LOG<LOG_INFO>() << "Download: unexpected status_code=" << status_code << LOG_ENDL;
-            }
-        }
+    } else if (status_code < 200 || status_code >= 300) {
+                                                    // reject?
+        LOG<LOG_INFO>() << "Download: unexpected status_code=" << status_code << LOG_ENDL;
     }
 
     // context type
