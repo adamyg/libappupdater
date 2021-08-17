@@ -2,6 +2,7 @@
 CVS/
 Debug.vs*/
 Release.vs*/
+.vs*/
 compat/
 
 # Prerequisites
