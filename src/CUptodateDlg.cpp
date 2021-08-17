@@ -1,4 +1,4 @@
-//  $Id: CUptodateDlg.cpp,v 1.10 2021/08/14 05:23:48 cvsuser Exp $
+//  $Id: CUptodateDlg.cpp,v 1.11 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutpUpdater: Up-to-date dialog.
 //
@@ -26,8 +26,6 @@
 //
 
 #include "common.h"
-
-#include "AutoMisc.h"
 
 #include "CUptodateDlg.h"
 #include "resource.h"

@@ -1,4 +1,4 @@
-//  $Id: AutoConfig.cpp,v 1.15 2021/08/14 15:38:09 cvsuser Exp $
+//  $Id: AutoConfig.cpp,v 1.16 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
@@ -106,7 +106,7 @@ GetVerInfoFixed(const void *fi)
     VS_FIXEDFILEINFO *info = NULL;
     UINT size = 0;
 
-    if (! ::VerQueryValue((void *)fi, _T("\\"), (LPVOID *)&info, &size)) {
+    if (! ::VerQueryValueA((void *)fi, "\\", (LPVOID *)&info, &size)) {
         throw SysException("Unable to access executable FIXEDFILEINFO");
     }
     assert(size == sizeof(VS_FIXEDFILEINFO));

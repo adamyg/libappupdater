@@ -1,4 +1,4 @@
-//  $Id: TProgressBar.cpp,v 1.6 2021/08/16 12:50:32 cvsuser Exp $
+//  $Id: TProgressBar.cpp,v 1.7 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutoUpdater: TProgressDialog.
 //
@@ -27,6 +27,7 @@
 
 #include "common.h"
 
+#include <string>
 #include <cassert>
 #include <iostream>
 #include <limits>

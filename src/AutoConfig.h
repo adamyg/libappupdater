@@ -1,6 +1,6 @@
 #ifndef AUTOCONFIG_H_INCLUDED
 #define AUTOCONFIG_H_INCLUDED
-//  $Id: AutoConfig.h,v 1.12 2021/08/14 15:38:09 cvsuser Exp $
+//  $Id: AutoConfig.h,v 1.13 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
@@ -35,7 +35,6 @@
 #include <sstream>
 #endif
 
-#include "AutoMisc.h"
 #include "AutoLogger.h"
 
 namespace Updater {

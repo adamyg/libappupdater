@@ -1,4 +1,4 @@
-//  $Id: AutoConsole.cpp,v 1.9 2021/08/16 12:50:32 cvsuser Exp $
+//  $Id: AutoConsole.cpp,v 1.10 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutoUpdater: console interface.
 //
@@ -33,7 +33,7 @@
 #include "AutoUpdater.h"
 #include "AutoError.h"
 #include "AutoLogger.h"
-#include "AutoMisc.h"
+#include "AutoThread.h"
 #include "TProgressBar.h"
 
 

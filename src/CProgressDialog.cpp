@@ -1,4 +1,4 @@
-//  $Id: CProgressDialog.cpp,v 1.14 2021/08/16 12:50:32 cvsuser Exp $
+//  $Id: CProgressDialog.cpp,v 1.15 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutoUpdater: Progress dialog.
 //
@@ -32,7 +32,7 @@
 #include <ShObjidl.h>
 
 #include "AutoLogger.h"
-#include "AutoMisc.h"
+#include "AutoThread.h"
 
 #include "CProgressDialog.h"
 #include "resource.h"

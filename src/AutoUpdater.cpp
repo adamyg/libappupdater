@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.22 2021/08/17 05:38:24 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.23 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //
@@ -76,7 +76,7 @@
 #include "AutoVersion.h"
 #include "AutoError.h"
 #include "AutoLogger.h"
-#include "AutoMisc.h"
+#include "AutoThread.h"
 #include "AutoDownload.h"
 
 #include <Wincrypt.h>

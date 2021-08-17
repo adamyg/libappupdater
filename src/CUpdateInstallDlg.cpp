@@ -1,4 +1,4 @@
-//  $Id: CUpdateInstallDlg.cpp,v 1.16 2021/08/16 12:50:32 cvsuser Exp $
+//  $Id: CUpdateInstallDlg.cpp,v 1.17 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutoUpdater: Install dialog.
 //
@@ -30,7 +30,7 @@
 #include <assert.h>
 #include <algorithm>
 
-#include "AutoMisc.h"
+#include "AutoThread.h"
 #include "AutoDialog.h"
 
 #include "CUpdateInstallDlg.h"

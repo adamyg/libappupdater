@@ -1,4 +1,4 @@
-//  $Id: CUpdatePromptDlg.cpp,v 1.10 2021/08/16 12:50:32 cvsuser Exp $
+//  $Id: CUpdatePromptDlg.cpp,v 1.11 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutoUpdater: Prompt dialog.
 //
@@ -29,7 +29,7 @@
 
 #include <assert.h>
 
-#include "AutoMisc.h"
+#include "AutoThread.h"
 #include "AutoUpdater.h"
 
 #include "CUpdatePromptDlg.h"

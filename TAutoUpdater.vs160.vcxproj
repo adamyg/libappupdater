@@ -234,7 +234,7 @@
     <ClInclude Include="src\AutoError.h" />
     <ClInclude Include="src\AutoLogger.h" />
     <ClInclude Include="src\AutoManifest.h" />
-    <ClInclude Include="src\AutoMisc.h" />
+    <ClInclude Include="src\AutoThread.h" />
     <ClInclude Include="src\AutoUpdater.h" />
     <ClInclude Include="src\AutoDownload.h" />
     <ClInclude Include="src\AutoVersion.h" />

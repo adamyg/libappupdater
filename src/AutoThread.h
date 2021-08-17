@@ -1,6 +1,6 @@
-#ifndef AUTOMISC_H_INCLUDED
-#define AUTOMISC_H_INCLUDED
-//  $Id: AutoMisc.h,v 1.6 2021/08/14 15:38:10 cvsuser Exp $
+#ifndef AUTOTHREAD_H_INCLUDED
+#define AUTOTHREAD_H_INCLUDED
+//  $Id: AutoThread.h,v 1.7 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutoUpdater: misc definitions and functionality
 //
@@ -28,34 +28,6 @@
 //
 
 #include "common.h"
-
-#include <string>
-#include <tchar.h>
-
-    //#define UPDATE_NORMSIZE 100
-    //#define UPDATE_BOLDSIZE 110
-    //#define UPDATE_NORMFONT _T("Arial")
-    //#define UPDATE_BOLDFONT _T("Arial Bold")
-    //#define UPDATE_NORMFONT _T("Lucida Sans Unicode")
-    //#define UPDATE_BOLDFONT _T("Lucida Sans Unicode Bold")
-    //#define UPDATE_NORMFONT _T("Verdana")
-    //#define UPDATE_BOLDFONT _T("Verdana Bold")
-    //#define UPDATE_NORMFONT _T("Trebuchet MS")
-    //#define UPDATE_BOLDFONT _T("Trebuchet MS Bold")
-    //#define UPDATE_NORMFONT _T("Tahoma")
-    //#define UPDATE_BOLDFONT _T("Tahoma Bold")
-    //#define UPDATE_NORMFONT _T("Sans-serif")
-    //#define UPDATE_BOLDFONT _T("Sans-serif Bold")
-
-#define UPDATE_NORMSIZE 110
-#define UPDATE_BOLDSIZE 125
-    //#define UPDATE_NORMFONT _T("Calibri")
-    //#define UPDATE_BOLDFONT _T("Calibri Bold")
-    //#define UPDATE_NORMFONT _T("Segoe UI")
-    //#define UPDATE_BOLDFONT _T("Segoe UI Bold")
-#define UPDATE_NORMFONT _T("Cambria")
-#define UPDATE_BOLDFONT _T("Cambria Bold")
-
 
 namespace Updater {
 
@@ -220,4 +192,4 @@ public:
 
 }   // namespace Updater
 
-#endif  //AUTOMISC_H_INCLUDED
+#endif  //AUTOTHREAD_H_INCLUDED

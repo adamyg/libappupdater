@@ -1,6 +1,6 @@
 #ifndef AUTOLOGGER_H_INCLUDED
 #define AUTOLOGGER_H_INCLUDED
-//  $Id: AutoLogger.h,v 1.12 2021/08/17 05:13:41 cvsuser Exp $
+//  $Id: AutoLogger.h,v 1.13 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutoUpdater: logger.
 //
@@ -41,7 +41,7 @@
 #pragma warning(pop)
 #endif
 
-#include "AutoMisc.h"
+#include "AutoThread.h"
 
 namespace Updater {
 

@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: CProgressDialog.h,v 1.4 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: CProgressDialog.h,v 1.5 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutoUpdater: progress dialog.
 //
@@ -26,7 +26,7 @@
 //  SOFTWARE.
 //
 
-#include "AutoMisc.h"
+#include "AutoThread.h"
 
 #if !defined(WINDOWS_MEAN_AND_LEAN)
 #define  WINDOWS_MEAN_AND_LEAN

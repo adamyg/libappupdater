@@ -1,4 +1,4 @@
-//  $Id: common.h,v 1.8 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: common.h,v 1.9 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  AutoUpdater: Common definitions.
 //
@@ -49,6 +49,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <climits>
+#include <new>
 
 #if defined(__WATCOMC__)
 #if !defined(__cplusplus)

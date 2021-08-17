@@ -1,5 +1,5 @@
 /* -*- mode: c; indent-width: 4; -*- */
-/* $Id: libautoupdater.cpp,v 1.14 2021/08/17 05:38:45 cvsuser Exp $
+/* $Id: libautoupdater.cpp,v 1.15 2021/08/17 15:27:10 cvsuser Exp $
  *
  *  libautoupdater cdecl interface.
  *
@@ -56,7 +56,7 @@
 #include "AutoConfig.h"
 #include "AutoError.h"
 #include "AutoLogger.h"
-#include "AutoMisc.h"
+#include "AutoThread.h"
 #include "AutoDownload.h"
 
 #pragma comment(lib, "Comctl32.lib")

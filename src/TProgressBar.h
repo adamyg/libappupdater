@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: TProgressBar.h,v 1.3 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: TProgressBar.h,v 1.4 2021/08/17 15:27:10 cvsuser Exp $
 //
 //  TProgressBar
 //
@@ -26,7 +26,7 @@
 //  SOFTWARE.
 //
 
-#include "AutoMisc.h"
+#include "AutoThread.h"
 
 class TProgressBar {
     virtual ~TProgressBar();

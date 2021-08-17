@@ -36,7 +36,7 @@
     <ClInclude Include="src\AutoManifest.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoMisc.h">
+    <ClInclude Include="src\AutoThread.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
     <ClInclude Include="src\AutoUpdater.h">

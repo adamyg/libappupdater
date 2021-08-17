@@ -292,7 +292,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoMisc.h"
+					RelativePath=".\src\AutoThread.h"
 					>
 				</File>
 				<File
