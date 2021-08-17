@@ -1,4 +1,4 @@
-//  $Id: AutoLogger.cpp,v 1.14 2021/08/16 15:16:39 cvsuser Exp $
+//  $Id: AutoLogger.cpp,v 1.16 2021/08/17 05:13:41 cvsuser Exp $
 //
 //  AutoUpdater: logger.
 //
@@ -43,12 +43,22 @@
 
 namespace Updater {
 
+CriticalSection Logger::lock_;
+Logger *Logger::global_instance_ = 0;
+char Logger::log_path_[MAX_PATH] = {0};
+char Logger::log_name_[MAX_PATH] = {"autoupdater.log"};
+
 namespace {
 static int
 PathCheck(char *buffer, size_t buflen, size_t leading, const char *application)
 {
-    (void) _snprintf(buffer + leading, buflen - leading, "\\%s",
-                (application ? application : ""));
+    assert(leading < buflen);
+    if (leading &&
+            (buffer[leading - 1] != '\\' && buffer[leading - 1] != '/')) {
+        buffer[leading++] = '\\';
+    }
+    (void) _snprintf(buffer + leading, buflen - leading, "%s%s",
+        (application ? application : ""), (application ? "\\" : ""));
     buffer[buflen - 1] = 0;
 
     if (0 == _access(buffer, 0) &&
@@ -67,7 +77,6 @@ PathCheck(char *buffer, size_t buflen, size_t leading, const char *application)
 static std::string
 GetLogPath(const char *application)
 {
-    const char *defaultlog = "autoupdater.log";
     char buffer[MAX_PATH];
     size_t len;
 
@@ -109,25 +118,20 @@ GetLogPath(const char *application)
         }
     }
 
-    strncat(buffer, "\\", sizeof(buffer)-1);
-    strncat(buffer, defaultlog, sizeof(buffer)-1);
-    buffer[sizeof(buffer)-1] = 0;
     return std::string(buffer);
 }
 
 }   //namespace anon
 
 
-CriticalSection Logger::lock_;
-Logger *Logger::global_instance_ = 0;
-
-
 Logger *
-Logger::new_instance(const char *application, bool append)
+Logger::open_instance(const char *application, bool append)
 {
     CriticalSection::Guard guard(lock_);
     if (0 == global_instance_) global_instance_ = new Logger();
-    global_instance_->OpenFile(application, append);
+    if (! global_instance_->file_.is_open()) {
+        global_instance_->OpenFile(application, append);
+    }
     return global_instance_;
 }
 
@@ -138,6 +142,15 @@ Logger::get_instance()
     CriticalSection::Guard guard(lock_);
     if (0 == global_instance_) global_instance_ = new Logger();
     return global_instance_;
+}
+
+
+void
+Logger::release_instance()
+{
+    CriticalSection::Guard guard(lock_);
+    delete global_instance_;
+    global_instance_ = NULL;
 }
 
 
@@ -253,9 +266,35 @@ Logger::SetStdout(bool val)
 
 
 void
+Logger::SetBasePath(const char *basepath)
+{
+    if (basepath && *basepath) {
+        strncpy(log_path_, basepath, sizeof(log_path_));
+    }
+}
+
+
+void
+Logger::SetName(const char *name)
+{
+    if (name && *name) {
+        strncpy(log_name_, name, sizeof(log_name_));
+    }
+}
+
+
+void
 Logger::OpenFile(const char *application, bool append)
 {
-    const std::string t_filename = GetLogPath(application);
+    std::string t_filename;
+
+    if (log_path_[0] &&
+            PathCheck(log_path_, sizeof(log_path_), strlen(log_path_), NULL)) {
+        t_filename.assign(log_path_);
+    } else {
+        t_filename = GetLogPath(application);
+    }
+    t_filename += log_name_;
 
     file_.close();
     file_.open(t_filename.c_str(), std::ios::out | (append ? std::ios::app : 0));
@@ -284,7 +323,7 @@ Logger::Timestamp(char *buffer, size_t buflen)
 #else
     _localtime64_s(&tm, &now);
 #endif
- // strftime(buffer, sizeof(buflen), "%a %b %e %H:%M:%S %Y", &tm);
+ // strftime(buffer, buflen, "%a %b %e %H:%M:%S %Y", &tm);
     strftime(buffer, buflen, "%c", &tm);
     return buffer;
 }

@@ -1,6 +1,6 @@
 #ifndef AUTOUPDATER_H_INCLUDED
 #define AUTOUPDATER_H_INCLUDED
-//  $Id: AutoUpdater.h,v 1.14 2021/08/16 12:50:32 cvsuser Exp $
+//  $Id: AutoUpdater.h,v 1.15 2021/08/17 05:37:30 cvsuser Exp $
 //
 //  AutoUpdater: application interface.
 //
@@ -96,8 +96,8 @@ public:
         ExecuteEnable,                          // Enable automatic checks.
         ExecuteAuto,                            // Automatically check if interval has been exceeded.
         ExecutePrompt,                          // Prompt if automatic checks are disabled.
-        ExecuteForce,                           // Unconditional prompt user.
-        ExecuteReinstall                        // Re-install, even if uptodate.
+        ExecuteIgnoreSkip,                      // Prompt ignoring skip status.
+        ExecuteReinstall                        // Prompt unconditionally, even if up-to-date/skipped.
     };
 
     void                EnableDialog();

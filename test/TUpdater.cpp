@@ -1,4 +1,4 @@
-// $Id: TUpdater.cpp,v 1.3 2021/08/14 05:23:53 cvsuser Exp $
+// $Id: TUpdater.cpp,v 1.4 2021/08/17 05:40:05 cvsuser Exp $
 //
 // AutoUpdater -- console test application.
 //
@@ -56,16 +56,19 @@ main(int argc, char *argv[])
     int ch;
 
     x_progname = Basename(argv[0]);
-    while (-1 != (ch = Updater::Getopt(argc, argv, "V:H:ivh"))) {
+    while (-1 != (ch = Updater::Getopt(argc, argv, "V:H:iL:vh"))) {
         switch (ch) {
         case 'V':   /* application version */
             version= Updater::optarg;
             break;
         case 'H':   /* host URL */
             hosturl = Updater::optarg;
-            break;
+            break;          
         case 'i':   /* interactive */
             ++interactive;
+            break;
+        case 'L':   /* logpath */
+            autoupdate_logger_path(Updater::optarg);
             break;
         case 'v':   /* verbose */
             autoupdate_logger_stdout(1);
@@ -102,10 +105,17 @@ main(int argc, char *argv[])
     } else if (0 == _stricmp("force", arg)) {
         interactive = 1;
         mode = 4;
+    } else if (0 == _stricmp("reinstall", arg)) {
+        mode = 5;
     } else if (0 == _stricmp("reset", arg)) {
         mode = -1;
     } else if (0 == _stricmp("dump", arg)) {
         mode = -2;
+    } else if (0 == _stricmp("config", arg)) {
+        std::cout
+            << "Version: " << version << "\n"
+            << "Host:    " << hosturl << "\n";
+        return 0;
     } else {
         std::cerr << "\n" <<
             x_progname << ": unknown mode '" << arg << "'" << std::endl;
@@ -143,10 +153,13 @@ Usage()
         "Modes:\n"\
         "   auto -              Periodically check for updates.\n"\
         "   prompt -            Re-prompt user when periodic updates are disabled.\n"\
-        "   force -             Unconditionally prompt user.\n"\
+        "   force -             Unconditionally prompt, even when skipped.\n"\
+        "   reinstall -         Prompt for install, even if uptodate.\n"\
         "   enable -            Enable periodic checks.\n"\
         "   disable -           Disable automatic periodic checks.\n"\
         "   reset -             Reset the updater status.\n"\
+        "\n"\
+        "   config -            Configuration.\n"\
         "\n"\
         "Options:\n"\
         "   -V <version>        Version label.\n"\

@@ -1,5 +1,5 @@
 /* -*- mode: c; indent-width: 4; -*- */
-/* $Id: libautoupdater.cpp,v 1.12 2021/08/14 07:03:04 cvsuser Exp $
+/* $Id: libautoupdater.cpp,v 1.14 2021/08/17 05:38:45 cvsuser Exp $
  *
  *  libautoupdater cdecl interface.
  *
@@ -256,6 +256,20 @@ autoupdate_logger_stdout(bool val)
 
 
 LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
+autoupdate_logger_path(const char *path)
+{
+    const char *label = "autoupdate_logger_path: ";
+    try {
+        Logger::SetBasePath(path);
+    } catch (const std::exception &e) {
+        LOG<LOG_ERROR>() << label << e.what() << LOG_ENDL;
+    } catch (...) {
+        LOG<LOG_ERROR>() << label << "Unknown exception" << LOG_ENDL;
+    }
+}
+
+
+LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
 autoupdate_set_console_mode(int val)
 {
     const char *label = "autoupdate_set_console_mode: ";
@@ -339,6 +353,7 @@ autoupdate_appversion_set(const char *appversion)
 }
 
 
+
 LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
 autoupdate_regpath_set(const char *path)
 {
@@ -369,6 +384,8 @@ autoupdate_isavailable(void)
     } catch (...) {
         LOG<LOG_ERROR>() << label << "Unknown exception" << LOG_ENDL;
     }
+    Logger::release_instance();
+
     return ret;
 }
 
@@ -387,7 +404,7 @@ autoupdate_execute(int mode, int interactive)
         case  1: exmode = AutoUpdater::ExecuteEnable; break;
         case  2: exmode = AutoUpdater::ExecuteAuto;  break;
         case  3: exmode = AutoUpdater::ExecutePrompt; break;
-        case  4: exmode = AutoUpdater::ExecuteForce; break;
+        case  4: exmode = AutoUpdater::ExecuteIgnoreSkip; break;
         case  5: exmode = AutoUpdater::ExecuteReinstall; break;
         case -1: exmode = AutoUpdater::ExecuteReset; break;
         case -2: exmode = AutoUpdater::ExecuteDump; break;
@@ -411,6 +428,8 @@ autoupdate_execute(int mode, int interactive)
     } catch (...) {
         LOG<LOG_ERROR>() << label << "Unknown exception" << LOG_ENDL;
     }
+    Logger::release_instance();
+
     return ret;
 }
 

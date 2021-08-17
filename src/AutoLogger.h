@@ -1,6 +1,6 @@
 #ifndef AUTOLOGGER_H_INCLUDED
 #define AUTOLOGGER_H_INCLUDED
-//  $Id: AutoLogger.h,v 1.11 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: AutoLogger.h,v 1.12 2021/08/17 05:13:41 cvsuser Exp $
 //
 //  AutoUpdater: logger.
 //
@@ -69,7 +69,7 @@ public:
       * @return pointer to Logger based class.
       */
     static Logger *
-    new_instance(const char *application = 0, bool append = false);
+    open_instance(const char *application = 0, bool append = false);
 
     /**
       * getInstance will return the most recent Logger based class that was created
@@ -78,6 +78,24 @@ public:
       */
     static Logger *
     get_instance();
+
+    /**
+      * release the current logger instance.
+      */
+    static void
+    release_instance();
+
+    /**
+      * set the logger output basepath.
+      */
+    static void
+    SetBasePath(const char *baseapth);
+
+    /**
+      * set the logger output name.
+      */
+    static void
+    SetName(const char *name);
 
     /**
       * Set the diagnostics level filter.
@@ -158,11 +176,13 @@ private:
 private:
     static CriticalSection lock_;
     static Logger *global_instance_;
+    static char log_path_[MAX_PATH];
+    static char log_name_[MAX_PATH];
     LogLevel level_;
     bool stdout_;
     std::ofstream file_;
 };
-    
+  
 
 template<enum LogLevel level>
 std::ostream& LOG() {

@@ -1,7 +1,7 @@
 #pragma once
 #ifndef LIBAUTOUPDATER_H_INCLUDED
 #define LIBAUTOUPDATER_H_INCLUDED
-/* $Id: libautoupdater.h,v 1.7 2021/08/14 05:43:49 cvsuser Exp $
+/* $Id: libautoupdater.h,v 1.8 2021/08/17 05:11:59 cvsuser Exp $
  *
  *  libappupdatee public binding
  *
@@ -54,6 +54,9 @@ LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
 
 LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
     autoupdate_logger_stdout(bool val);
+
+LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
+    autoupdate_logger_path(const char *path);
 
 LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
     autoupdate_hosturl_set(const char *url);

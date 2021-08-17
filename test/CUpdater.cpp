@@ -1,4 +1,4 @@
-//  $Id: CUpdater.cpp,v 1.10 2021/08/14 05:43:49 cvsuser Exp $
+//  $Id: CUpdater.cpp,v 1.11 2021/08/17 05:40:05 cvsuser Exp $
 //
 //  AutoUpdater -- dialog test application.
 //
@@ -64,7 +64,7 @@ CUpdaterApp::Run()
     au.HostURL("https://sourceforge.net/projects/grief/files/grief.manifest/download");
   //au.HostURL("https://master.dl.sourceforge.net/project/grief/grief.manifest?viasf=1");
 
-    au.Execute(AutoUpdater::ExecuteForce, true);
+    au.Execute(AutoUpdater::ExecuteReinstall, true);
 
     return TRUE;
 }

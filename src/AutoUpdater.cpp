@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.21 2021/08/16 12:50:32 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.22 2021/08/17 05:38:24 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //
@@ -165,7 +165,7 @@ public:
     }
 
     Updater::AutoManifest d_manifest;           // current application manifest.
-#if defined(_MSC_VER) && (_MSC_VER_ <= 1500)
+#if defined(_MSC_VER) && (_MSC_VER <= 1500)
     std::tr1::shared_ptr <IAutoUpdaterUI> d_uibind;
 #else
     std::shared_ptr<IAutoUpdaterUI> d_uibind;   // UI binding.
@@ -315,7 +315,7 @@ AutoUpdater::Execute(enum ExecuteMode mode, bool interactive)
 {
     enum UpdateStatus status = STATUS_PROMPT;
 
-    Logger::new_instance(AppName(), 1);         // logger
+    Logger::open_instance(AppName(), true);     // logger
     LOG<LOG_INFO>()
         << "AutoUpdate::Execute() mode=" << mode << ", interactive=" << interactive << LOG_ENDL;
 
@@ -363,12 +363,14 @@ AutoUpdater::Execute(enum ExecuteMode mode, bool interactive)
                 const bool isSkipped = IsSkipped();
 
                 ret = 3;
-                if (ExecuteReinstall == mode || !isSkipped || ExecuteForce == mode) {
+                if (ExecuteReinstall == mode || ExecuteIgnoreSkip == mode || !isSkipped) {
                     LOG<LOG_DEBUG>() << "AutoUpdate: prompting install" << LOG_ENDL;
                     if (1 == InstallDialog()) { // query install
                         SetOnce(true);
                         ret = 2;
                     }
+                } else {
+                    LOG<LOG_DEBUG>() << "AutoUpdate: prompting skipped" << LOG_ENDL;
                 }
 
             } else if (0 == isAvailable) {      // up-to-date
@@ -466,7 +468,7 @@ AutoUpdater::Status(const enum ExecuteMode mode)
         }
         break;
 
-    case ExecuteForce:
+    case ExecuteIgnoreSkip:
     case ExecuteReinstall:
         break;
     }
@@ -537,6 +539,8 @@ AutoUpdater::Dump()
 int
 AutoUpdater::IsAvailable(bool interactive)
 {
+    Logger::open_instance(AppName(), true);     // logger
+
     // Retrieve and load manifest, plus optional description
     const std::string app_version = Config::GetAppVersion();
     const std::string feed_url = Config::GetFeedURL();
