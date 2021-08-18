@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.23 2021/08/17 15:27:10 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.24 2021/08/18 13:01:03 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //
@@ -718,11 +718,11 @@ AutoUpdater::InstallNow(IInstallNow &updater, bool interactive)
                 STARTUPINFOA si = {0};
 
                 if (! d_manifest.installerArguments.empty()) {
-                    _snprintf(szCommandLine, sizeof(szCommandLine)-1,
-                            "\"%s\" %s", targetName.c_str(), d_manifest.installerArguments.c_str());
+                    sprintf_s(szCommandLine, sizeof(szCommandLine)-1,
+                                "\"%s\" %s", targetName.c_str(), d_manifest.installerArguments.c_str());
                 } else {
-                    _snprintf(szCommandLine, sizeof(szCommandLine)-1,
-                            "\"%s\"", targetName.c_str());
+                    sprintf_s(szCommandLine, sizeof(szCommandLine)-1,
+                                "\"%s\"", targetName.c_str());
                 }
 
                 si.cb = sizeof(si);
@@ -838,11 +838,11 @@ AutoUpdater::GetTargetName()
 
             // download image
             if (d_manifest.attributeName.length()) {
-                _snprintf_s(tempfile, sizeof(tempfile), "%s\\%s",
-                    tempdir.c_str(), d_manifest.attributeName.c_str());
+                sprintf_s(tempfile, sizeof(tempfile), "%s\\%s",
+                            tempdir.c_str(), d_manifest.attributeName.c_str());
             } else {
-                _snprintf_s(tempfile, sizeof(tempfile), "%s\\installer-%s.exe",
-                    tempdir.c_str(), d_manifest.attributeVersion.c_str());
+                sprintf_s(tempfile, sizeof(tempfile), "%s\\installer-%s.exe",
+                            tempdir.c_str(), d_manifest.attributeVersion.c_str());
             }
 
             d_impl->d_tempdir = tempdir;

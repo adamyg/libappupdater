@@ -1,6 +1,6 @@
 #ifndef AUTOUPDATER_H_INCLUDED
 #define AUTOUPDATER_H_INCLUDED
-//  $Id: AutoUpdater.h,v 1.15 2021/08/17 05:37:30 cvsuser Exp $
+//  $Id: AutoUpdater.h,v 1.16 2021/08/18 13:01:03 cvsuser Exp $
 //
 //  AutoUpdater: application interface.
 //
@@ -65,8 +65,7 @@ public:
         va_list ap;
         
         va_start(ap, format);
-        int ret = _snprintf(buffer, sizeof(buffer), format, ap);     
-        if (ret < 0 || ret >= sizeof(buffer)) buffer[sizeof(buffer)-1] = 0;
+        sprintf_s(buffer, sizeof(buffer), format, ap);     
         (*this)(buffer);
         va_end(ap);
     }

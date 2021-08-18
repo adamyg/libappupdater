@@ -1,4 +1,4 @@
-//  $Id: AutoLogger.cpp,v 1.16 2021/08/17 05:13:41 cvsuser Exp $
+//  $Id: AutoLogger.cpp,v 1.17 2021/08/18 13:01:03 cvsuser Exp $
 //
 //  AutoUpdater: logger.
 //
@@ -57,9 +57,8 @@ PathCheck(char *buffer, size_t buflen, size_t leading, const char *application)
             (buffer[leading - 1] != '\\' && buffer[leading - 1] != '/')) {
         buffer[leading++] = '\\';
     }
-    (void) _snprintf(buffer + leading, buflen - leading, "%s%s",
+    sprintf_s(buffer + leading, buflen - leading, "%s%s",
         (application ? application : ""), (application ? "\\" : ""));
-    buffer[buflen - 1] = 0;
 
     if (0 == _access(buffer, 0) &&
             (::GetFileAttributesA(buffer) & FILE_ATTRIBUTE_DIRECTORY)) {
@@ -339,7 +338,7 @@ Logger::Level(char *buffer, size_t buflen, LogLevel level)
     case LOG_TRACE: return "TRACE";
     case LOG_DEBUG: return "DEBUG";
     default:
-        _snprintf(buffer, buflen, "lvl-%d", level - (LOG_DEBUG - 1));
+        sprintf_s(buffer, buflen, "lvl-%d", level - (LOG_DEBUG - 1));
         break;
     }
     return buffer;
