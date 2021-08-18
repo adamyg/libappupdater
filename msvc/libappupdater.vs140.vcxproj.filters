@@ -27,202 +27,199 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="expat\xmlparse.c">
+    <ClCompile Include="..\expat\xmlparse.c">
       <Filter>Source Files\expat</Filter>
     </ClCompile>
-    <ClCompile Include="expat\xmlrole.c">
+    <ClCompile Include="..\expat\xmlrole.c">
       <Filter>Source Files\expat</Filter>
     </ClCompile>
-    <ClCompile Include="expat\xmltok.c">
+    <ClCompile Include="..\expat\xmltok.c">
       <Filter>Source Files\expat</Filter>
     </ClCompile>
-    <ClCompile Include="src\AutoConfig.cpp">
+    <ClCompile Include="..\src\AutoConfig.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\AutoDialog.cpp">
+    <ClCompile Include="..\src\AutoDialog.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\AutoDownload.cpp">
+    <ClCompile Include="..\src\AutoDownload.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\AutoError.cpp">
+    <ClCompile Include="..\src\AutoError.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\AutoLogger.cpp">
+    <ClCompile Include="..\src\AutoLogger.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\AutoManifest.cpp">
+    <ClCompile Include="..\src\AutoManifest.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\AutoUpdater.cpp">
+    <ClCompile Include="..\src\AutoUpdater.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\AutoVersion.cpp">
+    <ClCompile Include="..\src\AutoVersion.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\CSimpleBrowser.cpp">
+    <ClCompile Include="..\src\CSimpleBrowser.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\CUpdateInstallDlg.cpp">
+    <ClCompile Include="..\src\CUpdateInstallDlg.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\CUpdatePromptDlg.cpp">
+    <ClCompile Include="..\src\CUpdatePromptDlg.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\CUptodateDlg.cpp">
+    <ClCompile Include="..\src\CUptodateDlg.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="libautoupdater.cpp">
+    <ClCompile Include="..\src\CProgressDialog.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\AutoConsole.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TProgressBar.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libautoupdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CProgressDialog.cpp">
-      <Filter>Source Files\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\AutoConsole.cpp">
-      <Filter>Source Files\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TProgressBar.cpp">
-      <Filter>Source Files\core</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="art\applications-system-48.bmp">
+    <Image Include="..\art\applications-system-48.bmp">
       <Filter>Art</Filter>
     </Image>
-    <Image Include="art\applications-system-64.bmp">
+    <Image Include="..\art\applications-system-64.bmp">
       <Filter>Art</Filter>
     </Image>
-    <Image Include="art\applications-system.ico">
+    <Image Include="..\art\applications-system.ico">
       <Filter>Art</Filter>
     </Image>
-    <Image Include="art\software-update-available-48.bmp">
+    <Image Include="..\art\software-update-available-48.bmp">
       <Filter>Art</Filter>
     </Image>
-    <Image Include="art\software-update-available-64.bmp">
+    <Image Include="..\art\software-update-available-64.bmp">
       <Filter>Art</Filter>
     </Image>
-    <Image Include="art\software-update-available.ico">
+    <Image Include="..\art\software-update-available.ico">
       <Filter>Art</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="expat\amigaconfig.h">
+    <ClInclude Include="..\expat\amigaconfig.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\ascii.h">
+    <ClInclude Include="..\expat\ascii.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\asciitab.h">
+    <ClInclude Include="..\expat\asciitab.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\expat.h">
+    <ClInclude Include="..\expat\expat.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\expat_external.h">
+    <ClInclude Include="..\expat\expat_external.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\iasciitab.h">
+    <ClInclude Include="..\expat\iasciitab.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\internal.h">
+    <ClInclude Include="..\expat\internal.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\latin1tab.h">
+    <ClInclude Include="..\expat\latin1tab.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\macconfig.h">
+    <ClInclude Include="..\expat\macconfig.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\nametab.h">
+    <ClInclude Include="..\expat\nametab.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\utf8tab.h">
+    <ClInclude Include="..\expat\utf8tab.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\winconfig.h">
+    <ClInclude Include="..\expat\winconfig.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\xmlrole.h">
+    <ClInclude Include="..\expat\xmlrole.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\xmltok.h">
+    <ClInclude Include="..\expat\xmltok.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="expat\xmltok_impl.h">
+    <ClInclude Include="..\expat\xmltok_impl.h">
       <Filter>Header Files\expat</Filter>
     </ClInclude>
-    <ClInclude Include="libautoupdater.h">
+    <ClInclude Include="..\libautoupdater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CUptodateDlg.h">
+    <ClInclude Include="..\src\CUptodateDlg.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\CUpdateInstallDlg.h">
+    <ClInclude Include="..\src\CUpdateInstallDlg.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\CSimpleBrowser.h">
+    <ClInclude Include="..\src\CSimpleBrowser.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoVersion.h">
+    <ClInclude Include="..\src\AutoVersion.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoUpdater.h">
+    <ClInclude Include="..\src\AutoUpdater.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoThread.h">
+    <ClInclude Include="..\src\AutoManifest.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoManifest.h">
+    <ClInclude Include="..\src\AutoLogger.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoLogger.h">
+    <ClInclude Include="..\src\AutoError.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoError.h">
+    <ClInclude Include="..\src\AutoDownload.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoDownload.h">
+    <ClInclude Include="..\src\AutoConfig.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoConfig.h">
+    <ClInclude Include="..\src\Resource.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Resource.h">
+    <ClInclude Include="..\src\BufferStream.hpp">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="manifest.h">
+    <ClInclude Include="..\src\IAutoUpdaterUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BufferStream.hpp">
+    <ClInclude Include="..\src\CProgressDialog.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\IAutoUpdaterUI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CProgressDialog.h">
+    <ClInclude Include="..\src\TProgressBar.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\TProgressBar.h">
+    <ClInclude Include="..\src\AutoConsole.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoConsole.h">
+    <ClInclude Include="..\src\AutoDialog.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoDialog.h">
+    <ClInclude Include="..\src\CUpdatePromptDlg.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\CUpdatePromptDlg.h">
+    <ClInclude Include="..\src\AutoString.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoString.h">
+    <ClInclude Include="..\src\common.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\common.h">
+    <ClInclude Include="..\src\AutoThread.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="src\AutoUpdater.rc">
+    <ResourceCompile Include="..\src\AutoUpdater.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

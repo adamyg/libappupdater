@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(ConfigurationName).vs90/$(PlatformName)/"
+			OutputDirectory="$(SolutionDir)/$(ConfigurationName).vs90/$(PlatformName)/"
 			IntermediateDirectory="$(ConfigurationName).vs90/$(PlatformName)/libappupdater/"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -91,7 +91,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(ConfigurationName).vs90/$(PlatformName)/"
+			OutputDirectory="$(SolutionDir)/$(ConfigurationName).vs90/$(PlatformName)/"
 			IntermediateDirectory="$(ConfigurationName).vs90/$(PlatformName)/libappupdater/"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -173,74 +173,70 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;hpj;bat;for;f90"
 			>
 			<File
-				RelativePath=".\libautoupdater.cpp"
+				RelativePath="..\libautoupdater.cpp"
 				>
 			</File>
 			<Filter
 				Name="core"
 				>
 				<File
-					RelativePath=".\src\AutoConfig.cpp"
+					RelativePath=".\..\src\AutoConfig.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoConsole.cpp"
+					RelativePath=".\..\src\AutoConsole.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoDialog.cpp"
+					RelativePath=".\..\src\AutoDialog.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoDownLoad.cpp"
+					RelativePath=".\..\src\AutoDownLoad.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoError.cpp"
+					RelativePath=".\..\src\AutoError.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoLogger.cpp"
+					RelativePath=".\..\src\AutoLogger.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoManifest.cpp"
+					RelativePath=".\..\src\AutoManifest.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoUpdater.cpp"
+					RelativePath=".\..\src\AutoUpdater.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoVersion.cpp"
+					RelativePath=".\..\src\AutoVersion.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\common.h"
+					RelativePath=".\..\src\CProgressDialog.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\CProgressDialog.cpp"
+					RelativePath=".\..\src\CSimpleBrowser.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\CSimpleBrowser.cpp"
+					RelativePath=".\..\src\CUpdateInstallDlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\CUpdateInstallDlg.cpp"
+					RelativePath=".\..\src\CUpdatePromptDlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\CUpdatePromptDlg.cpp"
+					RelativePath=".\..\src\CUptodateDlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\CUptodateDlg.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\TProgressBar.cpp"
+					RelativePath=".\..\src\TProgressBar.cpp"
 					>
 				</File>
 			</Filter>
@@ -248,15 +244,15 @@
 				Name="expat_compat"
 				>
 				<File
-					RelativePath=".\compat\xmlparse.c"
+					RelativePath="..\compat\xmlparse.c"
 					>
 				</File>
 				<File
-					RelativePath=".\compat\xmlrole.c"
+					RelativePath="..\compat\xmlrole.c"
 					>
 				</File>
 				<File
-					RelativePath=".\compat\xmltok.c"
+					RelativePath="..\compat\xmltok.c"
 					>
 				</File>
 			</Filter>
@@ -265,82 +261,74 @@
 			Name="Header Files"
 			>
 			<File
-				RelativePath=".\libautoupdater.h"
+				RelativePath="..\libautoupdater.h"
 				>
 			</File>
 			<Filter
 				Name="core"
 				>
 				<File
-					RelativePath=".\src\AutoConfig.h"
+					RelativePath=".\..\src\AutoConfig.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoDownLoad.h"
+					RelativePath=".\..\src\AutoDownLoad.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoError.h"
+					RelativePath=".\..\src\AutoError.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoLogger.h"
+					RelativePath=".\..\src\AutoLogger.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoManifest.h"
+					RelativePath=".\..\src\AutoManifest.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoThread.h"
+					RelativePath=".\..\src\AutoThread.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoUpdater.h"
+					RelativePath=".\..\src\AutoUpdater.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\AutoVersion.h"
+					RelativePath=".\..\src\AutoVersion.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\BufferStream.hpp"
+					RelativePath=".\..\src\BufferStream.hpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\CReadOnlyEdit.h"
+					RelativePath=".\..\src\common.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\CSimpleBrowser.h"
+					RelativePath=".\..\src\CSimpleBrowser.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\CUpdateInstallDlg.h"
+					RelativePath=".\..\src\CUpdateInstallDlg.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\CUpdatePromptDlg.h"
+					RelativePath=".\..\src\CUpdatePromptDlg.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\CUpdater.h"
+					RelativePath=".\..\src\CUpdater.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\CUptodateDlg.h"
+					RelativePath=".\..\src\CUptodateDlg.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\dllmain.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\resource.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\stdafx.h"
+					RelativePath=".\..\src\resource.h"
 					>
 				</File>
 			</Filter>
@@ -349,31 +337,31 @@
 			Name="Resource Files"
 			>
 			<File
-				RelativePath=".\art\applications-system-48.bmp"
+				RelativePath=".\..\art\applications-system-48.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\art\applications-system-64.bmp"
+				RelativePath=".\..\art\applications-system-64.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\art\applications-system.ico"
+				RelativePath=".\..\art\applications-system.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\src\AutoUpdater.rc"
+				RelativePath=".\..\src\AutoUpdater.rc"
 				>
 			</File>
 			<File
-				RelativePath=".\art\software-update-available-48.bmp"
+				RelativePath=".\..\art\software-update-available-48.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\art\software-update-available-64.bmp"
+				RelativePath=".\..\art\software-update-available-64.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\art\software-update-available.ico"
+				RelativePath=".\..\art\software-update-available.ico"
 				>
 			</File>
 		</Filter>

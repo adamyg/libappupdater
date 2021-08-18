@@ -18,66 +18,66 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\CUptodateDlg.h">
+    <ClInclude Include="..\src\CUptodateDlg.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoConfig.h">
+    <ClInclude Include="..\src\AutoConfig.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoDownload.h">
+    <ClInclude Include="..\src\AutoDownload.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoError.h">
+    <ClInclude Include="..\src\AutoError.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoLogger.h">
+    <ClInclude Include="..\src\AutoLogger.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoManifest.h">
+    <ClInclude Include="..\src\AutoManifest.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoThread.h">
+    <ClInclude Include="..\src\AutoThread.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoUpdater.h">
+    <ClInclude Include="..\src\AutoUpdater.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoVersion.h">
+    <ClInclude Include="..\src\AutoVersion.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\CSimpleBrowser.h">
+    <ClInclude Include="..\src\CSimpleBrowser.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\CUpdateInstallDlg.h">
+    <ClInclude Include="..\src\CUpdateInstallDlg.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\CUpdatePromptDlg.h">
+    <ClInclude Include="..\src\CUpdatePromptDlg.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="test\resource.h">
+    <ClInclude Include="..\test\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoDialog.h">
+    <ClInclude Include="..\src\AutoDialog.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoConsole.h">
+    <ClInclude Include="..\src\AutoConsole.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="test\upgetopt.h">
+    <ClInclude Include="..\test\upgetopt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="test\CUpdater.rc">
+    <ClCompile Include="..\test\TUpdater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\test\upgetopt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\test\CUpdater.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="test\TUpdater.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test\upgetopt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,9 +1,12 @@
 # General
 CVS/
+compat/
+
+# MSVC working
 Debug.vs*/
 Release.vs*/
 .vs*/
-compat/
+*.vcxproj.user
 
 # Prerequisites
 *.d

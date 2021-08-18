@@ -111,7 +111,6 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -133,7 +132,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>$(Configuration).vs140\$(Platform)\libappupdater.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)\$(Configuration).vs140\$(Platform)\libappupdater.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -143,7 +142,6 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -164,7 +162,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <AdditionalDependencies>$(Configuration).vs140\$(Platform)\libappupdater.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)\$(Configuration).vs140\$(Platform)\libappupdater.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -180,7 +178,6 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -195,7 +192,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>$(Configuration).vs140\$(Platform)\libappupdater.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)\$(Configuration).vs140\$(Platform)\libappupdater.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -210,7 +207,6 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -225,39 +221,39 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <AdditionalDependencies>$(Configuration).vs140\$(Platform)\libappupdater.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)\$(Configuration).vs140\$(Platform)\libappupdater.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\AutoConfig.h" />
-    <ClInclude Include="src\AutoConsole.h" />
-    <ClInclude Include="src\AutoDialog.h" />
-    <ClInclude Include="src\AutoError.h" />
-    <ClInclude Include="src\AutoLogger.h" />
-    <ClInclude Include="src\AutoManifest.h" />
-    <ClInclude Include="src\AutoThread.h" />
-    <ClInclude Include="src\AutoUpdater.h" />
-    <ClInclude Include="src\AutoDownload.h" />
-    <ClInclude Include="src\AutoVersion.h" />
-    <ClInclude Include="src\CSimpleBrowser.h" />
-    <ClInclude Include="src\CUpdateInstallDlg.h" />
-    <ClInclude Include="src\CUpdatePromptDlg.h" />
-    <ClInclude Include="src\CUptodateDlg.h" />
-    <ClInclude Include="test\CUpdater.h" />
-    <ClInclude Include="test\resource.h" />
+    <ClInclude Include="..\src\AutoConfig.h" />
+    <ClInclude Include="..\src\AutoConsole.h" />
+    <ClInclude Include="..\src\AutoDialog.h" />
+    <ClInclude Include="..\src\AutoError.h" />
+    <ClInclude Include="..\src\AutoLogger.h" />
+    <ClInclude Include="..\src\AutoManifest.h" />
+    <ClInclude Include="..\src\AutoThread.h" />
+    <ClInclude Include="..\src\AutoUpdater.h" />
+    <ClInclude Include="..\src\AutoDownload.h" />
+    <ClInclude Include="..\src\AutoVersion.h" />
+    <ClInclude Include="..\src\CSimpleBrowser.h" />
+    <ClInclude Include="..\src\CUpdateInstallDlg.h" />
+    <ClInclude Include="..\src\CUpdatePromptDlg.h" />
+    <ClInclude Include="..\src\CUptodateDlg.h" />
+    <ClInclude Include="..\test\CUpdater.h" />
+    <ClInclude Include="..\test\resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test\CUpdater.cpp" />
+    <ClCompile Include="..\test\CUpdater.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="test\CUpdater.rc" />
+    <ResourceCompile Include="..\test\CUpdater.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties RESOURCE_FILE=".\src\AutoUpdater.rc" />
+      <UserProperties RESOURCE_FILE=".\..\src\AutoUpdater.rc" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

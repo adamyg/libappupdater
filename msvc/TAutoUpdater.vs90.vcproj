@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="CAutoUpdater"
-	ProjectGUID="{9C67A1BE-A52A-46CC-8C03-8548C53FCF2E}"
-	RootNamespace="AutoUpdater"
+	Name="TAutoUpdater"
+	ProjectGUID="{9C67A1BE-A52B-56CC-8C23-8549B53FCF2A}"
+	RootNamespace="TAutoUpdater"
 	Keyword="MFCProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -18,10 +18,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(ConfigurationName).vs90/$(PlatformName)/"
+			OutputDirectory="$(SolutionDir)/$(ConfigurationName).vs90/$(PlatformName)/"
 			IntermediateDirectory="$(ConfigurationName).vs90/$(PlatformName)/AutoUpdater/"
 			ConfigurationType="1"
-			UseOfMFC="2"
+			UseOfMFC="0"
 			UseOfATL="0"
 			CharacterSet="1"
 			>
@@ -47,7 +47,7 @@
 				Name="VCCLCompilerTool"
 				UseUnicodeResponseFiles="true"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\compat&quot;"
+				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -73,11 +73,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="version.lib wininet.lib"
-				AdditionalDependencies="$(OutDir)/libappupdater.lib"
+				AdditionalDependencies="$(OutDir)\libappupdater.lib"
 				LinkIncremental="2"
 				AddModuleNamesToAssembly=""
 				GenerateDebugInformation="true"
-				SubSystem="2"
+				SubSystem="1"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				TargetMachine="1"
@@ -106,10 +106,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(ConfigurationName).vs90/$(PlatformName)/"
+			OutputDirectory="$(SolutionDir)/$(ConfigurationName).vs90/$(PlatformName)/"
 			IntermediateDirectory="$(ConfigurationName).vs90/$(PlatformName)/AutoUpdater/"
 			ConfigurationType="1"
-			UseOfMFC="2"
+			UseOfMFC="0"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -133,7 +133,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\compat&quot;"
+				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
@@ -156,9 +156,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="$(OutDir)\libappupdater.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
-				SubSystem="2"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				RandomizedBaseAddress="1"
@@ -197,7 +198,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\test\CUpdater.cpp"
+				RelativePath="..\test\TUpdater.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\test\upgetopt.cpp"
 				>
 			</File>
 		</Filter>
@@ -206,12 +211,20 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\libautoupdater.h"
+				>
+			</File>
+			<File
+				RelativePath="..\test\upgetopt.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			>
 			<File
-				RelativePath=".\test\CUpdater.rc"
+				RelativePath="..\test\CUpdater.rc"
 				>
 			</File>
 		</Filter>
@@ -219,7 +232,7 @@
 	<Globals>
 		<Global
 			Name="RESOURCE_FILE"
-			Value=".\src\AutoUpdater.rc"
+			Value=".\..\src\AutoUpdater.rc"
 		/>
 	</Globals>
 </VisualStudioProject>
