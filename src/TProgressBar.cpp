@@ -1,4 +1,4 @@
-//  $Id: TProgressBar.cpp,v 1.7 2021/08/17 15:27:10 cvsuser Exp $
+//  $Id: TProgressBar.cpp,v 1.8 2021/08/18 13:01:03 cvsuser Exp $
 //
 //  AutoUpdater: TProgressDialog.
 //
@@ -118,7 +118,7 @@ TProgressBar::Start(bool marquee, bool cancelable)
     if (thread_) return true;
 
     marquee_ = marquee;
-    cancelable_ = cancelable_;
+    cancelable_ = cancelable;
     running_ = true;
     ++references_;
     if (0 != (thread_= ::CreateThread(NULL, 0, progress_thread, this, 0, NULL))) {
@@ -239,7 +239,7 @@ TProgressBar::Update()
 
         const int progress_len =
                 progress(progress_buffer, sizeof(progress_buffer), complete_, total_);
-        int display_width = console_width - 4;
+        int display_width = console_width - (cancelable_ ? 10 : 4);
 
         if (! text_msg_.empty()) { //XXX
             int text_width = (int)(text_msg_.length() + 1);
@@ -300,11 +300,13 @@ TProgressBar::Update()
         }
 
         std::cout << progress_buffer;
+
         std::cout << animation[ ++index % (sizeof(animation)-1) ];
 
         if (cancelable_) {
-            std::cout << " (ESC?)";
-        }       
+            std::cout << " - ESC";
+        }
+
         std::cout << "\r";
         std::cout.flush();
     }
