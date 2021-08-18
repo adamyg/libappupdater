@@ -1,5 +1,5 @@
 /* -*- mode: c; indent-width: 4; -*- */
-/* $Id: libautoupdater.cpp,v 1.15 2021/08/17 15:27:10 cvsuser Exp $
+/* $Id: libautoupdater.cpp,v 1.16 2021/08/18 13:01:03 cvsuser Exp $
  *
  *  libautoupdater cdecl interface.
  *
@@ -456,7 +456,4 @@ int autosnprintf_s( char * s, size_t n, const char * format, ... ) {
 }
 #endif  //__WATCOMC__
 
-    //#include "manifest.h"
-
 /*end*/
-
