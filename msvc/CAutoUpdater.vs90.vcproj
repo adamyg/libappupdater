@@ -4,7 +4,7 @@
 	Version="9.00"
 	Name="CAutoUpdater"
 	ProjectGUID="{9C67A1BE-A52A-46CC-8C03-8548C53FCF2E}"
-	RootNamespace="AutoUpdater"
+	RootNamespace="CAutoUpdater"
 	Keyword="MFCProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -47,7 +47,7 @@
 				Name="VCCLCompilerTool"
 				UseUnicodeResponseFiles="true"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\compat&quot;"
+				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -73,7 +73,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="version.lib wininet.lib"
-				AdditionalDependencies="$(OutDir)/libappupdater.lib"
+				AdditionalDependencies="$(OutDir)\libappupdater.lib"
 				LinkIncremental="2"
 				AddModuleNamesToAssembly=""
 				GenerateDebugInformation="true"
@@ -133,7 +133,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\compat&quot;"
+				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
@@ -156,6 +156,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="$(OutDir)\libappupdater.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -206,6 +207,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\libautoupdater.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
