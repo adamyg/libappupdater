@@ -1,10 +1,14 @@
 /* -*- mode: c; indent-width: 4; -*- */
-/* $Id: libautoupdater.cpp,v 1.16 2021/08/18 13:01:03 cvsuser Exp $
+/* $Id: libautoupdater.cpp,v 1.18 2021/10/14 16:24:50 cvsuser Exp $
  *
  *  libautoupdater cdecl interface.
  *
  *  Externals:
  *      autoupdate_version
+ *      autoupdate_logger_stdout
+ *      autoupdate_logger_path
+ *      autoupdate_set_console_mode
+ *      autoupdate_language_set
  *      autoupdate_hosturl_set
  *      autoupdate_application_set
  *      autoupdate_regpath_set
@@ -59,6 +63,8 @@
 #include "AutoThread.h"
 #include "AutoDownload.h"
 
+#include "localisation/NSLocalizedString.h"
+
 #pragma comment(lib, "Comctl32.lib")
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -79,8 +85,6 @@ static struct tls_value tls_values[32] = {0};   // thread local storage.
 BOOL WINAPI
 DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
-    void *data = NULL;
-
     switch (fdwReason) {
         // DLL is loading due to process initialization or a call to LoadLibrary.
         case DLL_PROCESS_ATTACH: {
@@ -209,23 +213,19 @@ Updater::LoggerTlsGetValue(void)
 //      http://support.microsoft.com/kb/164787
 //
 
-#if defined(__WATCOMC__) && (__WATCOMC__ >= 1300)
-//FIXME, owc 2.0
-#else
-#undef ShellExecute
-
 __declspec(dllexport) void __stdcall            // UNICODE
 ShellExecuteW(HWND hwnd, HINSTANCE hinst, LPWSTR lpszCmdLine, int nCmdShow)
 {
-//  #pragma comment(linker, "/EXPORT:"__FUNCTION__"="__FUNCTION__) // undecorated name
+#if defined(_MSC_VER)
+    // #pragma comment(linker, "/EXPORT:"__FUNCTION__"="__FUNCTION__) // undecorated name
 #pragma comment(linker, "/EXPORT:ShellExecuteW=" __FUNCDNAME__) // decorated function name
+#endif
 
     AutoDialogUI dialog;
     AutoUpdater au(&dialog);
     int ret = au.Execute(AutoUpdater::ExecutePrompt, true);
     ExitProcess(ret);
 }
-#endif
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -275,6 +275,20 @@ autoupdate_set_console_mode(int val)
     const char *label = "autoupdate_set_console_mode: ";
     try {
         Config::SetConsoleMode(val);
+    } catch (const std::exception& e) {
+        LOG<LOG_ERROR>() << label << e.what() << LOG_ENDL;
+    } catch (...) {
+        LOG<LOG_ERROR>() << label << "Unknown exception" << LOG_ENDL;
+    }
+}
+
+
+LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
+autoupdate_language_set(const char *language)
+{
+    const char *label = "autoupdate_language_set: ";
+    try {
+        Config::SetLanguage(language);
     } catch (const std::exception& e) {
         LOG<LOG_ERROR>() << label << e.what() << LOG_ENDL;
     } catch (...) {
@@ -411,6 +425,10 @@ autoupdate_execute(int mode, int interactive)
         default:
             return -2;
         }
+
+     // NSLocalizedLoadFile("../lproj/Strings/Base.strings");
+     // NSLocalizedLoadResource("NSLocalized", "Localizable");
+        NSLocalizedLoadResource("NSLocalized", "xx");
 
         if (1 == Config::GetConsoleMode()) {
             AutoConsoleUI console;

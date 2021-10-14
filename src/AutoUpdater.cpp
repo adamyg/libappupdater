@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.24 2021/08/18 13:01:03 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.25 2021/10/14 16:24:51 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //
@@ -1034,4 +1034,3 @@ AutoUpdater::ProgressStop()
     }
     return true;
 }
-

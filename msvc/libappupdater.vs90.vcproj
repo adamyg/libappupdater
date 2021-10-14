@@ -256,6 +256,46 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="localisation"
+				>
+				<File
+					RelativePath="..\localisation\NSFormat.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\localisation\NSFormat.h"
+					>
+				</File>
+				<File
+					RelativePath="..\localisation\nslocal.h"
+					>
+				</File>
+				<File
+					RelativePath="..\localisation\NSLocalizedCollection.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\localisation\NSLocalizedCollectionImpl.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\localisation\NSLocalizedDefault.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\localisation\NSLocalizedString.cpp"
+					>
+				</File>
+				<Filter
+					Name="test"
+					>
+					<File
+						RelativePath="..\localisation\test\NSFormatTests.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -329,6 +369,22 @@
 				</File>
 				<File
 					RelativePath=".\..\src\resource.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="localisation"
+				>
+				<File
+					RelativePath="..\localisation\NSLocalizedCollection.h"
+					>
+				</File>
+				<File
+					RelativePath="..\localisation\NSLocalizedCollectionImpl.h"
+					>
+				</File>
+				<File
+					RelativePath="..\localisation\NSLocalizedString.h"
 					>
 				</File>
 			</Filter>

@@ -25,6 +25,15 @@
     <Filter Include="Source Files\core">
       <UniqueIdentifier>{22c5ad38-683c-4a82-9f8b-9bb58267213c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\localisation">
+      <UniqueIdentifier>{0fbba1d4-457d-4c8e-b165-e55f2d8a6234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\localisation">
+      <UniqueIdentifier>{274f6161-4730-47ad-897a-a6ca0fc377ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\localisation\test">
+      <UniqueIdentifier>{d30d5324-ad41-4dbc-a2fa-54f960a43d23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\expat\xmlparse.c">
@@ -83,6 +92,24 @@
     </ClCompile>
     <ClCompile Include="..\libautoupdater.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\localisation\NSLocalizedCollection.cpp">
+      <Filter>Source Files\localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\localisation\NSLocalizedString.cpp">
+      <Filter>Source Files\localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\localisation\NSLocalizedCollectionImpl.cpp">
+      <Filter>Source Files\localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\localisation\NSLocalizedDefault.cpp">
+      <Filter>Source Files\localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\localisation\NSFormat.cpp">
+      <Filter>Source Files\localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\localisation\test\NSFormatTests.cpp">
+      <Filter>Source Files\localisation\test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,10 +244,25 @@
     <ClInclude Include="..\src\AutoThread.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="..\localisation\NSLocalizedString.h">
+      <Filter>Header Files\localisation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\localisation\NSLocalizedCollection.h">
+      <Filter>Header Files\localisation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\localisation\NSLocalizedCollectionImpl.h">
+      <Filter>Header Files\localisation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\localisation\NSFormat.h">
+      <Filter>Header Files\localisation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\AutoUpdater.rc">
       <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="..\localisation\NSLocalized.rc">
+      <Filter>Source Files\localisation</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>

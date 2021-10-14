@@ -19,7 +19,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// AutpUpdater meta data; optional
+// AutoUpdater meta data; optional
 //
 
 UPDATER HostURL	{ "\0" }

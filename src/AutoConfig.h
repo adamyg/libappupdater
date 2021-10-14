@@ -1,6 +1,6 @@
 #ifndef AUTOCONFIG_H_INCLUDED
 #define AUTOCONFIG_H_INCLUDED
-//  $Id: AutoConfig.h,v 1.13 2021/08/17 15:27:10 cvsuser Exp $
+//  $Id: AutoConfig.h,v 1.14 2021/08/25 15:29:44 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
@@ -79,6 +79,9 @@ public:
 
     /// Set the console interface mode
     static void             SetConsoleMode(int mode);
+
+    /// Set language
+    static void             SetLanguage(const char *language);
 
     /// Set host location
     static void             SetHostURL(const char *url);
@@ -191,6 +194,7 @@ private:
     static unsigned         queried_status_;
     static VersionInfo      version_info_;
     static std::string      string_file_info_;
+    static std::string      language_;
     static std::string      host_URL_;
     static std::string      channel_;
     static std::string      os_label_;
@@ -205,4 +209,3 @@ private:
 }   // namespace Updater
 
 #endif  //AUTOSETTINGS_H_INCLUDED
-

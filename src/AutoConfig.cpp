@@ -1,4 +1,4 @@
-//  $Id: AutoConfig.cpp,v 1.16 2021/08/17 15:27:10 cvsuser Exp $
+//  $Id: AutoConfig.cpp,v 1.17 2021/08/25 15:29:44 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
@@ -44,6 +44,7 @@ int                 Config::console_mode_ = 0;
 unsigned            Config::queried_status_ = 0;
 Config::VersionInfo Config::version_info_;
 std::string         Config::string_file_info_;
+std::string         Config::language_;
 std::string         Config::host_URL_;
 std::string         Config::channel_;
 std::string         Config::os_label_;
@@ -293,6 +294,16 @@ Config::SetConsoleMode(int mode)
     CriticalSection::Guard lock(critical_section_);
     console_mode_ = mode;
     LOG<LOG_INFO>() << "Config::SetConsoleMode=" << console_mode_ << LOG_ENDL;
+}
+
+
+//public
+void
+Config::SetLanguage(const char *language)
+{
+    CriticalSection::Guard lock(critical_section_);
+    language_.assign(language?language:"");
+    LOG<LOG_INFO>() << "Config::SetLanguage=" << language_ << LOG_ENDL;
 }
 
 
@@ -765,5 +776,3 @@ void Config::WriteConfigValue(const char *name, const std::string &value)
 #endif  //__WATCOMC__
 
 }  // namespace Updater
-
-

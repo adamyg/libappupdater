@@ -26,6 +26,12 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\libautoupdater.cpp" />
+    <ClCompile Include="..\localisation\NSFormat.cpp" />
+    <ClCompile Include="..\localisation\NSLocalizedCollection.cpp" />
+    <ClCompile Include="..\localisation\NSLocalizedCollectionImpl.cpp" />
+    <ClCompile Include="..\localisation\NSLocalizedDefault.cpp" />
+    <ClCompile Include="..\localisation\NSLocalizedString.cpp" />
+    <ClCompile Include="..\localisation\test\NSFormatTests.cpp" />
     <ClCompile Include="..\src\AutoConfig.cpp" />
     <ClCompile Include="..\src\AutoConsole.cpp" />
     <ClCompile Include="..\src\AutoDialog.cpp" />
@@ -69,6 +75,10 @@
     <ClInclude Include="..\expat\xmltok.h" />
     <ClInclude Include="..\expat\xmltok_impl.h" />
     <ClInclude Include="..\libautoupdater.h" />
+    <ClInclude Include="..\localisation\NSFormat.h" />
+    <ClInclude Include="..\localisation\NSLocalizedCollection.h" />
+    <ClInclude Include="..\localisation\NSLocalizedCollectionImpl.h" />
+    <ClInclude Include="..\localisation\NSLocalizedString.h" />
     <ClInclude Include="..\src\AutoConfig.h" />
     <ClInclude Include="..\src\AutoConsole.h" />
     <ClInclude Include="..\src\AutoDialog.h" />
@@ -177,7 +187,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader />
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>

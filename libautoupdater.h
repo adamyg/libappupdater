@@ -1,7 +1,7 @@
 #pragma once
 #ifndef LIBAUTOUPDATER_H_INCLUDED
 #define LIBAUTOUPDATER_H_INCLUDED
-/* $Id: libautoupdater.h,v 1.8 2021/08/17 05:11:59 cvsuser Exp $
+/* $Id: libautoupdater.h,v 1.9 2021/08/25 14:47:13 cvsuser Exp $
  *
  *  libappupdatee public binding
  *
@@ -51,6 +51,9 @@ extern "C" {
 
 LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
     autoupdate_set_console_mode(int val);
+
+LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
+    autoupdate_language_set(const char *language);
 
 LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
     autoupdate_logger_stdout(bool val);
