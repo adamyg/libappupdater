@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: NSLocalizedCollectionImpl.h,v 1.4 2021/08/27 14:46:13 cvsuser Exp $
+//  $Id: NSLocalizedCollectionImpl.h,v 1.5 2021/10/19 15:53:58 cvsuser Exp $
 //
 //  NSLocalization - Collection implementation
 //
@@ -30,6 +30,9 @@
 
 #if !defined(WINDOWS_MEAN_AND_LEAN)
 #define WINDOWS_MEAN_AND_LEAN
+#endif
+#if defined(__WATCOMC__)
+#define NOMINMAX
 #endif
 #include <Windows.h>
 

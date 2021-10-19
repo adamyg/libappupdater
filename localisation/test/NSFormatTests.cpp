@@ -1,4 +1,4 @@
-/*  $Id: NSFormatTests.cpp,v 1.1 2021/10/14 16:24:51 cvsuser Exp $
+/*  $Id: NSFormatTests.cpp,v 1.2 2021/10/19 15:53:58 cvsuser Exp $
  *
  *  NSLocalization - String tests.
  *
@@ -54,10 +54,23 @@
  */
 
 #include "..\NSFormat.h"
+#if defined(__WATCOMC__)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#else
 #include <cassert>
+#endif
 
 #if defined(_MSC_VER)
 #pragma warning(disable:4146)
+#endif
+#if defined(__WATCOMC__)
+#pragma warning 13 9    // unreachable code
+#pragma warning 14 9    // no reference to symbol 'xxx' 
+#pragma warning 368 9   // conditional expression in if statement is always false
+#pragma warning 887 9   // unary '-' of unsigned operand produces unsigned result
 #endif
 
 

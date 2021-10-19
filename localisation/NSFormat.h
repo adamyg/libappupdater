@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: NSFormat.h,v 1.3 2021/10/14 16:24:50 cvsuser Exp $
+//  $Id: NSFormat.h,v 1.4 2021/10/19 15:53:57 cvsuser Exp $
 //
 //  NSLocalization - String
 //
@@ -26,12 +26,19 @@
 //  SOFTWARE.
 
 #include <cstddef>
+#if defined(__WATCOMC__)
+#include <stdarg.h>
+#else
 #include <cstdarg>
+#endif
 #include <vector>
 
-#if defined(_MSC_VER) && (_MSC_VER <= 1500)
+#if (defined(_MSC_VER) && (_MSC_VER <= 1500)) || defined(__WATCOMC__)
 typedef long long intmax_t;
 typedef unsigned long long uintmax_t;
+#endif
+#if defined(__WATCOMC__)
+typedef wchar_t wint_t;
 #endif
 
 class NSFormat {

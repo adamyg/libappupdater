@@ -1,4 +1,4 @@
-/*  $Id: NSFormat.cpp,v 1.3 2021/10/14 16:24:50 cvsuser Exp $
+/*  $Id: NSFormat.cpp,v 1.4 2021/10/19 15:53:57 cvsuser Exp $
  *
  *  NSLocalization - String.
  *
@@ -65,9 +65,12 @@
 #include <climits>
 
 #include "NSFormat.h"
+#include "nslocal.h"
 
 #include <iostream>
 #if defined(__WATCOMC__)
+#include <stdlib.h> // C header; <cstdlib> requires std namespace.
+#include <string.h> // C header; <cstring> requires std namespace.
 #include <strstream>
 #else
 #pragma warning(push)
@@ -183,6 +186,21 @@ NSFormat::vformat(char *buffer, unsigned size, const char *fmt, va_list ap)
 	}
 	return NSFormat::exec_format(buffer, size, fieldno, fields, arguments);
 }
+
+
+#if defined(__WATCOMC__)
+static size_t
+strnlen(const char *s, size_t maxlen)
+{
+    size_t len;
+    for (len = 0; len < maxlen; ++len, ++s) {
+        if (! *s) {
+            break;
+        }
+    }
+    return (len);
+}
+#endif  //__WATCOMC__
 
 
 int
