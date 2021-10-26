@@ -1,4 +1,4 @@
-//  $Id: NSLocalizedCollectionImpl.cpp,v 1.7 2021/10/14 16:24:50 cvsuser Exp $
+//  $Id: NSLocalizedCollectionImpl.cpp,v 1.8 2021/10/26 13:14:28 cvsuser Exp $
 //
 //  NSLocalization - Collection implementation
 //
@@ -35,6 +35,11 @@
 #include "NSLocalizedCollectionImpl.h"
 
 #include "NSFormat.h"
+
+#if defined(_MSC_VER)
+#pragma warning(disable:4100) // unreferenced formal parameter
+#pragma warning(disable:4244) // possible loss of data
+#endif
 
 extern void NSFormatTests(void);
 
@@ -440,7 +445,7 @@ NSLocalizedCollectionImpl::load_po(Logger &logger, const char *it, const char *e
                         if (1 == std::sscanf(token.c_str(), "msgstr[%u]", &idx)) {
                             if (NULL == (it == get_str(logger, it, end, plural, "'msgstr[x] translated-string'"))) {
                                 return false;
-                            } else if (idx != (state - 2)) {
+                            } else if ((int)idx != (state - 2)) {
                                 logger.error("unexpected plural index [%u]", idx);
                                 return false;
                             }
@@ -540,7 +545,7 @@ NSLocalizedCollectionImpl::get_str(Logger &logger, const char *it, const char *e
                             n = (n << 3) + (ch - '0'); ++it;
                         }
                     }
-                    result += n;
+                    result += (char)n;
                 }
                 break;
             case 'x':                           // \x + any number of hex digits

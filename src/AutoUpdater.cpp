@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.25 2021/10/14 16:24:51 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.26 2021/10/26 13:15:52 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //
@@ -794,7 +794,7 @@ AutoUpdater::GetTargetName()
 {
     const Updater::AutoManifest &d_manifest = d_impl->d_manifest;
     char temppath[MAX_PATH+1] = {0};
-    size_t len;
+    size_t len = 0;
 
     // working directory CSIDL_INTERNET_CACHE otherwise TEMP
     temppath[0] = 0;
@@ -815,7 +815,7 @@ AutoUpdater::GetTargetName()
         len = dwRetVal;
     }
 
-    if (temppath[len - 1] != '\\') {
+    if (len && temppath[len - 1] != '\\') {
         temppath[len++] = '\\';
         temppath[len] = '\0';
     }

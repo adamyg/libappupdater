@@ -1,4 +1,4 @@
-//  $Id: AutoManifest.cpp,v 1.11 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: AutoManifest.cpp,v 1.12 2021/10/26 13:15:47 cvsuser Exp $
 //
 //  AutoUpdater: Update manifest.
 //
@@ -424,8 +424,8 @@ OnStartElement(void *data, const char *name, const char **attrs)
 
             std::string channel;
             for (int i = 0; attrs[i]; i += 2) {
-                const char *name = attrs[i], *value = attrs[i+1];
-                if (0 == strcmp(name, "name")) {
+                const char *var = attrs[i], *value = attrs[i+1];
+                if (0 == strcmp(var, "name")) {
                     channel = value;
                     break;
                 }
@@ -495,8 +495,8 @@ OnStartElement(void *data, const char *name, const char **attrs)
         } else if (0 == strcmp(name, ATOM_DESCRIPTION)) {
             if (0 == ctx.description_level && ctx.manifest) {
                 for (unsigned i = 0; attrs[i] && attrs[i+i]; i += 2) {
-                    const char *name = attrs[i], *value = attrs[i+1];
-                    if (0 == strcmp(name, ATTR_URL)) {
+                    const char *var = attrs[i], *value = attrs[i+1];
+                    if (0 == strcmp(var, ATTR_URL)) {
                         ctx.manifest->releaseNotesLink = value;
                         break;
                     }
@@ -523,9 +523,8 @@ OnStartElement(void *data, const char *name, const char **attrs)
             if (0 == ctx.criticalUpdate_level && ctx.manifest) {
                 ctx.manifest->criticalUpdate = "*";
                 for (unsigned i = 0; attrs[i] && attrs[i+i]; i += 2) {
-                    const char *name = attrs[i], *value = attrs[i+1];
-
-                    if (ctx.PrefixFieldMatch(name, ATOM_VERSION)) {
+                    const char *var = attrs[i], *value = attrs[i+1];
+                    if (ctx.PrefixFieldMatch(var, ATOM_VERSION)) {
                         ctx.manifest->criticalUpdate = value;
                         break;
                     }
@@ -546,37 +545,37 @@ OnStartElement(void *data, const char *name, const char **attrs)
         } else if (0 == strcmp(name, ATOM_ENCLOSURE)) {
             if (AutoManifest *manifest = ctx.manifest) {
                 for (unsigned i = 0; attrs[i]; i += 2) {
-                    const char *name = attrs[i], *value = attrs[i+1];
+                    const char *var = attrs[i], *value = attrs[i+1];
 
                     LOG<LOG_TRACE>() << "Manifest[" << ctx.LineNumber() << "]"
-                            << "->enclosure<" << name << "=" << value << ">" << LOG_ENDL;
-                    if (0 == strcmp(name, ATTR_NAME)) {
+                            << "->enclosure<" << var << "=" << value << ">" << LOG_ENDL;
+                    if (0 == strcmp(var, ATTR_NAME)) {
                         manifest->attributeName = value;
-                    } else if (0 == strcmp(name, ATTR_URL)) {
+                    } else if (0 == strcmp(var, ATTR_URL)) {
                         manifest->attributeURL = value;
-                    } else if (0 == strcmp(name, ATTR_VERSION)) {
+                    } else if (0 == strcmp(var, ATTR_VERSION)) {
                         manifest->attributeVersion = value;
-                    } else if (0 == strcmp(name, ATTR_LENGTH)) {
+                    } else if (0 == strcmp(var, ATTR_LENGTH)) {
                         manifest->attributeLength = value;
-                    } else if (0 == strcmp(name, ATTR_TYPE)) {
+                    } else if (0 == strcmp(var, ATTR_TYPE)) {
                         manifest->attributeType = value;
-                    } else if (0 == strcmp(name, ATTR_BUILD)) {
+                    } else if (0 == strcmp(var, ATTR_BUILD)) {
                         if (!manifest->BuildLabel.empty() && manifest->BuildLabel != value) {
                             ctx.ParserError("build attribute redefined");
                         } else {
                             manifest->BuildLabel = value;
                         }
-                    } else if (0 == strcmp(name, ATTR_OS)) {
+                    } else if (0 == strcmp(var, ATTR_OS)) {
                         if (!manifest->OSLabel.empty() && manifest->OSLabel != value) {
                             ctx.ParserError("os attribute redefined");
                         } else {
                             manifest->OSLabel = value;
                         }
-                    } else if (0 == strcmp(name, ATTR_SHASIGNATURE)) {
+                    } else if (0 == strcmp(var, ATTR_SHASIGNATURE)) {
                         manifest->attributeSHASignature = value;
-                    } else if (0 == strcmp(name, ATTR_MD5SIGNATURE)) {
+                    } else if (0 == strcmp(var, ATTR_MD5SIGNATURE)) {
                         manifest->attributeMD5Signature = value;
-                    } else if (0 == strcmp(name, ATTR_EDSIGNATURE)) {
+                    } else if (0 == strcmp(var, ATTR_EDSIGNATURE)) {
                         manifest->attritbuteEDSignature = value;
                     }
                 }

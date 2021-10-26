@@ -1,4 +1,4 @@
-//  $Id: CSimpleBrowser.cpp,v 1.11 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: CSimpleBrowser.cpp,v 1.12 2021/10/26 13:15:01 cvsuser Exp $
 //
 //  AutoUpdater: Browser widget.
 //
@@ -28,6 +28,10 @@
 #include "common.h"
 
 #include "CSimpleBrowser.h"
+
+#if defined(_MSC_VER)
+#pragma warning(disable:4100) //unreferenced formal parameter
+#endif
 
 #if defined(__WATCOMC__)
 #include <alloca.h>
