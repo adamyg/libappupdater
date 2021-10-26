@@ -1,6 +1,6 @@
 #ifndef AUTOSTRING_H_INCLUDED
 #define AUTOSTRING_H_INCLUDED
-//  $Id: AutoString.h,v 1.3 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: AutoString.h,v 1.5 2021/10/26 15:21:57 cvsuser Exp $
 //
 //  AutoUpdater: string
 //
@@ -97,7 +97,7 @@ to_string(const std::wstring& wstr) {
     std::string result;
 
     result.resize(size);
-    result.resize(std::wcstombs((char *)result.data(), wstr.data(), size));
+    result.resize(std::wcstombs((char *)result.data(), wstr.c_str(), size));
     return result;
 #endif
 }
@@ -115,7 +115,7 @@ to_wstring(const std::string& str) {
     std::wstring wresult;
 
     wresult.resize(size);
-    wresult.resize(std::mbstowcs((wchar_t *)wresult.data(), str.data(), size));
+    wresult.resize(std::mbstowcs((wchar_t *)wresult.data(), str.c_str(), size));
     return wresult;
 #endif
 }
