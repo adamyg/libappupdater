@@ -1,5 +1,5 @@
 /* -*- mode: c; indent-width: 4; -*- */
-/* $Id: libautoupdater.cpp,v 1.18 2021/10/14 16:24:50 cvsuser Exp $
+/* $Id: libautoupdater.cpp,v 1.19 2021/10/26 13:14:05 cvsuser Exp $
  *
  *  libautoupdater cdecl interface.
  *
@@ -472,6 +472,13 @@ int autosnprintf_s( char * s, size_t n, const char * format, ... ) {
     va_end(ap);
     return ret;
 }
+
+int autovsprintf_s( char * s, size_t n, const char * format, va_list ap ) {
+    int ret = std::vsnprintf(s, n, format, ap);
+    if (ret < 0 || ret >= n) s[n-1] = 0;
+    return ret;
+}
+
 #endif  //__WATCOMC__
 
 /*end*/

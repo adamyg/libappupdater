@@ -1,6 +1,6 @@
 #ifndef AUTOUPDATER_H_INCLUDED
 #define AUTOUPDATER_H_INCLUDED
-//  $Id: AutoUpdater.h,v 1.16 2021/08/18 13:01:03 cvsuser Exp $
+//  $Id: AutoUpdater.h,v 1.17 2021/10/26 13:16:01 cvsuser Exp $
 //
 //  AutoUpdater: application interface.
 //
@@ -65,7 +65,7 @@ public:
         va_list ap;
         
         va_start(ap, format);
-        sprintf_s(buffer, sizeof(buffer), format, ap);     
+        vsprintf_s(buffer, sizeof(buffer), format, ap);     
         (*this)(buffer);
         va_end(ap);
     }

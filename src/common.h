@@ -1,4 +1,4 @@
-//  $Id: common.h,v 1.9 2021/08/17 15:27:10 cvsuser Exp $
+//  $Id: common.h,v 1.11 2021/10/26 13:24:54 cvsuser Exp $
 //
 //  AutoUpdater: Common definitions.
 //
@@ -51,6 +51,10 @@
 #include <climits>
 #include <new>
 
+#if defined(_MSC_VER)
+#pragma warning(disable:4267)                   // 'argument': conversion from 'size_t' to 'int', possible loss of data.
+#endif
+
 #if defined(__WATCOMC__)
 #if !defined(__cplusplus)
 #pragma disable_message(124)                    /* Comparison result always 0 */
@@ -91,8 +95,10 @@ inline std::ostream& operator<<(std::ostream &stream, const std::string &s) {
 
 /*missing*/
 extern int autosprintf_s( char * s, size_t n, const char * __format, ... );
+extern int autovsprintf_s( char * s, size_t n, const char * __format, va_list ap );
 extern int autosnprintf_s( char * s, size_t n, const char * __format, ... );
 #define sprintf_s autosprintf_s
+#define vsprintf_s autovsprintf_s
 #define _snprintf_s autosnprintf_s
 
 #pragma warning (pop)
