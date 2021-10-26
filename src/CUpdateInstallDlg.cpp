@@ -1,4 +1,4 @@
-//  $Id: CUpdateInstallDlg.cpp,v 1.17 2021/08/17 15:27:10 cvsuser Exp $
+//  $Id: CUpdateInstallDlg.cpp,v 1.18 2021/10/26 14:59:30 cvsuser Exp $
 //
 //  AutoUpdater: Install dialog.
 //
@@ -30,6 +30,7 @@
 #include <assert.h>
 #include <algorithm>
 
+#include "AutoLogger.h"
 #include "AutoThread.h"
 #include "AutoDialog.h"
 
@@ -56,6 +57,8 @@ public:
 //  CDialogUpdater
 //
 
+using namespace Updater;
+
 class CDialogUpdater : public IInstallNow {
 public:
     CDialogUpdater(CUpdateInstallDlg &owner) : owner_(owner) {
@@ -64,6 +67,7 @@ public:
     virtual void operator()(const char *message) {
         owner_.d_edit_result.SetText(message);
         owner_.d_edit_result.SetFont(owner_.d_bold);
+        LOG<LOG_TRACE>() << "MSG: " << message << LOG_ENDL;
     }
 
     virtual HWND GetParent() {
