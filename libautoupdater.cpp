@@ -1,5 +1,5 @@
 /* -*- mode: c; indent-width: 4; -*- */
-/* $Id: libautoupdater.cpp,v 1.19 2021/10/26 13:14:05 cvsuser Exp $
+/* $Id: libautoupdater.cpp,v 1.20 2021/12/01 15:56:21 cvsuser Exp $
  *
  *  libautoupdater cdecl interface.
  *
@@ -426,9 +426,11 @@ autoupdate_execute(int mode, int interactive)
             return -2;
         }
 
+#if !defined(NDEBUG)
      // NSLocalizedLoadFile("../lproj/Strings/Base.strings");
      // NSLocalizedLoadResource("NSLocalized", "Localizable");
         NSLocalizedLoadResource("NSLocalized", "xx");
+#endif
 
         if (1 == Config::GetConsoleMode()) {
             AutoConsoleUI console;
