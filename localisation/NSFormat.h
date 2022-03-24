@@ -1,11 +1,11 @@
 #pragma once
-//  $Id: NSFormat.h,v 1.4 2021/10/19 15:53:57 cvsuser Exp $
+//  $Id: NSFormat.h,v 1.5 2022/03/24 07:43:43 cvsuser Exp $
 //
 //  NSLocalization - String
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2021 Adam Young
+//  Copyright (c) 2022 Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,9 @@
 #include <cstddef>
 #if defined(__WATCOMC__)
 #include <stdarg.h>
+#if (__WATCOMC__ >= 1300)
+#include <stddef.h>                             /*ptrdiff_t*/
+#endif
 #else
 #include <cstdarg>
 #endif

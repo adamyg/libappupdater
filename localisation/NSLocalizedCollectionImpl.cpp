@@ -1,10 +1,10 @@
-//  $Id: NSLocalizedCollectionImpl.cpp,v 1.8 2021/10/26 13:14:28 cvsuser Exp $
+//  $Id: NSLocalizedCollectionImpl.cpp,v 1.9 2022/03/24 07:43:43 cvsuser Exp $
 //
 //  NSLocalization - Collection implementation
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2021 Adam Young
+//  Copyright (c) 2022 Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,9 @@
 #include <fstream>
 #include <cctype>
 #include <cstdarg>
+#if defined(__WATCOMC__) && (__WATCOMC__ >= 1300)
+#include <cstdio>
+#endif
 #include <cassert>
 #include <ios>
 
