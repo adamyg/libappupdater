@@ -1,6 +1,6 @@
 #ifndef AUTOMANIFEST_H_INCLUDED
 #define AUTOMANIFEST_H_INCLUDED
-//  $Id: AutoManifest.h,v 1.9 2021/08/16 12:50:32 cvsuser Exp $
+//  $Id: AutoManifest.h,v 1.10 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: application manifest.
 //

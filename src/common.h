@@ -1,4 +1,4 @@
-//  $Id: common.h,v 1.11 2021/10/26 13:24:54 cvsuser Exp $
+//  $Id: common.h,v 1.12 2022/06/09 08:46:31 cvsuser Exp $
 //
 //  AutoUpdater: Common definitions.
 //

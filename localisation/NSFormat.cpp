@@ -1,4 +1,4 @@
-/*  $Id: NSFormat.cpp,v 1.4 2021/10/19 15:53:57 cvsuser Exp $
+/*  $Id: NSFormat.cpp,v 1.5 2022/06/09 08:46:29 cvsuser Exp $
  *
  *  NSLocalization - String.
  *

@@ -1,4 +1,4 @@
-//  $Id: AutoDialog.cpp,v 1.14 2021/08/17 15:27:10 cvsuser Exp $
+//  $Id: AutoDialog.cpp,v 1.15 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: dialog interface
 //

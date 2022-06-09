@@ -1,4 +1,4 @@
-//  $Id: AutoManifest.cpp,v 1.12 2021/10/26 13:15:47 cvsuser Exp $
+//  $Id: AutoManifest.cpp,v 1.13 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: Update manifest.
 //

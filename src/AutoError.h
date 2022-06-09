@@ -1,6 +1,6 @@
 #ifndef AUTOERROR_H_INCLUDED
 #define AUTOERROR_H_INCLUDED
-//  $Id: AutoError.h,v 1.9 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: AutoError.h,v 1.10 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: exception interface.
 //

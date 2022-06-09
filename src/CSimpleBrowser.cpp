@@ -1,4 +1,4 @@
-//  $Id: CSimpleBrowser.cpp,v 1.12 2021/10/26 13:15:01 cvsuser Exp $
+//  $Id: CSimpleBrowser.cpp,v 1.13 2022/06/09 08:46:31 cvsuser Exp $
 //
 //  AutoUpdater: Browser widget.
 //

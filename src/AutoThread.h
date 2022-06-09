@@ -1,6 +1,6 @@
 #ifndef AUTOTHREAD_H_INCLUDED
 #define AUTOTHREAD_H_INCLUDED
-//  $Id: AutoThread.h,v 1.7 2021/08/17 15:27:10 cvsuser Exp $
+//  $Id: AutoThread.h,v 1.8 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: misc definitions and functionality
 //

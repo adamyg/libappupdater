@@ -1,4 +1,4 @@
-//  $Id: AutoLogger.cpp,v 1.17 2021/08/18 13:01:03 cvsuser Exp $
+//  $Id: AutoLogger.cpp,v 1.18 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: logger.
 //

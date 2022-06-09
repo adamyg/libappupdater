@@ -1,6 +1,6 @@
 #ifndef AUTOUPDATER_H_INCLUDED
 #define AUTOUPDATER_H_INCLUDED
-//  $Id: AutoUpdater.h,v 1.17 2021/10/26 13:16:01 cvsuser Exp $
+//  $Id: AutoUpdater.h,v 1.18 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: application interface.
 //

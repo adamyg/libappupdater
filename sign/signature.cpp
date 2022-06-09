@@ -1,4 +1,4 @@
-//  $Id: signature.cpp,v 1.8 2021/08/14 06:26:01 cvsuser Exp $
+//  $Id: signature.cpp,v 1.9 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: Manifest generation tool.
 //

@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: CSimpleBrowser.h,v 1.8 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: CSimpleBrowser.h,v 1.9 2022/06/09 08:46:31 cvsuser Exp $
 //
 //  AutoUpdater: Browser widget.
 //

@@ -1,4 +1,4 @@
-//  $Id: CUpdateInstallDlg.cpp,v 1.18 2021/10/26 14:59:30 cvsuser Exp $
+//  $Id: CUpdateInstallDlg.cpp,v 1.19 2022/06/09 08:46:31 cvsuser Exp $
 //
 //  AutoUpdater: Install dialog.
 //

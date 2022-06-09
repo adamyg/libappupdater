@@ -1,6 +1,6 @@
 #ifndef AUTODOWNLOAD_H_INCLUDED
 #define AUTODOWNLOAD_H_INCLUDED
-//  $Id: AutoDownLoad.h,v 1.12 2021/08/16 12:50:32 cvsuser Exp $
+//  $Id: AutoDownLoad.h,v 1.13 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //

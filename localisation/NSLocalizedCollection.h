@@ -1,7 +1,7 @@
 #pragma once
 #ifndef NSLocalizedCollection_h_included
 #define NSLocalizedCollection_h_included
-//  $Id: NSLocalizedCollection.h,v 1.2 2021/08/25 15:29:44 cvsuser Exp $
+//  $Id: NSLocalizedCollection.h,v 1.3 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  NSLocalization - Collection
 //

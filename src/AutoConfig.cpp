@@ -1,4 +1,4 @@
-//  $Id: AutoConfig.cpp,v 1.17 2021/08/25 15:29:44 cvsuser Exp $
+//  $Id: AutoConfig.cpp,v 1.18 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
