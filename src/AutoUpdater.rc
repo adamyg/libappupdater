@@ -3,7 +3,7 @@
 //
 //  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2021 Adam Young
+//  Copyright (c) 2012 - 2022, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -125,7 +125,7 @@ BEGIN
             VALUE "FileVersion", AUTORELEASE_FILEVERSION
 #endif
             VALUE "InternalName", "libautoupdater.dll"
-            VALUE "LegalCopyright", "(c) 2012-2021 Adam Young, All rights reserved."
+            VALUE "LegalCopyright", "(c) 2012-2022, Adam Young, All rights reserved."
 				"This is free software; see the source for copying conditions. "
 				"There is NO warranty; not even for MERCHANTABILITY "
 				"or FITNESS FOR A PARTICULAR PURPOSE. "
