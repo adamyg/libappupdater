@@ -62,12 +62,12 @@
 #include <cstdarg>
 #include <cerrno>
 #include <cassert>
+#include <cstring>
 #include <climits>
 
 #include "NSFormat.h"
 #include "nslocal.h"
 
-#include <iostream>
 #if defined(__WATCOMC__)
 #include <stdlib.h> // C header; <cstdlib> requires std namespace.
 #include <string.h> // C header; <cstring> requires std namespace.
@@ -231,7 +231,7 @@ NSFormat::exec_format(char *buffer, unsigned size, unsigned fieldno, const struc
 		int precision = (f->precision_arg ? arguments[f->precision_arg].val.intarg : f->precision);
 		unsigned short flags = f->flags;
 		const char spec = f->spec;
-		int ioflags = f->ioflags;
+		ioflags_t ioflags = f->ioflags;
 
 		text.unsetf(std::ios::adjustfield | std::ios::basefield | std::ios::floatfield);
 
@@ -503,7 +503,7 @@ NSFormat::parse_format(const char *fmt, va_list ap, struct Field *fields, unsign
 	const char *cp; 		/* handy char pointer (short term usage) */
 	const char *pp; 		/* position index */
 	unsigned short flags;		/* flags as above */
-	int ioflags;			/* ostream flags */
+	ioflags_t ioflags;		/* ostream flags */
 	int nextarg = 1;		/* 1-based argument index */
 	int maxarg = 1; 		/* upper bound */
 
@@ -599,7 +599,7 @@ NSFormat::parse_format(const char *fmt, va_list ap, struct Field *fields, unsign
 		++fmt;		/* skip over '%' */
 
 		flags = 0;
-		ioflags = 0;
+		ioflags = (ioflags_t)0;
 
 rflag:		ch = *fmt++;
 reswitch:	switch (ch) {
@@ -802,17 +802,17 @@ floating_point: 	flags |= FPT;
 #endif /* FLOATING_POINT */
 		case 'n':
 #ifndef NO_PRINTF_PERCENT_N
-			if (ioflags & LLONGINT)
+			if (flags & LLONGINT)
 				ADDTYPE(TP_LLONG);
-			else if (ioflags & LONGINT)
+			else if (flags & LONGINT)
 				ADDTYPE(TP_LONG);
-			else if (ioflags & SHORTINT)
+			else if (flags & SHORTINT)
 				ADDTYPE(TP_SHORT);
-			else if (ioflags & PTRINT)
+			else if (flags & PTRINT)
 				ADDTYPE(TP_PTRINT);
-			else if (ioflags & SIZEINT)
+			else if (flags & SIZEINT)
 				ADDTYPE(TP_SSIZEINT);
-			else if (ioflags & MAXINT)
+			else if (flags & MAXINT)
 				ADDTYPE(TP_MAXINT);
 			else
 				ADDTYPE(TP_INT);
@@ -956,7 +956,7 @@ done:	if (maxarg >= (int)argno) {
 #endif
 #ifdef PRINTF_WIDE_CHAR
 		case T_WINT:
-			arg->val.wintarg = va_arg(ap, wint_t);
+		        arg->val.wintarg = va_arg(ap, int /*wint_t*/);
 			break;
 		case TP_WCHAR:
 			arg->val.pwchararg = va_arg(ap, const wchar_t *);

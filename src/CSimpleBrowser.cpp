@@ -33,7 +33,7 @@
 #pragma warning(disable:4100) //unreferenced formal parameter
 #endif
 
-#if defined(__WATCOMC__)
+#if defined(__WATCOMC__) || defined(__MINGW32__)
 #include <alloca.h>
 
 class bstr_t {

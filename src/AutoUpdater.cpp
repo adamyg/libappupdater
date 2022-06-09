@@ -885,7 +885,7 @@ AutoUpdater::Verify(const std::string &filename)
         CloseHandle(hFile);
         return false;
 
-    } else if (fileSize != strtol(d_manifest.attributeLength.c_str(), 0, NULL)) {
+    } else if (fileSize != strtol(d_manifest.attributeLength.c_str(), NULL, 0)) {
         LOG<LOG_WARN>() << "target-length incorrect (" << fileSize
                 << " and " << d_manifest.attributeLength << ")" << LOG_ENDL;
         CloseHandle(hFile);

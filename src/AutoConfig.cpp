@@ -237,7 +237,7 @@ std::string
 Config::GetVerInfoField(const char *field, bool required)
 {
     const std::string key(GetStringFileInfo() + "\\" + field);
-    char *value;
+    const char *value;
     UINT len;
 
     if (! ::VerQueryValueA((void *)GetVerInfoData(), (LPSTR)(key.c_str()), (void **)&value, &len)) {

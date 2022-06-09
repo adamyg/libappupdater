@@ -61,6 +61,7 @@
 #include <assert.h>
 #else
 #include <cassert>
+#include <cstring>
 #endif
 
 #if defined(_MSC_VER)

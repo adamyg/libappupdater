@@ -738,7 +738,11 @@ OnText(void *data, const char *s, int len)
         } else if (1 == ctx.published_level) {  // <published>
             if (len) {
                 const std::string t_buffer(s, len);
+#if defined(__MINGW64_VERSION_MAJOR)
+                const __time64_t published = (__time64_t)strtoull(t_buffer.c_str(), NULL, 10);
+#else
                 const time_t published = atoi(t_buffer.c_str());
+#endif
 
                 manifest->published = published;
                 if (published > 0 && manifest->pubDate.empty()) {
