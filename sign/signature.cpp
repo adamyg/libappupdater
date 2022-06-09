@@ -63,7 +63,11 @@ sign_manifest(const char *filename, const char *version, const char *hosturl)
         const std::string sha = Signature(hFile, filename, CALG_SHA);
         const std::string md5 = Signature(hFile, filename, CALG_MD5);
 
+#if defined(__MINGW64_VERSION_MAJOR)
+        const __time64_t now = _time64(NULL);
+#else
         const time_t now = time(NULL);
+#endif
         struct tm pubtime = {0};
         char pubDate[32] = {0};
 

@@ -63,9 +63,9 @@ public:
     void message(const char *format, ...) {
         char buffer[1024];
         va_list ap;
-        
+
         va_start(ap, format);
-        vsprintf_s(buffer, sizeof(buffer), format, ap);     
+        vsprintf_s(buffer, sizeof(buffer), format, ap);
         (*this)(buffer);
         va_end(ap);
     }
@@ -155,7 +155,7 @@ private:
 private:
     friend class AutoUpdaterImpl;
     friend class AutoUpdaterSink;
-    AutoUpdaterImpl *   d_impl;                 // implementation.
+    class AutoUpdaterImpl *d_impl;              // implementation.
 };
 
 #endif  /*AUTOUPDATER_H_INCLUDED*/

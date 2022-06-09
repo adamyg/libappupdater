@@ -26,15 +26,22 @@
 //  SOFTWARE.
 
 #include <cstddef>
+
 #if defined(__WATCOMC__)
 #include <stdarg.h>
 #if (__WATCOMC__ >= 1300)
-#include <stddef.h>                             /*ptrdiff_t*/
+#include <stddef.h>                             /* ptrdiff_t */
 #endif
 #else
 #include <cstdarg>
 #endif
+
 #include <vector>
+#include <iostream>
+
+#if defined(HAVE_INTTYPES_H) || defined(__MINGW32__)
+#include <inttypes.h>                           /* intmax_t */
+#endif
 
 #if (defined(_MSC_VER) && (_MSC_VER <= 1500)) || defined(__WATCOMC__)
 typedef long long intmax_t;
@@ -95,7 +102,13 @@ public:
 #endif
 		void		*pobjectarg;
 	};
-
+        
+#if defined(__WATCOMC__)
+        typedef unsigned ioflags_t;
+#else
+        typedef std::ios_base::fmtflags ioflags_t;
+#endif
+        
 	struct Argument {
 		union arg val;
 		unsigned argtype;
@@ -107,7 +120,7 @@ public:
 		short width_arg, width;
 		short precision_arg, precision;
 		int value_arg;
-		int ioflags;
+		ioflags_t ioflags;
 		char spec;
 	};
 

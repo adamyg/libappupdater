@@ -296,7 +296,14 @@ Logger::OpenFile(const char *application, bool append)
     t_filename += log_name_;
 
     file_.close();
-    file_.open(t_filename.c_str(), std::ios::out | (append ? std::ios::app : 0));
+
+#if defined(__WATCOMC__)
+    unsigned mode = std::ios::out;
+#else
+    std::ios_base::openmode mode = std::ios::out;
+#endif
+    if (append) mode |= std::ios::app;
+    file_.open(t_filename.c_str(), mode);
     if (! file_.is_open()) {
         throw std::runtime_error("LOGGER: Unable to open an output stream");
     }
@@ -314,7 +321,11 @@ Logger::CloseFile()
 const char *
 Logger::Timestamp(char *buffer, size_t buflen)
 {
+#if defined(__MINGW64_VERSION_MAJOR)
+    __time64_t now = _time64(NULL);
+#else
     time_t now = time(NULL);
+#endif
     struct tm tm = {0};
 
 #if defined(__WATCOMC__)

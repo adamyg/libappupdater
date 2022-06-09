@@ -446,7 +446,7 @@ NSLocalizedCollectionImpl::load_po(Logger &logger, const char *it, const char *e
                         unsigned idx = 0;
 
                         if (1 == std::sscanf(token.c_str(), "msgstr[%u]", &idx)) {
-                            if (NULL == (it == get_str(logger, it, end, plural, "'msgstr[x] translated-string'"))) {
+                            if (NULL == (it = get_str(logger, it, end, plural, "msgstr[x] translated-string"))) {
                                 return false;
                             } else if ((int)idx != (state - 2)) {
                                 logger.error("unexpected plural index [%u]", idx);
