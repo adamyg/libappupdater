@@ -1,6 +1,6 @@
 #ifndef AUTOVERSION_H_INCLUDED
 #define AUTOVERSION_H_INCLUDED
-//  $Id: AutoVersion.h,v 1.9 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: AutoVersion.h,v 1.10 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: Version comparison.
 //

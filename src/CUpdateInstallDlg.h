@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: CUpdateInstallDlg.h,v 1.11 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: CUpdateInstallDlg.h,v 1.12 2022/06/09 08:46:31 cvsuser Exp $
 //
 //  Install dialog
 //

@@ -1,6 +1,6 @@
 #ifndef AUTOSTRING_H_INCLUDED
 #define AUTOSTRING_H_INCLUDED
-//  $Id: AutoString.h,v 1.5 2021/10/26 15:21:57 cvsuser Exp $
+//  $Id: AutoString.h,v 1.6 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: string
 //

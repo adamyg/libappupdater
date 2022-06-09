@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: NSLocalizedCollectionImpl.h,v 1.5 2021/10/19 15:53:58 cvsuser Exp $
+//  $Id: NSLocalizedCollectionImpl.h,v 1.6 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  NSLocalization - Collection implementation
 //

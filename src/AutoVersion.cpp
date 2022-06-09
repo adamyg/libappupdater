@@ -1,4 +1,4 @@
-//  $Id: AutoVersion.cpp,v 1.9 2021/08/14 15:38:10 cvsuser Exp $
+//  $Id: AutoVersion.cpp,v 1.10 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoVersion: Version comparison.
 //

@@ -1,4 +1,4 @@
-//  $Id: AutoError.cpp,v 1.11 2021/08/14 15:38:09 cvsuser Exp $
+//  $Id: AutoError.cpp,v 1.12 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: exception interface.
 //

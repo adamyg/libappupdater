@@ -1,6 +1,6 @@
 #ifndef AUTOCONSOLE_H_INCLUDED
 #define AUTOCONSOLE_H_INCLUDED
-//  $Id: AutoConsole.h,v 1.5 2021/08/14 15:38:09 cvsuser Exp $
+//  $Id: AutoConsole.h,v 1.6 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  AutoUpdater: console interface.
 //

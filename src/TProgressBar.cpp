@@ -1,4 +1,4 @@
-//  $Id: TProgressBar.cpp,v 1.8 2021/08/18 13:01:03 cvsuser Exp $
+//  $Id: TProgressBar.cpp,v 1.9 2022/06/09 08:46:31 cvsuser Exp $
 //
 //  AutoUpdater: TProgressDialog.
 //

@@ -1,4 +1,4 @@
-//  $Id: NSLocalizedString.cpp,v 1.4 2021/10/14 16:24:51 cvsuser Exp $
+//  $Id: NSLocalizedString.cpp,v 1.5 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  NSLocalization - Interface
 //

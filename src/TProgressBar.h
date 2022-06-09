@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: TProgressBar.h,v 1.4 2021/08/17 15:27:10 cvsuser Exp $
+//  $Id: TProgressBar.h,v 1.5 2022/06/09 08:46:31 cvsuser Exp $
 //
 //  TProgressBar
 //

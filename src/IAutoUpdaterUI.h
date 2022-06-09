@@ -1,6 +1,6 @@
 #ifndef IAUTOUPDATERUI_H_INCLUDED
 #define IAUTOUPDATERUI_H_INCLUDED
-//  $Id: IAutoUpdaterUI.h,v 1.6 2021/08/16 12:50:32 cvsuser Exp $
+//  $Id: IAutoUpdaterUI.h,v 1.7 2022/06/09 08:46:31 cvsuser Exp $
 //
 //  IAutoUpdaterUI: ui interface.
 //

@@ -1,4 +1,4 @@
-//  $Id: CUpdatePromptDlg.cpp,v 1.11 2021/08/17 15:27:10 cvsuser Exp $
+//  $Id: CUpdatePromptDlg.cpp,v 1.12 2022/06/09 08:46:31 cvsuser Exp $
 //
 //  AutoUpdater: Prompt dialog.
 //

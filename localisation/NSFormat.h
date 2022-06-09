@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: NSFormat.h,v 1.5 2022/03/24 07:43:43 cvsuser Exp $
+//  $Id: NSFormat.h,v 1.6 2022/06/09 08:46:30 cvsuser Exp $
 //
 //  NSLocalization - String
 //
