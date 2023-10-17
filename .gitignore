@@ -7,6 +7,8 @@ Debug.vs*/
 Release.vs*/
 .vs*/
 *.vcxproj.user
+*.VC.opendb
+*.VC.db
 .#*
 
 # Prerequisites

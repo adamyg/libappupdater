@@ -6,8 +6,8 @@
 // AutoUpdater Localizer data
 //
 
-NSLocalized Localizable "./strings/Base.strings"
-NSLocalized de "./strings/de.strings"
+//NSLocalized Localizable "./strings/Base.strings"
+//NSLocalized de "./strings/de.strings"
 NSLocalized xx "./object.nsmo"
 
 //end
