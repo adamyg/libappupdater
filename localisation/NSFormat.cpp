@@ -1,10 +1,10 @@
-/*  $Id: NSFormat.cpp,v 1.5 2022/06/09 08:46:29 cvsuser Exp $
+/*  $Id: NSFormat.cpp,v 1.6 2023/10/17 12:33:56 cvsuser Exp $
  *
  *  NSLocalization - String.
  *
  *  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
  *
- *  Copyright (c) 2021 - 2022, Adam Young
+ *  Copyright (c) 2021 - 2023, Adam Young
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -192,13 +192,13 @@ NSFormat::vformat(char *buffer, unsigned size, const char *fmt, va_list ap)
 static size_t
 strnlen(const char *s, size_t maxlen)
 {
-    size_t len;
-    for (len = 0; len < maxlen; ++len, ++s) {
-        if (! *s) {
-            break;
-        }
-    }
-    return (len);
+	size_t len;
+	for (len = 0; len < maxlen; ++len, ++s) {
+		if (! *s) {
+			break;
+		}
+	}
+	return (len);
 }
 #endif  //__WATCOMC__
 
@@ -244,8 +244,7 @@ NSFormat::exec_format(char *buffer, unsigned size, unsigned fieldno, const struc
 			width = -width;
 		}
 
-		//  strings and characters
-                //
+		// strings and characters
 		if ('s' == spec /*TODO: || 'S' == spec*/) {
 			const char *s = arguments[f->value_arg].val.pchararg;
 
@@ -282,7 +281,8 @@ NSFormat::exec_format(char *buffer, unsigned size, unsigned fieldno, const struc
 				text.setf(std::ios::left);
 			text.fill((ZEROPAD == ((ZEROPAD | LADJUST) & flags)) ? '0' : ' ');
 			text.width(width);
-			text << c;
+			if (c) text << c;
+                        else text << "\\0";
 			continue;
 
 		} else if ('%' == spec) {
@@ -292,11 +292,10 @@ NSFormat::exec_format(char *buffer, unsigned size, unsigned fieldno, const struc
 			continue;
 		}
 
-		//  numeric fields
-		//
+		// numeric fields
 		const Argument *arg = arguments + f->value_arg;
 
-		if (LADJUST  & flags)
+		if (LADJUST & flags)
 			ioflags |= std::ios::left;
 
 		if ((PLUSSIGN|SPACESIGN) & flags)
@@ -356,7 +355,11 @@ NSFormat::exec_format(char *buffer, unsigned size, unsigned fieldno, const struc
 				ioflags |=  std::ios::internal; //pad style
 				ioflags &= ~std::ios::left; //manually applied
 			}
-			if ('p' == spec) t_width = 0;
+
+			if ('p' == spec) { // void-pointer
+				t_width = 0;
+			}
+
 			text.width(t_width);
 		}
 
@@ -439,8 +442,21 @@ NSFormat::exec_format(char *buffer, unsigned size, unsigned fieldno, const struc
 		if (0 == (FPT & flags)) { //numeric
 			if ('p' == spec) {
 				/*
-				 *  0X prefix.
+				 *  lowercase/uppercase plus 0X prefix.
 				 */
+				if (ioflags & std::ios::uppercase) {
+					for (char *cursor = start, *cend = start + length; cursor < cend; ++cursor) {
+						if (*cursor >= 'a' && *cursor <= 'f') {
+							*cursor = 'A' + (*cursor - 'a');
+						}
+					}
+				} else {
+					for (char *cursor = start, *cend = start + length; cursor < cend; ++cursor) {
+						if (*cursor >= 'A' && *cursor <= 'F') {
+							*cursor = 'a' + (*cursor - 'A');
+						}
+					}
+				}
 				if (ALT & flags) {
 					text << "  ";
 					memmove(start + 2, start, length);
@@ -730,7 +746,8 @@ reswitch:	switch (ch) {
 		//  %g		64-bit floating-point number (double), printed in the style of %e if the exponent is less than –4 or greater than or equal to the precision, in the style of %f otherwise.
 		//  %G		64-bit floating-point number (double), printed in the style of %E if the exponent is less than –4 or greater than or equal to the precision, in the style of %f otherwise.
 		//  %o, %O	Unsigned 32-bit integer (unsigned int), printed in octal.
-		//  %p		Void pointer (void *), printed in hexadecimal with the digits 0–9 and lowercase a–f, with a leading 0x.
+		//  %p		Void pointer (void *), printed in hexadecimal with the digits 0–9 and lowercase a-f, with a leading 0x.
+		//  %Fp		Void pointer (void *), printed in hexadecimal with the digits 0–9 and uppercase A-F, with a leading 0x.
 		//  %S		Null-terminated array of 16-bit UTF-16 code units.
 		//  %s		Null-terminated array of 8-bit unsigned characters.
 		//  %u, %U	Unsigned 32-bit integer (unsigned int).
@@ -787,6 +804,10 @@ reswitch:	switch (ch) {
 			ioflags |= std::ios::uppercase;
 			/*FALLTHROUGH*/
 		case 'f':
+			if (*fmt == 'p') { // [Ff]p
+				ch = *fmt++;
+				goto void_pointer;
+			}
 			ioflags |= std::ios::fixed;
 			goto floating_point;
 		case 'G':
@@ -847,7 +868,7 @@ floating_point: 	flags |= FPT;
 			flags &= ~(PLUSSIGN | SPACESIGN);
 			break;
 		case 'p':
-			ADDTYPE(TP_VOID);
+void_pointer:		ADDTYPE(TP_VOID);
 			ioflags |= std::ios::hex;
 			f->precision = -1;
 			flags &= ~(PLUSSIGN | SPACESIGN);
@@ -956,7 +977,7 @@ done:	if (maxarg >= (int)argno) {
 #endif
 #ifdef PRINTF_WIDE_CHAR
 		case T_WINT:
-		        arg->val.wintarg = va_arg(ap, int /*wint_t*/);
+			arg->val.wintarg = va_arg(ap, int /*wint_t*/);
 			break;
 		case TP_WCHAR:
 			arg->val.pwchararg = va_arg(ap, const wchar_t *);

@@ -256,6 +256,12 @@
     <ClInclude Include="..\localisation\NSFormat.h">
       <Filter>Header Files\localisation</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\VTSupport.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ProgressStyle.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\AutoUpdater.rc">

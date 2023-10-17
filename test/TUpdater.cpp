@@ -1,10 +1,10 @@
-// $Id: TUpdater.cpp,v 1.4 2021/08/17 05:40:05 cvsuser Exp $
+// $Id: TUpdater.cpp,v 1.5 2023/10/17 12:33:59 cvsuser Exp $
 //
 // AutoUpdater -- console test application.
 //
 //  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2021 Adam Young
+//  Copyright (c) 2012 - 2023 Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,7 @@ static const char *         x_progname;
 int
 main(int argc, char *argv[])
 {
-    const char *version = "1.0.1",
+    const char *version = "1.0.2",
             *hosturl = "https://sourceforge.net/projects/grief/files/grief.manifest/download";
     int mode = 2, interactive = 0;
     int ch;
@@ -59,11 +59,11 @@ main(int argc, char *argv[])
     while (-1 != (ch = Updater::Getopt(argc, argv, "V:H:iL:vh"))) {
         switch (ch) {
         case 'V':   /* application version */
-            version= Updater::optarg;
+            version = Updater::optarg;
             break;
         case 'H':   /* host URL */
             hosturl = Updater::optarg;
-            break;          
+            break;
         case 'i':   /* interactive */
             ++interactive;
             break;
@@ -146,7 +146,7 @@ Usage()
 {
     std::cerr <<
         "\n"\
-        "Console updater                                            version 1.01\n"\
+        "Console updater                                            version 1.02\n"\
         "\n"\
         "   consoleupdater [options] mode\n"\
         "\n"\

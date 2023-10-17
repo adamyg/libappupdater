@@ -1,10 +1,10 @@
-//  $Id: AutoDownLoad.cpp,v 1.19 2022/06/09 08:46:30 cvsuser Exp $
+//  $Id: AutoDownLoad.cpp,v 1.20 2023/10/17 12:33:57 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2022, Adam Young
+//  Copyright (c) 2012 - 2023, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -213,7 +213,7 @@ Download::cancel()
 //
 
 FileDownloadSink::FileDownloadSink(const char *filename) :
-        filename_(filename?filename:""), filesize_(-1), handle_(INVALID_HANDLE_VALUE) 
+    filename_(filename?filename:""), filesize_(-1), handle_(INVALID_HANDLE_VALUE) 
 {
 }
 
@@ -656,8 +656,12 @@ again:
             if (! InternetReadFile(request_handle, buffer, sizeof(buffer), &read)) {
                 throw SysException("Reading internet connection");
             }
-            if (0 == read) break;               // EOF
+
+            if (0 == read)
+                break;                              // EOF
             sink.append(buffer, read);
+            if (sink.cancelled()) 
+                break;
         }
         sink.close();
     }

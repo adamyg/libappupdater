@@ -98,8 +98,10 @@
     <ClInclude Include="..\src\CUpdatePromptDlg.h" />
     <ClInclude Include="..\src\CUptodateDlg.h" />
     <ClInclude Include="..\src\IAutoUpdaterUI.h" />
+    <ClInclude Include="..\src\ProgressStyle.h" />
     <ClInclude Include="..\src\Resource.h" />
     <ClInclude Include="..\src\TProgressBar.h" />
+    <ClInclude Include="..\src\VTSupport.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\localisation\NSLocalized.rc" />

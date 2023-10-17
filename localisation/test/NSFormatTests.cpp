@@ -1,4 +1,4 @@
-/*  $Id: NSFormatTests.cpp,v 1.3 2022/06/09 08:46:30 cvsuser Exp $
+/*  $Id: NSFormatTests.cpp,v 1.4 2023/10/17 12:33:56 cvsuser Exp $
  *
  *  NSLocalization - String tests.
  *
@@ -136,10 +136,11 @@ test_1(void)
 
     TEST("AbC",                     -1, "%c%c%c",       'A', 'b', 'C');
 
-    /* Ein String ohne alles */
+    /* String only */
+    TEST("",                        0,  "");
     TEST("Hallo heimur",            12, "Hallo heimur");
 
-    /* Einfache Konvertierungen */
+    /* Simple conversions */
     TEST("Hallo heimur",            12, "%s",           "Hallo heimur");
     TEST("1024",                     4, "%d",           1024);
     TEST("-1024",                    5, "%d",           -1024);
@@ -156,10 +157,10 @@ test_1(void)
     TEST("x",                        1, "%c",           'x');
     TEST("%",                        1, "%%");
 
-    /* Mit %c kann man auch Nullbytes ausgeben */
-//  TEST("\0",                       1, "%c",           '\0');
+    /* Mit %c, output null bytes */
+    TEST("\\0",                      2, "%c",           '\0');
 
-    /* Vorzeichen erzwingen (Flag +) */
+    /* Force sign (Flag +) */
     TEST("Hallo heimur",            12, "%+s",          "Hallo heimur");
     TEST("+1024",                    5, "%+d",          1024);
     TEST("-1024",                    5, "%+d",          -1024);
@@ -175,7 +176,7 @@ test_1(void)
     TEST("EDCB5433",                 8, "%+X",          -0x1234abcdu);
     TEST("x",                        1, "%+c",          'x');
 
-    /* Vorzeichenplatzhalter erzwingen (Flag <space>) */
+    /* Force space (Flag <space>) */
     TEST("Hallo heimur",            12, "% s",          "Hallo heimur");
 #if (0)
     TEST(" 1024",                    5, "% d",          1024);
@@ -220,7 +221,7 @@ test_1(void)
     TEST("0",                        1, "%#x",          0u);
     TEST("0",                        1, "%#X",          0u);
 
-    /* Feldbreite: Kleiner als Ausgabe */
+    /* Field width: Smaller than output */
     TEST("Hallo heimur",            12, "%1s",          "Hallo heimur");
     TEST("1024",                     4, "%1d",          1024);
     TEST("-1024",                    5, "%1d",          -1024);
@@ -236,7 +237,7 @@ test_1(void)
     TEST("EDCB5433",                 8, "%1X",          -0x1234abcdu);
     TEST("x",                        1, "%1c",          'x');
 
-    /* Feldbreite: Größer als Ausgabe */
+    /* Field width: Greater than output */
     TEST("               Hallo",    20, "%20s",         "Hallo");
     TEST("                1024",    20, "%20d",         1024);
     TEST("               -1024",    20, "%20d",         -1024);
@@ -252,7 +253,7 @@ test_1(void)
     TEST("            EDCB5433",    20, "%20X",         -0x1234abcdu);
     TEST("                   x",    20, "%20c",         'x');
 
-    /* Feldbreite: Linksbündig */
+    /* Field width: left-aligned */
     TEST("Hallo               ",    20, "%-20s",        "Hallo");
     TEST("1024                ",    20, "%-20d",        1024);
     TEST("-1024               ",    20, "%-20d",        -1024);
@@ -268,7 +269,7 @@ test_1(void)
     TEST("EDCB5433            ",    20, "%-20X",        -0x1234abcdu);
     TEST("x                   ",    20, "%-20c",        'x');
 
-    /* Feldbreite: Padding mit 0 */
+    /* Field width: Padding with 0 */
     TEST("00000000000000001024",    20, "%020d",        1024);
     TEST("-0000000000000001024",    20, "%020d",        -1024);
     TEST("00000000000000001024",    20, "%020i",        1024);
@@ -282,7 +283,7 @@ test_1(void)
     TEST("0000000000001234ABCD",    20, "%020X",        0x1234abcdu);
     TEST("000000000000EDCB5433",    20, "%020X",        -0x1234abcdu);
 
-    /* Feldbreite: Padding und alternative Form */
+    /* Field width: padding and alternative shape */
     TEST("                0777",    20, "%#20o",        0777u);
     TEST("        037777777001",    20, "%#20o",        -0777u);
     TEST("          0x1234abcd",    20, "%#20x",        0x1234abcdu);
@@ -297,7 +298,7 @@ test_1(void)
     TEST("0X00000000001234ABCD",    20, "%#020X",       0x1234abcdu);
     TEST("0X0000000000EDCB5433",    20, "%#020X",       -0x1234abcdu);
 
-    /* Feldbreite: - hat Vorrang vor 0 */
+    /* Field width: - takes precedence over 0 */
     TEST("Hallo               ",    20, "%0-20s",       "Hallo");
     TEST("1024                ",    20, "%0-20d",       1024);
     TEST("-1024               ",    20, "%0-20d",       -1024);
@@ -313,7 +314,7 @@ test_1(void)
     TEST("EDCB5433            ",    20, "%-020X",       -0x1234abcdu);
     TEST("x                   ",    20, "%-020c",       'x');
 
-    /* Feldbreite: Aus Parameter */
+    /* Field width: From parameter */
     TEST("               Hallo",    20, "%*s",          20, "Hallo");
     TEST("                1024",    20, "%*d",          20, 1024);
     TEST("               -1024",    20, "%*d",          20, -1024);
@@ -329,7 +330,7 @@ test_1(void)
     TEST("            EDCB5433",    20, "%*X",          20, -0x1234abcdu);
     TEST("                   x",    20, "%*c",          20, 'x');
 
-    /* Präzision / Mindestanzahl von Ziffern */
+    /* Precision / minimum number of digits */
     TEST("Hallo heimur",            12, "%.20s",        "Hallo heimur");
     TEST("00000000000000001024",    20, "%.20d",        1024);
     TEST("-00000000000000001024",   21, "%.20d",        -1024);
@@ -344,7 +345,7 @@ test_1(void)
     TEST("0000000000001234ABCD",    20, "%.20X",        0x1234abcdu);
     TEST("000000000000EDCB5433",    20, "%.20X",        -0x1234abcdu);
 
-    /* Feldbreite und Präzision */
+    /* Field width and precision */
     TEST("               Hallo",    20, "%20.5s",       "Hallo heimur");
     TEST("               01024",    20, "%20.5d",       1024);
     TEST("              -01024",    20, "%20.5d",       -1024);
@@ -359,7 +360,7 @@ test_1(void)
     TEST("            1234ABCD",    20, "%20.5X",       0x1234abcdu);
     TEST("          00EDCB5433",    20, "%20.10X",      -0x1234abcdu);
 
-    /* Präzision: 0 wird ignoriert */
+    /* Precision: 0 is ignored */
     TEST("               Hallo",    20, "%020.5s",      "Hallo heimur");
     TEST("               01024",    20, "%020.5d",      1024);
     TEST("              -01024",    20, "%020.5d",      -1024);
@@ -374,7 +375,7 @@ test_1(void)
     TEST("            1234ABCD",    20, "%020.5X",      0x1234abcdu);
     TEST("          00EDCB5433",    20, "%020.10X",     -0x1234abcdu);
 
-    /* Präzision 0 */
+    /* Precision: 0 */
     TEST("",                         0, "%.0s",         "Hallo heimur");
     TEST("                    ",    20, "%20.0s",       "Hallo heimur");
     TEST("",                         0, "%.s",          "Hallo heimur");
@@ -398,8 +399,8 @@ test_1(void)
     TEST("            EDCB5433",    20, "%20.0X",       -0x1234abcdu);
     TEST("                    ",    20, "%20.X",        0u);
 
-    /* Negative Präzision wird ignoriert */
-    /* XXX glibc tut nicht, was ich erwartet habe, vorerst deaktiviert... */
+    /* Negative precision is ignored */
+    /* XXX: glibc doesn't do what I expected, disabled for now .. */
 #if 0
     TEST("Hallo heimur",            12, "%.-42s",       "Hallo heimur");
     TEST("1024",                     4, "%.-42d",       1024);
@@ -751,10 +752,15 @@ test_2(void)
         OK( 0==strcmp(buffer,"  0X0000000000000039"),"Pointer formatted incorrectly\n");
         OK( r==20, "return count wrong\n");
 
-//      format = "%Fp";
-//      r = NSFormat::format(buffer,sizeof(buffer),format,(void *)57);
-//      OK( 0==strcmp(buffer,"0000000000000039"),"Pointer formatted incorrectly \"%s\"\n",buffer);
-//      OK( r==16, "return count wrong\n");
+        format = "%fp"; // lower-case
+        r = NSFormat::format(buffer,sizeof(buffer),format,(void *)107);
+        OK( 0==strcmp(buffer,"000000000000006b"),"Pointer formatted incorrectly \"%s\"\n",buffer);
+        OK( r==16, "return count wrong\n");
+
+        format = "%Fp"; // upper-case
+        r = NSFormat::format(buffer,sizeof(buffer),format,(void *)107);
+        OK( 0==strcmp(buffer,"000000000000006B"),"Pointer formatted incorrectly \"%s\"\n",buffer);
+        OK( r==16, "return count wrong\n");
 
         format = "%#-020p";
         r = NSFormat::format(buffer,sizeof(buffer),format,(void *)57);
@@ -773,9 +779,14 @@ test_2(void)
         OK( 0==strcmp(buffer,"  0X00000039"),"Pointer formatted incorrectly\n");
         OK( r==12, "return count wrong\n");
 
-        format = "%Fp";
-        r = NSFormat::format(buffer,sizeof(buffer),format,(void *)57);
-        OK( 0==strcmp(buffer,"00000039"),"Pointer formatted incorrectly \"%s\"\n",buffer);
+        format = "%fp"; // lower-case
+        r = NSFormat::format(buffer,sizeof(buffer),format,(void *)107);
+        OK( 0==strcmp(buffer,"0000006b"),"Pointer formatted incorrectly \"%s\"\n",buffer);
+        OK( r==8, "return count wrong\n");
+
+        format = "%Fp"; // upper-case
+        r = NSFormat::format(buffer,sizeof(buffer),format,(void *)107);
+        OK( 0==strcmp(buffer,"0000006B"),"Pointer formatted incorrectly \"%s\"\n",buffer);
         OK( r==8, "return count wrong\n");
 
         format = "%#-012p";
@@ -1057,9 +1068,7 @@ test_4(void)
 {
 //TODO
 //  TEST("1 2 is now available--you have 3?", -1, "%@ %@ is now available--you have %@?", NSObject(1), NSObject(2), NSObject(3));
-
 //  NSStringTest("%1$@ %2$@ has been downloaded", 1, 2);
-
 //  NSStringTest("%2$@ %1$@ has been downloaded", 2, 1);
 }
 
@@ -1072,3 +1081,5 @@ NSFormatTests(void)
     test_3();
     test_4();
 }
+
+//end

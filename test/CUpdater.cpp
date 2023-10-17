@@ -1,10 +1,10 @@
-//  $Id: CUpdater.cpp,v 1.11 2021/08/17 05:40:05 cvsuser Exp $
+//  $Id: CUpdater.cpp,v 1.12 2023/10/17 12:33:58 cvsuser Exp $
 //
 //  AutoUpdater -- dialog test application.
 //
 //  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2021 Adam Young
+//  Copyright (c) 2012 - 2023 Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

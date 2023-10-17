@@ -1,10 +1,10 @@
-//  $Id: AutoConsole.cpp,v 1.11 2022/06/09 08:46:30 cvsuser Exp $
+//  $Id: AutoConsole.cpp,v 1.13 2023/10/17 14:09:07 cvsuser Exp $
 //
 //  AutoUpdater: console interface.
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2022, Adam Young
+//  Copyright (c) 2012 - 2023, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -92,12 +92,12 @@ AutoConsoleUI::PromptDialog(AutoUpdater &owner)
         }
 
         if ('o' == ch || 'O' == ch) {           // once
-            std::cout << "\nchecking once ...\n";
+            std::cout << "\nchecking once ..." << std::endl;
             rsp = PROMPT_ONCE;
             break;
 
         } else if ('y' == ch || 'Y' == ch) {    // yes
-            std::cout << "\nchecking automatically ...\n";
+            std::cout << "\nchecking automatically ..." << std::endl;
             rsp = PROMPT_AUTO;
             break;
 
@@ -106,7 +106,7 @@ AutoConsoleUI::PromptDialog(AutoUpdater &owner)
         }
     }
 
-    std::cout << '\n';
+    std::cout << std::endl;
     return rsp;
 }
 
@@ -151,19 +151,20 @@ AutoConsoleUI::InstallDialog(AutoUpdater &owner)
         if ('y' == ch || 'Y' == ch) {           // yes
             CConsoleUpdater updater(*this);
 
-            std::cout << "\ninstalling now ...\n\n";
+            std::cout << "\ninstalling now ...\n" << std::endl;
             if (owner.InstallNow(updater, true)) {
                 return 1;
             }
+            return 0;
 
         } else if ('s' == ch || 'S' == ch) {    // skip
             if (is_critical) continue;
-            std::cout << "\nskipping release ...\n\n";
+            std::cout << "\nskipping release ...\n" << std::endl;
             owner.InstallSkip();
             return 0;
 
         } else if ('l' == ch || 'L' == ch) {    // later
-            std::cout << "\nshall prompt again later ...\n\n";
+            std::cout << "\nshall prompt again later ...\n" << std::endl;
             owner.InstallLater();
             return 0;
 
@@ -171,7 +172,7 @@ AutoConsoleUI::InstallDialog(AutoUpdater &owner)
             //  --- show release notes ---
 
         } else if (0x1b == ch) {                // cancel
-            std::cout << '\n';
+            std::cout << std::endl;
             break;
         }
     }
@@ -185,7 +186,7 @@ AutoConsoleUI::UptoDateDialog(AutoUpdater &owner)
     std::cout << owner.AppName();
     std::cout << " is up-to-date, you are running version ";
     std::cout << owner.AppVersion();
-    std::cout << "\n";
+    std::cout << std::endl;
 }
 
 
@@ -212,7 +213,7 @@ AutoConsoleUI::ProgressStart(AutoUpdater &owner, HWND parent, bool indeterminate
         if (TProgressBar *progress = new(std::nothrow) TProgressBar()) {
             progress->SetTextMsg(msg);
             progress->SetCancelMsg("Please wait while the operation completes ...");
-            progress->Start(true, true);
+            progress->Start(false, true);
             progress_ = (void *)progress;
         }
     }

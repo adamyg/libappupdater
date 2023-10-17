@@ -1,12 +1,12 @@
 #ifndef AUTOVERSION_H_INCLUDED
 #define AUTOVERSION_H_INCLUDED
-//  $Id: AutoVersion.h,v 1.10 2022/06/09 08:46:30 cvsuser Exp $
+//  $Id: AutoVersion.h,v 1.11 2023/10/17 12:33:58 cvsuser Exp $
 //
 //  AutoUpdater: Version comparison.
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2022, Adam Young
+//  Copyright (c) 2012 - 2023, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

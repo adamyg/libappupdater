@@ -1,10 +1,10 @@
-//  $Id: CProgressDialog.cpp,v 1.16 2022/06/09 08:46:30 cvsuser Exp $
+//  $Id: CProgressDialog.cpp,v 1.17 2023/10/17 12:33:58 cvsuser Exp $
 //
 //  AutoUpdater: Progress dialog.
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2022, Adam Young
+//  Copyright (c) 2012 - 2023, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -64,7 +64,7 @@ static INT_PTR CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 //
 
 CProgressDialog::CProgressDialog(HINSTANCE hInst)
-    : d_references(1), d_hInst(hInst), d_hWnd(0), d_cancelled(false), d_complete(0), d_total(0)
+    : d_references(1), d_hInst(hInst), d_hWnd(0), d_cancelled(false), d_complete(0), d_total(0), d_speed(100)
 {
 }
 
@@ -91,6 +91,14 @@ CProgressDialog::SetTitle(LPCWSTR text)
             SendMessageW(hWnd, WM_DLG_UPDATE, 0, 0);
         }
     }
+}
+
+
+void
+CProgressDialog::SetAnimationSpeed(DWORD speed)
+{
+    if (0 == speed) speed = 30; // default
+    d_speed = speed;
 }
 
 
@@ -337,12 +345,12 @@ SetMarquee(HWND hWnd, DWORD speed)
 
 
 static void
-EnableWindow(HWND hWnd, DWORD dwFlags)
+EnableWindow(HWND hWnd, DWORD dwFlags, DWORD speed)
 {
     ::SetWindowLong(hWnd, GWL_STYLE, ::GetWindowLong(hWnd, GWL_STYLE) | WS_VISIBLE);
     ::RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE|RDW_ERASE|RDW_FRAME|RDW_INTERNALPAINT);
     if (dwFlags & PROGDLG_MARQUEEPROGRESS) {
-        SetMarquee(hWnd, 200);
+        SetMarquee(hWnd, speed);
     }
     ::SetFocus(hWnd);
 }
@@ -384,7 +392,7 @@ dialog_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_TIMER:
         if (IDT_TIMER1 == wParam) {             // display delay timer.
-            EnableWindow(hWnd, self->Flags());
+            EnableWindow(hWnd, self->Flags(), self->MarqueeAnimationSpeed());
             ::KillTimer(hWnd, IDT_TIMER1);
             return TRUE;
         }
@@ -419,3 +427,5 @@ dialog_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     }
     return FALSE;
 }
+
+//end

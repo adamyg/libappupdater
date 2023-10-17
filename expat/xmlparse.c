@@ -74,6 +74,11 @@
 #include <stdint.h> /* uintptr_t */
 #include <math.h>   /* isnan */
 
+#if defined(_MSC_VER) && (_MSC_VER <= 1600 /*2010*/)
+#include <float.h>
+#define isnan _isnan
+#endif
+
 #ifdef _WIN32
 #  define getpid GetCurrentProcessId
 #else

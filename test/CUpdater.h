@@ -1,8 +1,8 @@
-//  $Id: CUpdater.h,v 1.5 2021/08/14 05:43:49 cvsuser Exp $
+//  $Id: CUpdater.h,v 1.6 2023/10/17 12:33:58 cvsuser Exp $
 //
 //  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2021 Adam Young
+//  Copyright (c) 2012 - 2023 Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

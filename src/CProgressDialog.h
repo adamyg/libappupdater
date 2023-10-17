@@ -1,11 +1,11 @@
 #pragma once
-//  $Id: CProgressDialog.h,v 1.6 2022/06/09 08:46:31 cvsuser Exp $
+//  $Id: CProgressDialog.h,v 1.7 2023/10/17 12:33:58 cvsuser Exp $
 //
 //  AutoUpdater: progress dialog.
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2022, Adam Young
+//  Copyright (c) 2012 - 2023, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -34,11 +34,15 @@
 #include <Windows.h>
 
 class CProgressDialog {
+    CProgressDialog(const CProgressDialog &); // delete
+    CProgressDialog& operator=(const CProgressDialog &); // delete
+
 public:
     CProgressDialog(HINSTANCE hInst = 0);
     ~CProgressDialog();
 
     void                SetTitle(LPCWSTR text);
+    void                SetAnimationSpeed(DWORD speed);
     void                SetLine(DWORD dwLineNum, LPCWSTR text, BOOL compat, void *reserved);
     void                SetCancelMsg(LPCWSTR text, void *reserved);
     void                StartProgressDialog(HWND parent, void *reserved1, DWORD dwFlags, void *reserved2);
@@ -49,13 +53,23 @@ public:
 
     //implementation
     void                Update(DWORD dirty = 0);
-    HWND                Window()                { return d_hWnd; }
-    void                SetWindow(HWND hWnd)    { d_hWnd = hWnd; }
+    HWND                Window()
+        { return d_hWnd; }
 
-    DWORD               Flags()                 { return d_dwFlags; }
-    void                Cancelled()             { d_cancelled = true; }
+    void                SetWindow(HWND hWnd)  
+        { d_hWnd = hWnd; }
 
-    Updater::CriticalSection& Lock()            { return d_lock; }
+    DWORD               Flags()
+        { return d_dwFlags; }
+
+    DWORD               MarqueeAnimationSpeed()
+        { return d_speed; }
+
+    void                Cancelled()
+        { d_cancelled = true; }
+
+    Updater::CriticalSection& Lock()
+        { return d_lock; }
 
 public:
     enum {
@@ -78,6 +92,7 @@ private:
     bool                d_cancelled;
     DWORD               d_complete, d_total;
     DWORD               d_dirty;
+    DWORD               d_speed;
 };
 
 //end

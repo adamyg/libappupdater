@@ -1,10 +1,10 @@
-//  $Id: CUptodateDlg.cpp,v 1.12 2022/06/09 08:46:31 cvsuser Exp $
+//  $Id: CUptodateDlg.cpp,v 1.13 2023/10/17 12:33:58 cvsuser Exp $
 //
 //  AutpUpdater: Up-to-date dialog.
 //
 //  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2022, Adam Young
+//  Copyright (c) 2012 - 2023, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

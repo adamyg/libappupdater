@@ -1,11 +1,11 @@
 #pragma once
-//  $Id: NSFormat.h,v 1.6 2022/06/09 08:46:30 cvsuser Exp $
+//  $Id: NSFormat.h,v 1.8 2023/10/17 12:33:56 cvsuser Exp $
 //
 //  NSLocalization - String
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2022 Adam Young
+//  Copyright (c) 2022 - 2023, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@
 #include <inttypes.h>                           /* intmax_t */
 #endif
 
-#if (defined(_MSC_VER) && (_MSC_VER <= 1500)) || defined(__WATCOMC__)
+#if (defined(_MSC_VER) && (_MSC_VER <= 1600) /*2010*/) || defined(__WATCOMC__)
 typedef long long intmax_t;
 typedef unsigned long long uintmax_t;
 #endif

@@ -1,13 +1,13 @@
 #pragma once
 #ifndef LIBAUTOUPDATER_H_INCLUDED
 #define LIBAUTOUPDATER_H_INCLUDED
-/* $Id: libautoupdater.h,v 1.10 2022/06/06 03:32:27 cvsuser Exp $
+/* $Id: libautoupdater.h,v 1.11 2023/10/15 06:37:59 cvsuser Exp $
  *
  *  libappupdatee public binding
  *
  *  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
  *
- *  Copyright (c) 2012 - 2022 Adam Young
+ *  Copyright (c) 2012 - 2023 Adam Young
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal

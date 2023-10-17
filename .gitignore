@@ -7,6 +7,7 @@ Debug.vs*/
 Release.vs*/
 .vs*/
 *.vcxproj.user
+.#*
 
 # Prerequisites
 *.d

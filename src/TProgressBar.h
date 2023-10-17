@@ -1,11 +1,11 @@
 #pragma once
-//  $Id: TProgressBar.h,v 1.5 2022/06/09 08:46:31 cvsuser Exp $
+//  $Id: TProgressBar.h,v 1.6 2023/10/17 12:33:58 cvsuser Exp $
 //
 //  TProgressBar
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2022, Adam Young
+//  Copyright (c) 2012 - 2023, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,8 @@
 //
 
 #include "AutoThread.h"
+#include "ProgressStyle.h"
+#include "VTSupport.h"
 
 class TProgressBar {
     virtual ~TProgressBar();
@@ -36,6 +38,8 @@ public:
 
     void SetTextMsg(const char *text);
     void SetCancelMsg(const char *text);
+    void SetAnimationSpeed(DWORD speed);
+    void SetStyle(ProgressStyle style);
 
     bool Start(bool marquee = true, bool cancelable = true);
     void SetProgress(unsigned complete, unsigned total);
@@ -44,10 +48,15 @@ public:
 
 public:
     static int ConsoleWidth();
+    static int Progress(char *buffer, int buflen, unsigned complete, unsigned total);
 
 public:
     void Release();
     void Update();
+
+private:
+    void UpdateDefault();
+    void UpdateVT();
 
 private:
     Updater::CriticalSection lock_;
@@ -55,11 +64,16 @@ private:
     std::string text_msg_;
     std::string cancel_msg_;
     HANDLE thread_;
+    VTSupport vt_;
+    ProgressStyle style_;
     unsigned references_;
     unsigned complete_;
     unsigned total_;
+    unsigned speed_;
     bool marquee_;
     bool cancelable_;
     bool user_cancelled_;
     bool running_;
 };
+
+//end

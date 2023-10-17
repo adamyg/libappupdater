@@ -1,10 +1,10 @@
-//  $Id: common.h,v 1.12 2022/06/09 08:46:31 cvsuser Exp $
+//  $Id: common.h,v 1.14 2023/10/17 12:47:53 cvsuser Exp $
 //
 //  AutoUpdater: Common definitions.
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2022, Adam Young
+//  Copyright (c) 2012 - 2023, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -46,6 +46,7 @@
 #endif
 #include <Windows.h>
 
+#include <stdint.h>
 #include <cstdio>
 #include <cstdlib>
 #include <climits>

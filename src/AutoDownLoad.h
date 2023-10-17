@@ -1,12 +1,12 @@
 #ifndef AUTODOWNLOAD_H_INCLUDED
 #define AUTODOWNLOAD_H_INCLUDED
-//  $Id: AutoDownLoad.h,v 1.13 2022/06/09 08:46:30 cvsuser Exp $
+//  $Id: AutoDownLoad.h,v 1.14 2023/10/17 12:33:57 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2022, Adam Young
+//  Copyright (c) 2012 - 2023, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,7 @@ struct IDownloadSink {
     virtual void set_size(size_t size) = 0;
     virtual bool open() = 0;
     virtual void append(const void *data, size_t len) = 0;
+    virtual bool cancelled() = 0;
     virtual void close() = 0;
 };
 
@@ -70,6 +71,10 @@ public:
     virtual void close() {
     }
 
+    virtual bool cancelled() {
+        return false;
+    }
+
     const std::string &data() {
         return *data_;
     }
@@ -91,8 +96,12 @@ public:
     virtual bool open();
     virtual void set_size(size_t size);
     virtual void append(const void *data, size_t len);
+    virtual bool cancelled() {
+        return false;
+    }
     virtual void close();
 
+private:
     std::string filename_;
     size_t filesize_;
     HANDLE handle_;

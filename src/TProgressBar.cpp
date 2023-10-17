@@ -1,10 +1,10 @@
-//  $Id: TProgressBar.cpp,v 1.9 2022/06/09 08:46:31 cvsuser Exp $
+//  $Id: TProgressBar.cpp,v 1.12 2023/10/17 14:09:07 cvsuser Exp $
 //
 //  AutoUpdater: TProgressDialog.
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2022, Adam Young
+//  Copyright (c) 2012 - 2023, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -29,11 +29,17 @@
 
 #include <string>
 #include <cassert>
+#include <vector>
 #include <iostream>
 #include <limits>
+#include <algorithm>
+#include <cmath>
 
 #include "TProgressBar.h"
+#include "VTSupport.h"
 
+#undef min
+#undef max
 
 ///////////////////////////////////////////////////////////////////////////////
 //  Support functions.
@@ -58,12 +64,79 @@ TProgressBar::ConsoleWidth()
 }
 
 
+//static
+int
+TProgressBar::Progress(char *buffer, int buflen, unsigned complete, unsigned total) 
+{
+    const char *suffix[] = {"B", "KB", "MB", "GB", "TB"};
+
+    if (total) {
+        const unsigned percentage = (unsigned)(((double)complete / total) * 100.0);
+        double unit = (double)(total);
+        int s = 0;
+
+        if (total > 1024) {
+            while ((total / 1024) > 0 && s < (_countof(suffix) - 1)) {
+                unit = total / 1024.0;
+                total /= 1024;
+                ++s;
+            }
+        }
+        return sprintf_s(buffer, buflen, " %2d%% / %.02lf%s ", percentage, unit, suffix[s]);
+    }
+    buffer[0] = 0;
+    return 0;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 
+
+namespace {
+    struct Coloriser {
+        Coloriser(VTSupport &vt, ProgressStyle style, size_t width) :
+            style_(style), vt_(vt)
+        {
+            if (ProgressStyleRainbow == style_) {
+                colors_.reserve(width);
+                for (size_t blk = 0; blk < width; ++blk) {
+                    colors_.push_back(VTSupport::rainbox_color(width, blk));
+                }
+            }
+        }
+
+        template <typename Stream>
+        void set(Stream &out, size_t idx)
+        {
+            switch (style_) {
+            case ProgressStyleNative:
+                break;
+            case ProgressStyleAccent:
+                if (0 == idx) {
+                    vt_.foreground(std::cout, vt_.hilite());
+                    vt_.background_scaled(std::cout, vt_.hilite());
+                }
+                break;
+            case ProgressStyleRainbow:
+                idx = std::min(idx, colors_.size() - 1);
+                vt_.foreground(std::cout, colors_[idx]);
+                break;
+            }
+        }
+
+        const ProgressStyle style_;
+        std::vector<VTSupport::VTColor> colors_;
+        VTSupport &vt_;
+    };
+};
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //  TProgressBar
 
 TProgressBar::TProgressBar()
-    : references_(1), thread_(0), complete_(0), total_(0),
+    : thread_(0), style_(ProgressStyleAccent), references_(1),
+        complete_(0), total_(0), speed_(150),
         marquee_(false), cancelable_(false),
         user_cancelled_(false), running_(false)
 {
@@ -107,6 +180,21 @@ TProgressBar::SetCancelMsg(const char *text)
 }
 
 
+void
+TProgressBar::SetAnimationSpeed(DWORD speed)
+{
+    if (0 == speed) speed = 100; // default
+    speed_ = speed;
+}
+
+
+void
+TProgressBar::SetStyle(ProgressStyle style)
+{
+    style_ = style;
+}
+
+
 bool
 TProgressBar::Start(bool marquee, bool cancelable)
 {
@@ -134,6 +222,7 @@ bool
 TProgressBar::HasUserCancelled()
 {
     assert(references_);
+    if (false == user_cancelled_) user_cancelled_ = VTSupport::ESCPressed();
     return user_cancelled_;
 }
 
@@ -142,7 +231,6 @@ void
 TProgressBar::SetProgress(unsigned complete, unsigned total)
 {
     assert(references_);
-
     Updater::CriticalSection::Guard guard(lock_);
     if ((complete_ = complete) > total) {
         complete_ = total;
@@ -171,92 +259,95 @@ TProgressBar::Stop()
 }
 
 
-static int
-progress(char *buffer, int buflen, int complete, int total) 
+void
+TProgressBar::Update()
 {
-    const char *suffix[] = {"B", "KB", "MB", "GB", "TB"};
+    if (vt_.isvt()) {
+        TProgressBar::UpdateVT();
+        vt_.restore();
 
-    if (total > 0 && complete >= 0) {
-        const int percentage = 
-                (int)(((double)complete / total) * 100.0);
-        double unit = (double)(total);
-        int s = 0;
-
-        if (total > 1024) {
-            while ((total / 1024) > 0 && s < (_countof(suffix) - 1)) {
-                unit = total / 1024.0;
-                total /= 1024;
-                ++s;
-            }
-        }
-        return sprintf_s(buffer, buflen, " %d%% / %.02lf%s ", percentage, unit, suffix[s]);
+    } else {
+        TProgressBar::UpdateDefault();
     }
-
-    buffer[0] = 0;
-    return 0;
 }
 
 
 void
-TProgressBar::Update()
+TProgressBar::UpdateDefault()
 {
     static const char animation[] = "|/-\\";
+
+    std::ostream &out = std::cout;
     int console_width = ConsoleWidth();
     char progress_buffer[32];
     unsigned index = 0;
-    unsigned pos = 0;
 
     for (;;) {
-        stop_.Wait(125);
+        stop_.Wait(speed_);
 
-        // termination?
+        // termination
         Updater::CriticalSection::Guard guard(lock_);
         if (! running_) {
-            for (int i = 0; i < console_width; ++i) {
-                std::cout << " ";
+            if (index) {
+                for (int i = 0; i < console_width; ++i) {
+                    out << ' ';
+                }
+                out << '\r';
+                out.flush();
+                std::fflush(stdout);
             }
-            std::cout << "\r";
-            std::cout.flush();
             break;
         }
 
-        // optional status text
-        int length = (cancelable_ ? 5 : 0);
-        if (user_cancelled_) {
+        // cancel message
+        if (cancelable_ && HasUserCancelled()) {
+            if (index != -1) {
+                for (int i = 0; i < console_width; ++i) {
+                    out << ' ';
+                }
+                out << '\r';
+                index = -1;
+            }
+
+            if (! text_msg_.empty())
+                out << text_msg_ << " .. ";
             if (cancel_msg_.empty()) {
-                std::cout << cancel_msg_ << " ";
-                length += (int)(cancel_msg_.length() + 1);
+                out << "cancelling";
+            } else {
+                out << cancel_msg_;
             }
-        } else {
-            if (text_msg_.empty()) {
-                std::cout << text_msg_ << " ";
-                length += (int)(text_msg_.length() + 1);
-            }
+
+            out << ' '<< animation[ index % (_countof(animation)-1) ];
+            out << '\r';
+            out.flush();
+            continue;
         }
 
         // bar
         console_width = ConsoleWidth();
 
         const int progress_len =
-                progress(progress_buffer, sizeof(progress_buffer), complete_, total_);
+                Progress(progress_buffer, sizeof(progress_buffer), complete_, total_);
         int display_width = console_width - (cancelable_ ? 10 : 4);
+        int length = (cancelable_ ? 5 : 0);
 
-        if (! text_msg_.empty()) { //XXX
+        if (! text_msg_.empty()) {
             int text_width = (int)(text_msg_.length() + 1);
 
+            length += text_width;
             if (text_width > (display_width - 10)) {
                 text_width = display_width - 10;
                 if (text_width > 10) {
                     const char *cursor = text_msg_.c_str();
                     for (int i = 2; i < text_width; ++i) {
-                        std::cout << *cursor++;
+                        out << *cursor++;
                     }
-                    std::cout << "..";
+                    out << "..";
                 } else {
                     text_width = 0;
                 }
             } else {
-                std::cout << text_msg_ << ' ';
+                out << text_msg_ << ' ';
             }
             display_width -= text_width;
         }
@@ -269,45 +360,184 @@ TProgressBar::Update()
 
         if (marquee_ || 0 == total_) {
             if ((length + 10) < display_width) {
-                const int start = (int)(pos % display_width),
-                    end = (int)((start + (display_width / 3)) % display_width);
+                const int start = (int)(index % display_width),
+                    end = (int)((start + (display_width / 2)) % display_width);
 
-                std::cout << "[";
+                out << '[';
                 if (end > start) {
                     for (int i = length; i < display_width; ++i) {
-                        std::cout << (i >= start && i <= end ? "#" : "-");
+                        out << (i >= start && i <= end ? "#" : "-");
                     }
                 } else {
                     for (int i = length; i < display_width; ++i) {
-                        std::cout << (i >= start || i <= end ? "#" : "-");
+                        out << (i >= start || i <= end ? "#" : "-");
                     }
                 }
-                std::cout << "] ";
+                out << "] ";
             }
-            ++pos;
 
         } else {
-            const float progress = (float)complete_ / total_;
-            int bar_progress = (int)(progress * display_width);
+            const double progress = static_cast<double>(complete_) / total_;
+            const size_t block = static_cast<size_t>(std::floor(progress * display_width));
 
             if ((length + 10) < display_width) {
-                std::cout << "[";
+                out << '[';
                 for (int i = length; i < display_width; ++i) {
-                    std::cout << (i <= bar_progress ? "#" : "-");
+                    out << (i <= block ? "#" : "-");
                 }
-                std::cout << "] ";
+                out << "] ";
             }
         }
 
-        std::cout << progress_buffer;
-
-        std::cout << animation[ ++index % (sizeof(animation)-1) ];
-
+        // trailing details
+        out << animation[ index % (_countof(animation)-1) ];
+        out << progress_buffer;
         if (cancelable_) {
-            std::cout << " - ESC";
+            out << " - ESC";
         }
-
-        std::cout << "\r";
-        std::cout.flush();
+        out << '\r';
+        out.flush();
+        ++index;
     }
 }
+
+
+void
+TProgressBar::UpdateVT()
+{
+    static const char* const fills[] = {
+        "\xe2\x96\x91", // U+2591, Light Shade
+        "\xe2\x96\x92", // U+2592, Medium Shade
+        "\xe2\x96\x93", // U+2593, Dark Shade
+        "\xe2\x96\x88", // U+2588, Full Block
+        "\xe2\x96\x93", // U+2593, Dark Shade
+        "\xe2\x96\x92", // U+2592, Medium Shade
+        };
+
+    static const char* const blocks[] = {
+#define BLOCK_OFF   0
+        " ",            // Blank
+        "\xe2\x96\x8f", // U+258E, Left One Eighth Block
+        "\xe2\x96\x8e", // U+258E, Left One Quarter Block
+        "\xe2\x96\x8d", // U+258D, Left Three Eighths Block
+        "\xe2\x96\x8c", // U+258C, Left Half Block
+        "\xe2\x96\x8B", // U+258B, Left Five Eighths Block
+        "\xe2\x96\x8a", // U+258A. Left Three Quarters Block
+        "\xe2\x96\x89", // U+2589, Left Seven Eighths Block
+        "\xe2\x96\x88"  // U+2588, Full Block
+#define BLOCK_ON    8
+        };
+
+    static const char *animation[] = {
+        "\xe2\x96\x81", // ▁
+        "\xe2\x96\x82", // ▂
+        "\xe2\x96\x83", // ▃
+        "\xe2\x96\x84", // ▄
+        "\xe2\x96\x85", // ▅
+        "\xe2\x96\x86", // ▆
+        "\xe2\x96\x87", // ▇
+        "\xe2\x96\x88", // █
+        "\xe2\x96\x87", // ▇
+        "\xe2\x96\x86", // ▆
+        "\xe2\x96\x85", // ▅
+        "\xe2\x96\x84", // ▄
+        "\xe2\x96\x83", // ▃
+        "\xe2\x96\x81"  // ▁
+        };
+
+    std::ostream &out = std::cout;
+    const int console_width = ConsoleWidth();
+    const size_t width = std::max(console_width / 2, 40);
+    Coloriser coloriser(vt_, style_, width);
+    size_t index = 0;
+
+    vt_.reset(out);
+    if (! text_msg_.empty()) {
+        out << text_msg_ << "\r\n";
+    }
+
+    for (;;) {
+        stop_.Wait(speed_);
+
+        // termination
+        Updater::CriticalSection::Guard guard(lock_);
+        if (! running_) {
+            if (index) {
+                vt_.reset(out);
+                vt_.erase_eol(out);
+                if (! text_msg_.empty()) {
+                    vt_.cursor_prev(out);
+                    vt_.erase_eol(out);
+                }
+                out.flush();
+                std::fflush(stdout);
+            }
+            break;
+        }
+
+        // progress bar
+        char progress_buffer[32];
+        const int progress_len =
+            Progress(progress_buffer, sizeof(progress_buffer), complete_, total_);
+
+        if (marquee_ || 0 == total_) {
+             const size_t block = (total_ ? 
+                static_cast<size_t>(std::floor(((double)complete_ / total_) * width)) : (index / _countof(fills)));
+               
+            for (size_t blk = 0; blk < width; ++blk) {
+                coloriser.set(out, blk);
+                if (blk == block-2) {
+                    out << fills[1];
+                } else if (blk == block-1) {
+                    out << fills[2];
+                } else if (blk == block) {
+                    out << fills[3];
+                } else  if (blk == block+1) {
+                    out << fills[4];
+                } else  if (blk == block+2) {
+                    out << fills[5];
+                } else {
+                    out << fills[0];
+                }
+            }
+
+        } else {
+            const double progress = static_cast<double>(complete_) / total_;
+            const size_t block = static_cast<size_t>(std::floor(progress * width));
+            const size_t part = static_cast<size_t>((progress * width - block) * 8);
+
+            for (size_t blk = 0; blk < width; ++blk) {
+                size_t state = BLOCK_OFF;
+                if (blk < block) {
+                    state = BLOCK_ON;
+                } else if (blk == block) {
+                    state = part;
+                }
+                coloriser.set(out, blk);
+                out << blocks[state];
+            }
+        }
+
+        // trailing details
+        vt_.reset(out);
+        if (cancelable_ && HasUserCancelled()) {
+            if (cancel_msg_.empty()) {
+                out << " Cancelling";
+            } else {
+                out << ' ' << cancel_msg_;
+            }
+            vt_.erase_eol(out);
+        } else {
+            out << animation[ index % _countof(animation) ];
+            out << progress_buffer;
+            if (cancelable_) {
+                out << " - ESC";
+            }
+        }
+        out << '\r';
+        out.flush();
+        ++index;
+    }
+}
+
+//end
