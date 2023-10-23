@@ -19,6 +19,7 @@ Release.vs*/
 *.lo
 *.o
 *.obj
+*.aps
 
 # Precompiled Headers
 *.gch
@@ -42,4 +43,5 @@ Release.vs*/
 # Executables
 *.exe
 *.out
+*.log
 *.app

@@ -1,4 +1,4 @@
-//  $Id: common.h,v 1.14 2023/10/17 12:47:53 cvsuser Exp $
+//  $Id: common.h,v 1.15 2023/10/23 09:58:34 cvsuser Exp $
 //
 //  AutoUpdater: Common definitions.
 //
@@ -87,7 +87,7 @@
     static inline void* operator new [] (size_t _Size, std::nothrow_t const&) {
         return malloc(_Size);
     }
-    
+
 /*missing string operators*/
 std::ostream& operator<<(std::ostream &stream, const std::string &s);
 inline std::ostream& operator<<(std::ostream &stream, const std::string &s) {
@@ -95,9 +95,36 @@ inline std::ostream& operator<<(std::ostream &stream, const std::string &s) {
 }
 
 /*missing*/
-extern int autosprintf_s( char * s, size_t n, const char * __format, ... );
-extern int autovsprintf_s( char * s, size_t n, const char * __format, va_list ap );
-extern int autosnprintf_s( char * s, size_t n, const char * __format, ... );
+inline int
+autosprintf_s( char * s, size_t n, const char * format, ... )
+{
+    va_list ap;
+    va_start(ap, format);
+    int ret = std::vsnprintf(s, n, format, ap);
+    if (ret < 0 || ret >= n) s[n-1] = 0;
+    va_end(ap);
+    return ret;
+}
+
+inline int
+autovsprintf_s( char * s, size_t n, const char * format, va_list ap )
+{
+    int ret = std::vsnprintf(s, n, format, ap);
+    if (ret < 0 || ret >= n) s[n-1] = 0;
+    return ret;
+}
+
+inline int
+autosnprintf_s( char * s, size_t n, const char * format, ... )
+{
+    va_list ap;
+    va_start(ap, format);
+    int ret = std::vsnprintf(s, n, format, ap);
+    if (ret < 0 || ret >= n) s[n-1] = 0;
+    va_end(ap);
+    return ret;
+}
+
 #define sprintf_s autosprintf_s
 #define vsprintf_s autovsprintf_s
 #define _snprintf_s autosnprintf_s
@@ -109,3 +136,4 @@ extern int autosnprintf_s( char * s, size_t n, const char * __format, ... );
 #if defined(__WATCOMC__) && !defined(_countof)
 #define _countof(array) (sizeof(array) / sizeof(array[0]))
 #endif
+

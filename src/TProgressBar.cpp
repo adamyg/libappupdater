@@ -1,4 +1,4 @@
-//  $Id: TProgressBar.cpp,v 1.12 2023/10/17 14:09:07 cvsuser Exp $
+//  $Id: TProgressBar.cpp,v 1.14 2023/10/22 17:51:43 cvsuser Exp $
 //
 //  AutoUpdater: TProgressDialog.
 //
@@ -125,7 +125,7 @@ namespace {
         }
 
         const ProgressStyle style_;
-        std::vector<VTSupport::VTColor> colors_;
+        std::vector<VTColor> colors_;
         VTSupport &vt_;
     };
 };
@@ -294,7 +294,6 @@ TProgressBar::UpdateDefault()
                 }
                 out << '\r';
                 out.flush();
-                std::fflush(stdout);
             }
             break;
         }
@@ -451,7 +450,7 @@ TProgressBar::UpdateVT()
     Coloriser coloriser(vt_, style_, width);
     size_t index = 0;
 
-    vt_.reset(out);
+    vt_.normal(out);
     if (! text_msg_.empty()) {
         out << text_msg_ << "\r\n";
     }
@@ -463,14 +462,13 @@ TProgressBar::UpdateVT()
         Updater::CriticalSection::Guard guard(lock_);
         if (! running_) {
             if (index) {
-                vt_.reset(out);
+                vt_.normal(out);
                 vt_.erase_eol(out);
                 if (! text_msg_.empty()) {
                     vt_.cursor_prev(out);
                     vt_.erase_eol(out);
                 }
-                out.flush();
-                std::fflush(stdout);
+                vt_.flush(out);
             }
             break;
         }
@@ -519,7 +517,7 @@ TProgressBar::UpdateVT()
         }
 
         // trailing details
-        vt_.reset(out);
+        vt_.normal(out);
         if (cancelable_ && HasUserCancelled()) {
             if (cancel_msg_.empty()) {
                 out << " Cancelling";
@@ -535,7 +533,7 @@ TProgressBar::UpdateVT()
             }
         }
         out << '\r';
-        out.flush();
+        vt_.flush(out);
         ++index;
     }
 }

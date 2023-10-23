@@ -101,6 +101,8 @@
     <ClInclude Include="..\src\ProgressStyle.h" />
     <ClInclude Include="..\src\Resource.h" />
     <ClInclude Include="..\src\TProgressBar.h" />
+    <ClInclude Include="..\src\VTColors.h" />
+    <ClInclude Include="..\src\VTStream.h" />
     <ClInclude Include="..\src\VTSupport.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
 /* -*- mode: c; indent-width: 4; -*- */
-/* $Id: libautoupdater.cpp,v 1.22 2023/10/15 06:37:59 cvsuser Exp $
+/* $Id: libautoupdater.cpp,v 1.23 2023/10/23 09:58:33 cvsuser Exp $
  *
  *  libautoupdater cdecl interface.
  *
@@ -454,33 +454,5 @@ autoupdate_execute(int mode, int interactive)
 }
 
 }   // extern "C"
-
-
-#if defined(__WATCOMC__)
-int autosprintf_s( char * s, size_t n, const char * format, ... ) {
-    va_list ap;
-    va_start(ap, format);
-    int ret = std::vsnprintf(s, n, format, ap);
-    if (ret < 0 || ret >= n) s[n-1] = 0;
-    va_end(ap);
-    return ret;
-}
-
-int autosnprintf_s( char * s, size_t n, const char * format, ... ) {
-    va_list ap;
-    va_start(ap, format);
-    int ret = std::vsnprintf(s, n, format, ap);
-    if (ret < 0 || ret >= n) s[n-1] = 0;
-    va_end(ap);
-    return ret;
-}
-
-int autovsprintf_s( char * s, size_t n, const char * format, va_list ap ) {
-    int ret = std::vsnprintf(s, n, format, ap);
-    if (ret < 0 || ret >= n) s[n-1] = 0;
-    return ret;
-}
-
-#endif  //__WATCOMC__
 
 /*end*/

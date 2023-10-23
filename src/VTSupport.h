@@ -1,11 +1,9 @@
 #pragma once
-//  $Id: VTSupport.h,v 1.2 2023/10/17 12:47:53 cvsuser Exp $
-//
-//  AutoUpdater: TProgressDialog.
+//  $Id: VTSupport.h,v 1.7 2023/10/23 12:45:14 cvsuser Exp $
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2023, Adam Young
+//  Copyright (c) 2022 - 2023, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,18 +25,87 @@
 //
 
 #include <shlwapi.h>
+#if defined(__WATCOMC__)
+#if (_WIN32_IE < 0x0500)
+LWSTDAPI_(COLORREF)     ColorHLSToRGB( WORD, WORD, WORD );
+#endif
+#endif
 #pragma comment( lib, "shlwapi.lib" )
 
 #include "common.h"
 
+
 ///////////////////////////////////////////////////////////////////////////////
-//  VT support
+//  VTSupport
+
+struct VTColor {
+    VTColor() : r(0), g(0), b(0) {}
+    VTColor(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) {}
+    VTColor(DWORD color) {
+        r = GetRValue(color), g = GetGValue(color), b = GetBValue(color);
+    }
+    VTColor& operator=(const DWORD color) {
+        r = GetRValue(color), g = GetGValue(color), b = GetBValue(color);
+        return *this;
+    }
+    VTColor scale(unsigned value = 3) const {
+        return VTColor(r / value, g / value, b / value);
+    }
+    uint8_t r, g, b;
+};
 
 class VTSupport {
     VTSupport(const VTSupport &); // delete
     VTSupport& operator=(const VTSupport &); // delete
 
 public:
+    enum Color {
+        Black,
+        Red,
+        Green,
+        Yellow,
+        Blue,
+        Magenta,
+        Cyan,
+        White,
+        BrightBlack,
+        BrightRed,
+        BrightGreen,
+        BrightYellow,
+        BrightBlue,
+        BrightMagenta,
+        BrightCyan,
+        BrightWhite
+    };
+
+    static const char *to_ascii(Color color) {
+        const char *desc = "Unknown";
+        switch (color) {
+        case VTSupport::Black: desc = "Black"; break;
+        case VTSupport::Red: desc = "Red"; break;
+        case VTSupport::Green: desc = "Green"; break;
+        case VTSupport::Yellow: desc = "Yellow"; break;
+        case VTSupport::Blue: desc = "Blue"; break;
+        case VTSupport::Magenta: desc = "Magenta"; break;
+        case VTSupport::Cyan: desc = "Cyan"; break;
+        case VTSupport::White: desc = "White"; break;
+        case VTSupport::BrightBlack: desc = "BrightBlack"; break;
+        case VTSupport::BrightRed: desc = "BrightRed"; break;
+        case VTSupport::BrightGreen: desc = "BrightGreen"; break;
+        case VTSupport::BrightYellow: desc = "BrightYellow"; break;
+        case VTSupport::BrightBlue: desc = "BrightBlue"; break;
+        case VTSupport::BrightMagenta: desc = "BrightMagenta"; break;
+        case VTSupport::BrightCyan: desc = "BrightCyan"; break;
+        case VTSupport::BrightWhite: desc = "BrightWhite"; break;
+        default: break;
+        }
+        return desc;
+    }
+
+    friend std::ostream& operator<<(std::ostream &out, Color color) {
+        return out << VTSupport::to_ascii(color);
+    }
+
     struct ConsoleState {
         bool vt;
         DWORD mode;
@@ -48,7 +115,7 @@ public:
 
 #define VT100_ESCAPE            "\x1b"
 #define VT100_CSI               VT100_ESCAPE "["
-#define VT100_TEXTFORMAT(_id_)  VT100_CSI #_id_ "m"
+#define VT100_SGR(id___)        VT100_CSI #id___ "m"
 
     enum VTMode {
         VTMODE_UNINIT = -1,
@@ -57,17 +124,14 @@ public:
         VTMODE_ACTIVE
     };
 
-    struct VTColor {
-        VTColor() : r(0), g(0), b(0) {}
-        VTColor(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) {}
-        VTColor(DWORD color) {
-            r = GetRValue(color), g = GetGValue(color), b = GetBValue(color);
-        }
-        VTColor& operator=(const DWORD color) {
-            r = GetRValue(color), g = GetGValue(color), b = GetBValue(color);
-            return *this;
-        }
-        uint8_t r, g, b;
+    enum CursorShape {
+        UserShape,              // Default cursor shape configured by the user
+        BlinkingBlock,          // Blinking block cursor shape
+        SteadyBlock,            // Steady block cursor shape
+        BlinkingUnderline,      // Blinking underline cursor shape
+        SteadyUnderline,        // Steady underline cursor shape
+        Blinking,               // Blinking bar cursor shape
+        SteadyBar               // Steady bar cursor shape
     };
 
 public:
@@ -111,13 +175,67 @@ public:
     {
         const double percentage = static_cast<double>(idx) / max;
         WORD hue = static_cast<WORD>(240.0 * percentage);
-        return VTColor(::ColorHLSToRGB(hue, 120, 240));
+        return VTColor(ColorHLSToRGB(hue, 120, 240));
     }
 
     template <typename Stream>
-    Stream& reset(Stream &out)
+    static Stream& normal(Stream &out)
     {
-        return out << VT100_TEXTFORMAT(0);
+        return out << VT100_SGR(0);
+    }
+
+    template <typename Stream>
+    static Stream& bold(Stream &out, bool on = true)
+    {
+        return out << VT100_SGR(on ? 1 : 22);
+    }
+
+    template <typename Stream>
+    static Stream& underline(Stream &out, bool on = true)
+    {
+        return out << VT100_SGR(on ? 4 : 24);
+    }
+
+    template <typename Stream>
+    static Stream& inverse(Stream &out, bool on = true)
+    {
+        return out << VT100_SGR(on ? 7: 27);
+    }
+
+    template <typename Stream>
+    static Stream& flush(Stream &out)
+    {
+        out.flush();
+#if defined(__WATCOMC__)
+        if (&out == &std::cout)
+            std::fflush(stdout);
+        else if (&out == &std::cerr)
+            std::fflush(stderr);
+#endif
+        return out;
+    }
+
+    /// Screen selection (main otherwise alternative)
+    template <typename Stream>
+    static Stream& screen_buffer(Stream &out, bool alt = false)
+    {
+        if (alt)
+            return out << VT100_CSI << "?1049h";    // Alternate Screen Buffer.
+        return out << VT100_CSI << "?1049l";        // Main Screen Buffer.
+    }
+
+    /// Cursor moves to <x>; <y> coordinate within the viewport,
+    template <typename Stream>
+    static Stream& cursor_pos(Stream &out, unsigned y, unsigned x)
+    {
+        return out << VT100_CSI << y << ';' << x << 'H';
+    }
+
+    /// Customization of the cursor shape.
+    template <typename Stream>
+    static Stream& cursor_shape(Stream &out, CursorShape shape)
+    {
+        return out << VT100_CSI << reinterrupt_cast<unsigned>(shape) << 'q';
     }
 
     /// Moves the cursor up n (default 1)
@@ -162,31 +280,121 @@ public:
         return out << VT100_CSI << n << 'F';
     }
 
-    /// Clear until the end-of-line.
+    /// Saves the cursor position/state in SCO console mode.
+    template <typename Stream>
+    static Stream& cursor_save()
+    {
+        return out << VT100_CSI << n << 's';
+    }
+
+    /// Restores the cursor position/state in SCO console mode.
+    template <typename Stream>
+    static Stream& cursor_restore()
+    {
+        return out << VT100_CSI << n << 'u';
+    }
+
+    /// Erases from the current cursor position (inclusive) to the end of the line
     template <typename Stream>
     static Stream& erase_eol(Stream &out)
     {
-        return out << VT100_CSI "K";
+        return out << VT100_CSI "0K";
     }
 
-    /// Clear to the start-of-line.
+    /// Erases from the beginning of the line up to and including the current cursor position.
     template <typename Stream>
     static Stream& erase_sol(Stream &out)
     {
         return out << VT100_CSI "1K";
     }
 
+    /// Erases the entire line.
+    template <typename Stream>
+    static Stream& erase(Stream &out)
+    {
+        return out << VT100_CSI "2K";
+    }
+
+    /// Erases from the current cursor position (inclusive) to the end of the display
+    template <typename Stream>
+    static Stream& erase_down(Stream &out)
+    {
+        return out << VT100_CSI "0J";
+    }
+
+    /// Erases from the beginning of the display up to and including the current cursor position.
+    template <typename Stream>
+    static Stream& erase_up(Stream &out)
+    {
+        return out << VT100_CSI "1J";
+    }
+
+    /// Erases the entire display.
+    template <typename Stream>
+    static Stream& clear(Stream &out)
+    {
+        return out << VT100_CSI "2J";
+    }
+
+    /// Set foreground color)
+    template <typename Stream>
+    static Stream& foreground(Stream &out, Color color)
+    {
+        if (color >= Black && color <= White) // 30 .. 37
+            return out << VT100_CSI << ((30 - Black) + color) << 'm';
+
+        else if (color >= BrightBlack && color <= BrightWhite) // 90 .. 97
+            return out << VT100_CSI << ((90 - BrightBlack) + color) << 'm';
+
+        return out;
+    }
+
+    /// Set foreground color to index (0..255)
+    template <typename Stream>
+    static Stream& foreground(Stream &out, unsigned idx)
+    {
+        char buffer[32];
+        return out << VTForeground(idx, buffer, sizeof(buffer));
+    }
+
     /// Set foreground color RGB
     template <typename Stream>
-    Stream& foreground(Stream &out, const VTColor &color)
+    static Stream& foreground(Stream &out, const VTColor color)
     {
         char buffer[32];
         return out << VTForeground(color, buffer, sizeof(buffer));
     }
 
+    template <typename Stream>
+    static Stream& foreground_scaled(Stream &out, const VTColor color, unsigned value = 3)
+    {
+        if (value) n out << foreground(out,  color.scale(value));
+    }
+
+    /// Set foreground color)
+    template <typename Stream>
+    static Stream& background(Stream &out, Color color)
+    {
+        if (color >= Black && color <= White) // 40 .. 47
+            return out << VT100_CSI << ((40 - Black) + color) << 'm';
+
+        else if (color >= BrightBlack && color <= BrightWhite) // 100 .. 107
+            return out << VT100_CSI << ((100 - BrightBlack) + color) << 'm';
+
+        return out;
+    }
+
+    /// Set background color to index (0..255)
+    template <typename Stream>
+    static Stream& background(Stream &out, unsigned idx)
+    {
+        char buffer[32];
+        return out << VTBackground(idx, buffer, sizeof(buffer));
+    }
+
     /// Set background color RGB
     template <typename Stream>
-    Stream& background(Stream &out, const VTColor &color)
+    static Stream& background(Stream &out, const VTColor color)
     {
         char buffer[32];
         return out << VTBackground(color, buffer, sizeof(buffer));
@@ -194,33 +402,42 @@ public:
 
     /// Set background color to the scaled RGB (default %33)
     template <typename Stream>
-    Stream& background_scaled(Stream &out, const VTColor &color, unsigned scale = 3)
+    static Stream& background_scaled(Stream &out, const VTColor color, unsigned value = 3)
     {
-        if (0 == scale) return out;
-
-        VTColor scaled = color;
-        scaled.r /= scale;
-        scaled.g /= scale;
-        scaled.b /= scale;
-
-        char buffer[32];
-        return out << VTBackground(scaled, buffer, sizeof(buffer));
+        if (value) background(out, color.scale(value));
+        return out;
     }
 
 public:
-    const char *
+    static const char *
     VTForeground(const VTColor color, char *buffer, size_t buflen)
     {
-        // CSI 38 ; 2 ; <r> ; <g> ; <b> -- RGB foreground color
+        // CSI 38 ; 2 ; <r> ; <g> ; <b> m -- RGB foreground color
         sprintf_s(buffer, buflen, VT100_CSI "38;2;%u;%u;%um", color.r, color.g, color.b);
         return buffer;
     }
 
-    const char *
+    static const char *
+    VTForeground(unsigned idx, char *buffer, size_t buflen)
+    {
+        // CSI 38 ; 5 ; <idx> m -- Foreground color
+        sprintf_s(buffer, buflen, VT100_CSI "38;5;%um", idx);
+        return buffer;
+    }
+
+    static const char *
     VTBackground(const VTColor color, char *buffer, size_t buflen)
     {
         // CSI 48 ; 2 ; <r> ; <g> ; <b> m -- RGB background color
         sprintf_s(buffer, buflen, VT100_CSI "48;2;%u;%u;%um", color.r, color.g, color.b);
+        return buffer;
+    }
+
+    static const char *
+    VTBackground(unsigned idx, char *buffer, size_t buflen)
+    {
+        // CSI 48 ; 5 ; <idx> m -- Background color
+        sprintf_s(buffer, buflen, VT100_CSI "48;5;%um", idx);
         return buffer;
     }
 

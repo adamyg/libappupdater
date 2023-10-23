@@ -28,7 +28,9 @@
 #define AUTORELEASE_FILEVERSION     "1.0.0.1"
 
 #if defined(_MSC_VER)
-#if   (_MSC_VER >= 1920)                        /* (Visual Studio 2019 / MSVC++ 16.x) */
+#if   (_MSC_VER >= 1930)                        /* (Visual Studio 2022 / MSVC++ 17.x) */
+#define AUTORELEASE_FILENAME        "libappupdater.vs170.dll"
+#elif (_MSC_VER >= 1920)                        /* (Visual Studio 2019 / MSVC++ 16.x) */
 #define AUTORELEASE_FILENAME        "libappupdater.vs160.dll"
 #elif (_MSC_VER >= 1910)                        /* (Visual Studio 2017 / MSVC++ 15.x) */
 #define AUTORELEASE_FILENAME        "libappupdater.vs150.dll"

@@ -262,6 +262,12 @@
     <ClInclude Include="..\src\ProgressStyle.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\VTColors.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\VTStream.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\AutoUpdater.rc">
