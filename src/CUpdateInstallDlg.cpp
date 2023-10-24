@@ -1,4 +1,4 @@
-//  $Id: CUpdateInstallDlg.cpp,v 1.20 2023/10/17 12:33:58 cvsuser Exp $
+//  $Id: CUpdateInstallDlg.cpp,v 1.21 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: Install dialog.
 //
@@ -24,6 +24,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 //
+
 #include "common.h"
 
 #include <time.h>
@@ -78,7 +79,9 @@ public:
 };
 
 
+#if defined(_MSC_VER)
 #pragma warning(disable:4355) //'this' : used in base member initializer list.
+#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CUpdateInstallDlg dialog
@@ -455,7 +458,7 @@ CUpdateInstallDlg::OnSize(UINT nType, int cx, int cy)
                 } else {
                     UINT uFlags = SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER;
                     if (SMove::Scale == p->c_action &&
-                            (p->c_dXSizeFrac != 0.0) || (p->c_dYSizeFrac != 0.0)) {
+                            ((p->c_dXSizeFrac != 0.0) || (p->c_dYSizeFrac != 0.0))) {
                         uFlags |= SWP_NOCOPYBITS;
                     }
                     DeferWindowPos(hDefer, p->c_hWnd, NULL, nrect.left, nrect.top, nrect.Width(), nrect.Height(), uFlags);
@@ -596,3 +599,5 @@ CUpdateInstallDlg::OnBnClickedInstallAuto()
 {
     d_owner.SetAuto(BST_CHECKED == d_button_auto.GetCheck() ? true : false);
 }
+
+//end

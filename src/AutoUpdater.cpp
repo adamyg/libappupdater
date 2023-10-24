@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.28 2023/10/17 12:33:57 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.29 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //
@@ -81,11 +81,15 @@
 
 #include <Wincrypt.h>
 #include <Rpc.h>                                // UnidCreate()
+#if defined(PRAGMA_COMMENT_LIB)
 #pragma comment(lib, "Rpcrt4.lib")
+#endif
 #include <shlobj.h>                             // SHGetFolderPath
+#if defined(PRAGMA_COMMENT_LIB)
 #pragma comment(lib, "userenv.lib")
 #pragma comment(lib, "shell32.lib")
 #pragma comment(lib, "shfolder.lib")
+#endif
 
 #include <io.h>                                 // _access()
 
@@ -131,7 +135,7 @@ public:
     }
 
     // RAII
-    void SetDialog(IAutoUpdaterUI *dialog) {
+    void SetDialog(IAutoUpdaterUI * /*dialog*/) {
         d_uibind.reset(new AutoDialogUI);
         d_dialog = d_uibind.get();
     }
@@ -331,6 +335,8 @@ AutoUpdater::Execute(enum ExecuteMode mode, bool interactive)
     case ExecuteDump:
         Dump();
         return 0;
+    default:
+        break;
     }
 
     // primary functions
@@ -455,7 +461,7 @@ AutoUpdater::Status(const enum ExecuteMode mode)
                 Config::WriteConfigValue(KEY_AUTOLAST, time(NULL));
             }
         }
-        /*FULLTHRU*/
+        /*FALLTHRU*/
 
     case ExecutePrompt: {
             bool autocheck = false;
@@ -474,6 +480,7 @@ AutoUpdater::Status(const enum ExecuteMode mode)
 
     case ExecuteIgnoreSkip:
     case ExecuteReinstall:
+    default:
         break;
     }
 
@@ -896,7 +903,7 @@ AutoUpdater::Verify(const std::string &filename)
         CloseHandle(hFile);
         return false;
 
-    } else if (fileSize != strtol(d_manifest.attributeLength.c_str(), NULL, 0)) {
+    } else if (fileSize != static_cast<DWORD>(strtol(d_manifest.attributeLength.c_str(), NULL, 0))) {
         LOG<LOG_WARN>() << "target-length incorrect (" << fileSize
                 << " and " << d_manifest.attributeLength << ")" << LOG_ENDL;
         CloseHandle(hFile);

@@ -1,6 +1,6 @@
 #ifndef AUTOLOGGER_H_INCLUDED
 #define AUTOLOGGER_H_INCLUDED
-//  $Id: AutoLogger.h,v 1.15 2023/10/17 12:33:57 cvsuser Exp $
+//  $Id: AutoLogger.h,v 1.16 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: logger.
 //
@@ -34,11 +34,15 @@
 #endif
 
 #if !defined(__WATCOMC__)
+#if defined(_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable:4244)
 #pragma warning(disable:4355)
+#endif
 #include "BufferStream.hpp"
+#if defined(_MSC_VER)
 #pragma warning(pop)
+#endif
 #endif
 
 #include "AutoThread.h"

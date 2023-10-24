@@ -1,6 +1,6 @@
 #ifndef AUTODIALOG_H_INCLUDED
 #define AUTODIALOG_H_INCLUDED
-//  $Id: AutoDialog.h,v 1.9 2023/10/17 12:33:57 cvsuser Exp $
+//  $Id: AutoDialog.h,v 1.10 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: dialog interface.
 //
@@ -176,7 +176,7 @@ public:
     void EndDialog(UINT return_code);
 
     HWND GetSafeHwnd() const {
-        return (this ? d_hWnd : 0);
+        return (d_hWnd);
     }
 
     BOOL IsWindow() const {
@@ -332,7 +332,7 @@ public:
     }
     void SetFont(AFont &font) {
         if (HWND hParent = GetParentHandle()) {
-            font.SetDlgItemFont(GetParentHandle(), idd_);
+            font.SetDlgItemFont(hParent, idd_);
         }
     }
     void SetFont(AFont *font) {
@@ -340,12 +340,12 @@ public:
     }
     void SetText(const AString &s) {
         if (HWND hParent = GetParentHandle()) {
-            if (!s.empty()) ::SetDlgItemTextW(hParent_, idd_, s.c_str());
+            if (!s.empty()) ::SetDlgItemTextW(hParent, idd_, s.c_str());
         }
     }
     void SetText(const char *s) {
         if (HWND hParent = GetParentHandle()) {
-            if (s) ::SetDlgItemTextA(hParent_, idd_, s);
+            if (s) ::SetDlgItemTextA(hParent, idd_, s);
         }
     }
     void SetText(const wchar_t *s) {

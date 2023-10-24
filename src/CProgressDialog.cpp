@@ -1,4 +1,4 @@
-//  $Id: CProgressDialog.cpp,v 1.17 2023/10/17 12:33:58 cvsuser Exp $
+//  $Id: CProgressDialog.cpp,v 1.18 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: Progress dialog.
 //
@@ -103,7 +103,7 @@ CProgressDialog::SetAnimationSpeed(DWORD speed)
 
 
 void
-CProgressDialog::SetLine(DWORD dwLineNum, LPCWSTR text, BOOL compat, void *reserved)
+CProgressDialog::SetLine(DWORD dwLineNum, LPCWSTR text, BOOL /*compat*/, void * /*reserved*/)
 {
     if (text) {
         HWND hWnd = 0;
@@ -125,7 +125,7 @@ CProgressDialog::SetLine(DWORD dwLineNum, LPCWSTR text, BOOL compat, void *reser
 
 
 void
-CProgressDialog::SetCancelMsg(LPCWSTR text, void *reserved)
+CProgressDialog::SetCancelMsg(LPCWSTR text, void * /*reserved*/)
 {
     if (text) {
         HWND hWnd = 0;
@@ -143,7 +143,7 @@ CProgressDialog::SetCancelMsg(LPCWSTR text, void *reserved)
 
 
 void
-CProgressDialog::StartProgressDialog(HWND parent, void *reserved1, DWORD dwFlags, void *reserved2)
+CProgressDialog::StartProgressDialog(HWND parent, void * /*reserved1*/, DWORD dwFlags, void * /*reserved2*/)
 {
     struct create_params params = {0};
     HANDLE hThread = 0;
@@ -254,7 +254,7 @@ progress(char *buffer, int buflen, int complete, int total)
         int s = 0;
 
         if (total > 1024) {
-            while ((total / 1024) > 0 && s < (_countof(suffix) - 1)) {
+            while ((total / 1024) > 0 && s < static_cast<int>(_countof(suffix) - 1)) {
                 unit = total / 1024.0;
                 total /= 1024;
                 ++s;

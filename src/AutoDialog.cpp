@@ -1,4 +1,4 @@
-//  $Id: AutoDialog.cpp,v 1.16 2023/10/17 12:33:57 cvsuser Exp $
+//  $Id: AutoDialog.cpp,v 1.17 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: dialog interface
 //
@@ -197,7 +197,7 @@ AutoDialogUI::ProgressStop()
 //
 
 AutoDialog::AutoDialog(int idd, AutoUpdater &owner, HWND hParent)
-    : d_owner(owner), d_idd(idd), d_hWnd(0), d_hParentWnd(hParent)
+    : d_idd(idd), d_owner(owner), d_hWnd(0), d_hParentWnd(hParent)
 {
 }
 
@@ -222,20 +222,20 @@ AutoDialog::EndDialog(UINT result)
 }
 
 
-static BOOL CALLBACK
-AboutBoxProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) 
-{
-    switch (msg) {
-    case WM_COMMAND:
-        switch (LOWORD(wParam)) { 
-        case IDOK:
-        case IDCANCEL:
-            ::EndDialog(hWnd, wParam);
-            return TRUE; 
-        }
-    }
-    return FALSE; 
-} 
+//static BOOL CALLBACK
+//AboutBoxProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM /*lParam*/) 
+//{
+//    switch (msg) {
+//    case WM_COMMAND:
+//        switch (LOWORD(wParam)) { 
+//        case IDOK:
+//        case IDCANCEL:
+//            ::EndDialog(hWnd, wParam);
+//            return TRUE; 
+//        }
+//    }
+//    return FALSE; 
+//} 
 
 
 INT_PTR CALLBACK
@@ -296,7 +296,7 @@ AutoDialog::OnInitDialog()
 
 //virtual
 BOOL
-AutoDialog::OnGetMinMaxInfo(MINMAXINFO *mmi)
+AutoDialog::OnGetMinMaxInfo(MINMAXINFO * /*mmi*/)
 {
     return FALSE;
 }
@@ -312,7 +312,7 @@ AutoDialog::OnQueryDragIcon()
 
 //virtual
 BOOL
-AutoDialog::OnCtlColorEdit(WPARAM wParam, LPARAM lParam)
+AutoDialog::OnCtlColorEdit(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
     return FALSE;
 }
@@ -320,7 +320,7 @@ AutoDialog::OnCtlColorEdit(WPARAM wParam, LPARAM lParam)
 
 //virtual
 LRESULT   
-AutoDialog::OnCtlColorStatic(WPARAM wParam, LPARAM lParam)
+AutoDialog::OnCtlColorStatic(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
     return 0;
 }
@@ -328,7 +328,7 @@ AutoDialog::OnCtlColorStatic(WPARAM wParam, LPARAM lParam)
 
 //virtual
 BOOL
-AutoDialog::OnCommand(WPARAM wParam, LPARAM lParam)
+AutoDialog::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 {
     switch (LOWORD(wParam)) { 
     case IDOK: 
@@ -344,7 +344,7 @@ AutoDialog::OnCommand(WPARAM wParam, LPARAM lParam)
 
 //virtual
 void
-AutoDialog::OnSysCommand(WPARAM wParam, LPARAM lParam)
+AutoDialog::OnSysCommand(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 }
 
@@ -374,7 +374,7 @@ AutoDialog::OnPaint()
 
 //virtual
 void
-AutoDialog::OnSize(UINT type, int cx, int cy)
+AutoDialog::OnSize(UINT /*type*/, int /*cx*/, int /*cy*/)
 {
 }
 

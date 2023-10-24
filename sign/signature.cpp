@@ -1,4 +1,4 @@
-//  $Id: signature.cpp,v 1.9 2022/06/09 08:46:30 cvsuser Exp $
+//  $Id: signature.cpp,v 1.10 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: Manifest generation tool.
 //
@@ -16,8 +16,10 @@
 
 #include <windows.h>
 
+#if defined(PRAGMA_COMMENT_LIB)
 #pragma comment(lib, "Advapi32.lib")            // Cypt.h
 #pragma comment(lib, "User32.lib")              // MessageBox
+#endif
 
 static std::string Signature(HANDLE hFile, const char *filename, int type);
 static const char *Basename(const char *name);
@@ -122,7 +124,7 @@ sign_manifest(const char *filename, const char *version, const char *hosturl)
 //      String containing the signature.
 //
 static std::string
-Signature(HANDLE hFile, const char *filename, int type)
+Signature(HANDLE hFile, const char * /*filename*/, int type)
 {
     BYTE ioBuffer[8 * 1024];                    // io buffer
     HCRYPTPROV hProv = 0;
@@ -135,7 +137,7 @@ Signature(HANDLE hFile, const char *filename, int type)
             !CryptCreateHash(hProv, type, 0, 0, &hHash)) {
         DWORD dwStatus = GetLastError();
         if (hProv) CryptReleaseContext(hProv, 0);
-        throw std::runtime_error(SysError("CryptAcquireContext failed."));
+        throw std::runtime_error(SysError("CryptAcquireContext failed.", dwStatus));
     }
 
     // Calculate hash
@@ -151,14 +153,14 @@ Signature(HANDLE hFile, const char *filename, int type)
             DWORD dwStatus = GetLastError();
             CryptReleaseContext(hProv, 0);
             CryptDestroyHash(hHash);
-            throw std::runtime_error(SysError("CryptHashData failed."));
+            throw std::runtime_error(SysError("CryptHashData failed.", dwStatus));
         }
     }
     if (!ioResult) {
         DWORD dwStatus = GetLastError();
         CryptReleaseContext(hProv, 0);
         CryptDestroyHash(hHash);
-        throw std::runtime_error(SysError("Cannot read exe image."));
+        throw std::runtime_error(SysError("Cannot read exe image.", dwStatus));
     }
 
     const char hashDigits[] = "0123456789abcdef";

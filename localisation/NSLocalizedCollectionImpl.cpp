@@ -1,4 +1,4 @@
-//  $Id: NSLocalizedCollectionImpl.cpp,v 1.11 2023/10/17 12:33:56 cvsuser Exp $
+//  $Id: NSLocalizedCollectionImpl.cpp,v 1.12 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  NSLocalization - Collection implementation
 //
@@ -51,15 +51,15 @@ extern void NSFormatTests(void);
 //  NSLocalizedCollectionImpl::ILogger's
 //
 
-NSLocalizedCollectionImpl::Filename::Filename(const char *filename) 
-    : filename_(filename) 
+NSLocalizedCollectionImpl::Filename::Filename(const char *filename)
+    : filename_(filename)
 {
 }
 
 
 //virtual
 void
-NSLocalizedCollectionImpl::Filename::error(unsigned line_number, const char *msg) 
+NSLocalizedCollectionImpl::Filename::error(unsigned line_number, const char *msg)
 {
     if (line_number) {
         std::cout << filename_ << " (" << line_number << ") : " << msg << std::endl;
@@ -69,15 +69,15 @@ NSLocalizedCollectionImpl::Filename::error(unsigned line_number, const char *msg
 }
 
 
-NSLocalizedCollectionImpl::Resource::Resource(const char *resourceName, const char *tableName) 
-    : resourceName_(resourceName), tableName_(tableName) 
+NSLocalizedCollectionImpl::Resource::Resource(const char *resourceName, const char *tableName)
+    : resourceName_(resourceName), tableName_(tableName)
 {
 }
 
 
-//virtual 
-void 
-NSLocalizedCollectionImpl::Resource::error(unsigned line_number, const char *msg) 
+//virtual
+void
+NSLocalizedCollectionImpl::Resource::error(unsigned line_number, const char *msg)
 {
     if (line_number) {
         std::cout << resourceName_ << "::" << tableName_ << " (" << line_number << ") : " << msg << std::endl;
@@ -91,8 +91,8 @@ NSLocalizedCollectionImpl::Resource::error(unsigned line_number, const char *msg
 //  NSLocalizedCollectionImpl::Logger
 //
 
-NSLocalizedCollectionImpl::Logger::Logger(NSLocalizedCollection::ILogger &ilogger) 
-    : ilogger_(ilogger), line_number(0) { 
+NSLocalizedCollectionImpl::Logger::Logger(NSLocalizedCollection::ILogger &ilogger)
+    : ilogger_(ilogger), line_number(0) {
 }
 
 
@@ -134,7 +134,7 @@ NSLocalizedCollectionImpl::load(NSLocalizedCollection::ILogger &ilogger, const c
 
 
 const char *
-NSLocalizedCollectionImpl::lookup(const char *key, const char *comment) 
+NSLocalizedCollectionImpl::lookup(const char *key, const char * /*comment*/)
 {
     Collection_t::const_iterator it = strings_.find(std::string(key));
     if (it != strings_.end()) {                 // exists
@@ -227,7 +227,7 @@ NSLocalizedCollectionImpl::load_strings(Logger &logger, const char *name, const 
 //  Parsers
 
 bool
-NSLocalizedCollectionImpl::load_object(Logger &logger, const void *it, const void *end, const char *name)
+NSLocalizedCollectionImpl::load_object(Logger & /*logger*/, const void *it, const void *end, const char * /*name*/)
 {
     //  Import elements
     //
@@ -254,7 +254,7 @@ NSLocalizedCollectionImpl::load_object(Logger &logger, const void *it, const voi
     while ((cursor + 2 + 2 + 1 + 1) < end) {
         const unsigned
             length1 = ((unsigned)cursor[0] << 8) + cursor[1],
-            length2 = ((unsigned)cursor[2] << 8) + cursor[3]; 
+            length2 = ((unsigned)cursor[2] << 8) + cursor[3];
 
         cursor += 4;
         if ((cursor + length1 + length2 + 2 /*nuls*/) > end) {
@@ -266,7 +266,7 @@ NSLocalizedCollectionImpl::load_object(Logger &logger, const void *it, const voi
         cursor += length1 + 1;
 
 //#if defined(_DEBUG)
-//std::cout << "\"" << key << "\"=\"" << std::string((const char *)it, length2) << "\"" << std::endl;
+//      std::cout << "\"" << key << "\"=\"" << std::string((const char *)it, length2) << "\"" << std::endl;
 //#endif
 
         assert(0 == cursor[length2]);
@@ -287,7 +287,7 @@ NSLocalizedCollectionImpl::load_strings(Logger &logger, const std::string &buffe
 
 
 bool
-NSLocalizedCollectionImpl::load_strings(Logger &logger, const char *it, const char *end, const char *name)
+NSLocalizedCollectionImpl::load_strings(Logger &logger, const char *it, const char *end, const char * /*name*/)
 {
     //  Import elements
     //
@@ -331,7 +331,7 @@ NSLocalizedCollectionImpl::load_strings(Logger &logger, const char *it, const ch
             continue;
 
         } else if ('\n' == ch) {
-            if (it < end && *it == '\r') 
+            if (it < end && *it == '\r')
                 ++it;
             ++logger.line_number;
             newline = true;
@@ -364,7 +364,7 @@ NSLocalizedCollectionImpl::load_strings(Logger &logger, const char *it, const ch
 
 
 bool
-NSLocalizedCollectionImpl::load_po(Logger &logger, const char *it, const char *end, const char *name)
+NSLocalizedCollectionImpl::load_po(Logger &logger, const char *it, const char *end, const char * /*name*/)
 {
     // white-space
     // #  translator-comments
@@ -522,7 +522,7 @@ NSLocalizedCollectionImpl::get_str(Logger &logger, const char *it, const char *e
             switch (ch2) {
                 // Punctuation characters
             case '\\': val = '\\'; break;       // \\ = backslash
-            case '"':  val = '\"'; break;       // \" = quotation mark (backslash not required for '"')  
+            case '"':  val = '\"'; break;       // \" = quotation mark (backslash not required for '"')
             case '\'': val = '\''; break;       // \' = apostrophe (backslash not required for "'")
             case '?':  val = '?';  break;       // \? = question mark (used to avoid trigraphs)
 

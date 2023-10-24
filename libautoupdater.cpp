@@ -1,5 +1,5 @@
 /* -*- mode: c; indent-width: 4; -*- */
-/* $Id: libautoupdater.cpp,v 1.23 2023/10/23 09:58:33 cvsuser Exp $
+/* $Id: libautoupdater.cpp,v 1.24 2023/10/24 13:56:23 cvsuser Exp $
  *
  *  libautoupdater cdecl interface.
  *
@@ -65,7 +65,9 @@
 
 #include "localisation/NSLocalizedString.h"
 
+#if defined(PRAGMA_COMMENT_LIB)
 #pragma comment(lib, "Comctl32.lib")
+#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  DLLMain
@@ -83,7 +85,7 @@ static TlsDestroy_t tls_destroy = NULL;         // destroy callback.
 static struct tls_value tls_values[32] = {0};   // thread local storage.
 
 BOOL WINAPI
-DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+DllMain(HINSTANCE /*hinstDLL*/, DWORD fdwReason, LPVOID /*lpvReserved*/)
 {
     switch (fdwReason) {
         // DLL is loading due to process initialization or a call to LoadLibrary.
@@ -148,12 +150,6 @@ DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
         default:
             break;
     }
-
-#if defined(_MSC_VER)
-    UNREFERENCED_PARAMETER(hinstDLL);
-    UNREFERENCED_PARAMETER(lpvReserved);
-#endif
-
     return TRUE;
 }
 
@@ -214,7 +210,7 @@ Updater::LoggerTlsGetValue(void)
 //
 
 __declspec(dllexport) void __stdcall            // UNICODE
-ShellExecuteW(HWND hwnd, HINSTANCE hinst, LPWSTR lpszCmdLine, int nCmdShow)
+ShellExecuteW(HWND /*hwnd*/, HINSTANCE /*hinst*/, LPWSTR /*lpszCmdLine*/, int /*nCmdShow*/)
 {
 #if defined(_MSC_VER)
     // #pragma comment(linker, "/EXPORT:"__FUNCTION__"="__FUNCTION__) // undecorated name
@@ -429,7 +425,7 @@ autoupdate_execute(int mode, int interactive)
 #if !defined(NDEBUG)
      // NSLocalizedLoadFile("../lproj/Strings/Base.strings");
      // NSLocalizedLoadResource("NSLocalized", "Localizable");
-        NSLocalizedLoadResource("NSLocalized", "xx");
+     // NSLocalizedLoadResource("NSLocalized", "xx");
 #endif
 
         if (1 == Config::GetConsoleMode()) {

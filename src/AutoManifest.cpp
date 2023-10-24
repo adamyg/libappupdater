@@ -1,4 +1,4 @@
-//  $Id: AutoManifest.cpp,v 1.14 2023/10/17 12:33:57 cvsuser Exp $
+//  $Id: AutoManifest.cpp,v 1.15 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: Update manifest.
 //
@@ -133,8 +133,8 @@ namespace {
 struct ParserContext {
     enum ChannelStatus {CHANNEL_OMITTED = -1, CHANNEL_NONE = 0, CHANNEL_ACTIVE = 1, CHANNEL_INACTIVE = 2};
 
-    ParserContext(XML_Parser parser, const char *required_channel)
-        : parser(parser), required_channel(required_channel?required_channel:""),
+    ParserContext(XML_Parser parser__, const char *required_channel__)
+        : parser(parser__), required_channel(required_channel__ ? required_channel__ : ""),
             channel_status(CHANNEL_NONE), in_item(false), in_tags(false),
             title_level(0),
             link_level(0),
@@ -252,10 +252,17 @@ static BOOL RtlGetVersion(OSVERSIONINFOW &version) {
     if (NULL == fnRtlGetVersion) {              // one-shot
         HMODULE ntdll = ::GetModuleHandleA("ntdll.dll");
         if (ntdll) {
+#if defined(GCC_VERSION) && (GCC_VERSION >= 80000)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+#endif
             fnRtlGetVersion = (RtlGetVersion_t) ::GetProcAddress(ntdll, "RtlGetVersion");
             if (NULL == fnRtlGetVersion) {
                 fnRtlGetVersion = (RtlGetVersion_t)-1;
             }
+#if defined(GCC_VERSION) && (GCC_VERSION >= 80000)
+#pragma GCC diagnostic pop
+#endif
         }
     }
 
@@ -307,7 +314,9 @@ ParserContext::SelectionWeight(const AutoManifest &manifest)
         const int elements = std::sscanf(manifest.minimumSystemVersion.c_str(), "%lu.%lu.%hu",
                     &vi.dwMajorVersion, &vi.dwMinorVersion, &vi.wServicePackMajor);
 
+#if defined(_MSC_VER)
 #pragma warning(disable:4996)
+#endif
         if (elements >= 1 && GetVersionExW(&cvi)) {
             if (cvi.dwMajorVersion > 6 ||       // vista+
                     (cvi.dwMajorVersion == 6 && cvi.dwMinorVersion >= 2)) {

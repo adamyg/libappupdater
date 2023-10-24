@@ -1,4 +1,4 @@
-//  $Id: TProgressBar.cpp,v 1.14 2023/10/22 17:51:43 cvsuser Exp $
+//  $Id: TProgressBar.cpp,v 1.15 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: TProgressDialog.
 //
@@ -76,7 +76,7 @@ TProgressBar::Progress(char *buffer, int buflen, unsigned complete, unsigned tot
         int s = 0;
 
         if (total > 1024) {
-            while ((total / 1024) > 0 && s < (_countof(suffix) - 1)) {
+            while ((total / 1024) > 0 && s < static_cast<int>(_countof(suffix) - 1)) {
                 unit = total / 1024.0;
                 total /= 1024;
                 ++s;
@@ -113,13 +113,13 @@ namespace {
                 break;
             case ProgressStyleAccent:
                 if (0 == idx) {
-                    vt_.foreground(std::cout, vt_.hilite());
-                    vt_.background_scaled(std::cout, vt_.hilite());
+                    vt_.foreground(out, vt_.hilite());
+                    vt_.background_scaled(out, vt_.hilite());
                 }
                 break;
             case ProgressStyleRainbow:
                 idx = std::min(idx, colors_.size() - 1);
-                vt_.foreground(std::cout, colors_[idx]);
+                vt_.foreground(out, colors_[idx]);
                 break;
             }
         }
@@ -300,12 +300,12 @@ TProgressBar::UpdateDefault()
 
         // cancel message
         if (cancelable_ && HasUserCancelled()) {
-            if (index != -1) {
+            if (index != static_cast<unsigned>(-1)) {
                 for (int i = 0; i < console_width; ++i) {
                     out << ' ';
                 }
                 out << '\r';
-                index = -1;
+                index = static_cast<unsigned>(-1);
             }
 
             if (! text_msg_.empty())
@@ -377,7 +377,7 @@ TProgressBar::UpdateDefault()
 
         } else {
             const double progress = static_cast<double>(complete_) / total_;
-            const size_t block = static_cast<size_t>(std::floor(progress * display_width));
+            const int block = static_cast<int>(std::floor(progress * display_width));
 
             if ((length + 10) < display_width) {
                 out << '[';
@@ -475,7 +475,7 @@ TProgressBar::UpdateVT()
 
         // progress bar
         char progress_buffer[32];
-        const int progress_len =
+        /*const int progress_len =*/
             Progress(progress_buffer, sizeof(progress_buffer), complete_, total_);
 
         if (marquee_ || 0 == total_) {

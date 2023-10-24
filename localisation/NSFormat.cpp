@@ -1,4 +1,4 @@
-/*  $Id: NSFormat.cpp,v 1.6 2023/10/17 12:33:56 cvsuser Exp $
+/*  $Id: NSFormat.cpp,v 1.7 2023/10/24 13:56:23 cvsuser Exp $
  *
  *  NSLocalization - String.
  *
@@ -73,11 +73,15 @@
 #include <string.h> // C header; <cstring> requires std namespace.
 #include <strstream>
 #else
+#if defined(_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable:4244)
 #pragma warning(disable:4355)
+#endif
 #include "BufferStream.hpp"
+#if defined(_MSC_VER)
 #pragma warning(pop)
+#endif
 #endif
 
 /*
@@ -336,7 +340,7 @@ NSFormat::exec_format(char *buffer, unsigned size, unsigned fieldno, const struc
 							++precision; //sign, prefix
 						break;
 					case T_LONG:
-						if (((PLUSSIGN|SPACESIGN) & flags) || arg->val.longarg < 0) 
+						if (((PLUSSIGN|SPACESIGN) & flags) || arg->val.longarg < 0)
 							++precision; //sign, prefix
 						break;
 					case T_LLONG:
@@ -368,8 +372,8 @@ NSFormat::exec_format(char *buffer, unsigned size, unsigned fieldno, const struc
 
 		start = STELL();
 		switch (arg->argtype) {
-		case T_CHAR: 
-		case T_SHORT: 
+		case T_CHAR:
+		case T_SHORT:
 		case T_INT:
 			text << arg->val.intarg;
 			break;
@@ -428,7 +432,7 @@ NSFormat::exec_format(char *buffer, unsigned size, unsigned fieldno, const struc
 
 		int length = (int)(STELL() - start);
 
-		if (((PLUSSIGN|SPACESIGN) & flags) == SPACESIGN) { //float and numeric 
+		if (((PLUSSIGN|SPACESIGN) & flags) == SPACESIGN) { //float and numeric
 			for (char *cursor = start, *cend = start + length; cursor < cend; ++cursor) {
 				if ('+' == *cursor) {
 					*cursor = ' ';
@@ -517,7 +521,6 @@ NSFormat::parse_format(const char *fmt, va_list ap, struct Field *fields, unsign
 	int ch; 			/* character from fmt */
 	int n, n2;			/* handy integer (short term usage) */
 	const char *cp; 		/* handy char pointer (short term usage) */
-	const char *pp; 		/* position index */
 	unsigned short flags;		/* flags as above */
 	ioflags_t ioflags;		/* ostream flags */
 	int nextarg = 1;		/* 1-based argument index */
@@ -567,7 +570,7 @@ NSFormat::parse_format(const char *fmt, va_list ap, struct Field *fields, unsign
 
 #define ADDASTER(__field) \
 	n2 = 0; \
-	pp = cp = fmt; \
+	cp = fmt; \
 	while (is_digit(*cp)) { \
 		APPEND_DIGIT(n2, *cp); \
 		++cp; \
@@ -862,6 +865,7 @@ floating_point: 	flags |= FPT;
 			break;
 		case 'X':
 			ioflags |= std::ios::uppercase;
+			/*FALLTHROUGH*/
 		case 'x':
 			ADDUARG();
 			ioflags |= std::ios::hex;
@@ -877,8 +881,8 @@ void_pointer:		ADDTYPE(TP_VOID);
 			if ((f->fmt + 2) != fmt) {
 				--fmt; /* unterminated specification */
 			}
-				/*FALLTHROUGH*/
-		default:	
+			/*FALLTHROUGH*/
+		default:
 unknown:		if (ch == '\0') --fmt; /* "%?" prints ?, unless ? is NUL */
 			ch = '%';
 			break;

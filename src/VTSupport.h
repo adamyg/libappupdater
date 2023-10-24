@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: VTSupport.h,v 1.7 2023/10/23 12:45:14 cvsuser Exp $
+//  $Id: VTSupport.h,v 1.8 2023/10/24 13:56:24 cvsuser Exp $
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
@@ -24,23 +24,24 @@
 //  SOFTWARE.
 //
 
+#include "common.h"
+
 #include <shlwapi.h>
 #if defined(__WATCOMC__)
 #if (_WIN32_IE < 0x0500)
-LWSTDAPI_(COLORREF)     ColorHLSToRGB( WORD, WORD, WORD );
+LWSTDAPI_(COLORREF) ColorHLSToRGB( WORD, WORD, WORD );
 #endif
 #endif
+#if defined(PRAGMA_COMMENT_LIB)
 #pragma comment( lib, "shlwapi.lib" )
-
-#include "common.h"
-
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 //  VTSupport
 
 struct VTColor {
     VTColor() : r(0), g(0), b(0) {}
-    VTColor(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) {}
+    VTColor(uint8_t r__, uint8_t g__, uint8_t b__) : r(r__), g(g__), b(b__) {}
     VTColor(DWORD color) {
         r = GetRValue(color), g = GetGValue(color), b = GetBValue(color);
     }
@@ -235,7 +236,7 @@ public:
     template <typename Stream>
     static Stream& cursor_shape(Stream &out, CursorShape shape)
     {
-        return out << VT100_CSI << reinterrupt_cast<unsigned>(shape) << 'q';
+        return out << VT100_CSI << reinterpret_cast<unsigned>(shape) << 'q';
     }
 
     /// Moves the cursor up n (default 1)
@@ -282,16 +283,16 @@ public:
 
     /// Saves the cursor position/state in SCO console mode.
     template <typename Stream>
-    static Stream& cursor_save()
+    static Stream& cursor_save(Stream &out)
     {
-        return out << VT100_CSI << n << 's';
+        return out << VT100_CSI << 's';
     }
 
     /// Restores the cursor position/state in SCO console mode.
     template <typename Stream>
-    static Stream& cursor_restore()
+    static Stream& cursor_restore(Stream &out)
     {
-        return out << VT100_CSI << n << 'u';
+        return out << VT100_CSI << 'u';
     }
 
     /// Erases from the current cursor position (inclusive) to the end of the line
@@ -368,7 +369,7 @@ public:
     template <typename Stream>
     static Stream& foreground_scaled(Stream &out, const VTColor color, unsigned value = 3)
     {
-        if (value) n out << foreground(out,  color.scale(value));
+        if (value) out << foreground(out,  color.scale(value));
     }
 
     /// Set foreground color)
@@ -526,7 +527,7 @@ public:
         if (INVALID_HANDLE_VALUE != hStdIn && NULL != hStdIn) {
             INPUT_RECORD ir = {0};
             DWORD read = 0;
-
+            
             while (PeekConsoleInputA(hStdIn, &ir, 1, &read) && read) {
                 ReadConsoleInputA(hStdIn, &ir, 1, &read);
                 if (KEY_EVENT == ir.EventType && ir.Event.KeyEvent.bKeyDown) {

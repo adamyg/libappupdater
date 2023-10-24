@@ -1,4 +1,4 @@
-//  $Id: AutoLogger.cpp,v 1.19 2023/10/17 12:33:57 cvsuser Exp $
+//  $Id: AutoLogger.cpp,v 1.20 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: logger.
 //
@@ -37,9 +37,11 @@
 
 #include "AutoLogger.h"
 
+#if defined(PRAGMA_COMMENT_LIB)
 #pragma comment(lib, "userenv.lib")
 #pragma comment(lib, "shell32.lib")
 #pragma comment(lib, "shfolder.lib")
+#endif
 
 namespace Updater {
 
@@ -112,7 +114,7 @@ GetLogPath(const char *application)
     //
     if (!*buffer) {
         DWORD ret;
-        if (0 == (ret = GetTempPathA(sizeof(buffer), buffer)) > 0 || ret > MAX_PATH) {
+        if (0 == (ret = GetTempPathA(sizeof(buffer), buffer)) || ret > MAX_PATH) {
             strcpy(buffer, "C:\\");
         }
     }

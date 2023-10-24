@@ -1,4 +1,4 @@
-//  $Id: AutoDownLoad.cpp,v 1.20 2023/10/17 12:33:57 cvsuser Exp $
+//  $Id: AutoDownLoad.cpp,v 1.21 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
@@ -37,7 +37,9 @@
 #include "AutoError.h"
 
 #include <wininet.h>
+#if defined(PRAGMA_COMMENT_LIB)
 #pragma comment(lib, "Wininet.lib")
+#endif
 
 // supported on Windows 10, version 1507 and later.
 #if !defined(INTERNET_OPTION_ENABLE_HTTP_PROTOCOL)
@@ -271,16 +273,16 @@ FileDownloadSink::append(const void *data, size_t len)
 //  DownloadContext
 //
 
-DownloadContext::DownloadContext(Download &owner, const std::string &url, IDownloadSink &sink, unsigned flags) :
-        owner(owner), url(url), file_sink(), sink(sink), flags(flags),
+DownloadContext::DownloadContext(Download &owner__, const std::string &url__, IDownloadSink &sink__, unsigned flags__) :
+        owner(owner__), url(url__), file_sink(), sink(sink__), flags(flags__),
     references(1), callback_trigger(INVALID_HANDLE_VALUE), completion_trigger(INVALID_HANDLE_VALUE),
     success(false)
 {
 }
 
 
-DownloadContext::DownloadContext(Download &owner, const std::string &url, const char *filename, unsigned flags) :
-        owner(owner), url(url), file_sink(filename), sink(file_sink), flags(flags),
+DownloadContext::DownloadContext(Download &owner__, const std::string &url__, const char *filename__, unsigned flags__) :
+        owner(owner__), url(url__), file_sink(filename__), sink(file_sink), flags(flags__),
     references(1), callback_trigger(INVALID_HANDLE_VALUE), completion_trigger(INVALID_HANDLE_VALUE),
     success(false)
 {

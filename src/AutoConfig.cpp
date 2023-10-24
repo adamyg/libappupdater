@@ -1,4 +1,4 @@
-//  $Id: AutoConfig.cpp,v 1.19 2023/10/17 12:33:56 cvsuser Exp $
+//  $Id: AutoConfig.cpp,v 1.20 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
@@ -34,8 +34,11 @@
 #include "AutoConfig.h"
 #include "AutoLogger.h"
 #include "AutoError.h"
+#include "AutoString.h"
 
+#if defined(PRAGMA_COMMENT_LIB)
 #pragma comment(lib, "version.lib")
+#endif
 
 namespace Updater {
 
@@ -69,7 +72,7 @@ RegDeleteKeyExA_t x_RegDeleteKeyExA = NULL;
 //  RegDeleteKeyExA() emulation, which simply clears the registry value.
 //
 LONG WINAPI
-MyRegDeleteKeyExA(HKEY hKey, const char *lpSubKey, REGSAM samDesired, DWORD Reserved)
+MyRegDeleteKeyExA(HKEY hKey, const char *lpSubKey, REGSAM /*samDesired*/, DWORD /*Reserved*/)
 {
     return RegSetValueExA(hKey, lpSubKey, 0, REG_SZ, (const BYTE *)"", 1);
 }
@@ -85,6 +88,10 @@ XRegDeleteKeyExA(HKEY hKey, const char *lpSubKey, REGSAM samDesired, DWORD Reser
         HMODULE hAdvAPI32 = LoadLibraryA("AdvAPI32.dll");
 
         assert(hAdvAPI32 != NULL);
+#if defined(GCC_VERSION) && (GCC_VERSION >= 80000)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+#endif
         x_RegDeleteKeyExA = (RegDeleteKeyExA_t)GetProcAddress(hAdvAPI32, "RegDeleteKeyExA");
         if (NULL == x_RegDeleteKeyExA) {        // assign enumlation
             LOG<LOG_DEBUG>() << "RegDeleteKeyExA enumlation" << LOG_ENDL;
@@ -94,6 +101,9 @@ XRegDeleteKeyExA(HKEY hKey, const char *lpSubKey, REGSAM samDesired, DWORD Reser
         } else {
             LOG<LOG_DEBUG>() << "RegDeleteKeyExA available" << LOG_ENDL;
         }
+#if defined(GCC_VERSION) && (GCC_VERSION >= 80000)
+#pragma GCC diagnostic pop
+#endif
     }
     return (*x_RegDeleteKeyExA)(hKey, lpSubKey, samDesired, Reserved);
 }
@@ -127,21 +137,23 @@ Config::GetVerInfoData()
         return version_info_.data();
     }
 
-    TCHAR module_name[MAX_PATH + 1];
+    wchar_t module[MAX_PATH + 1] = {0};
 
-    if (! GetModuleFileName(NULL, module_name, MAX_PATH)) {
+    if (! GetModuleFileNameW(NULL, module, MAX_PATH)) {
         throw SysException("GetModuleFileName");
     }
 
+    LOG<LOG_INFO>() << "Config::Module=" << Updater::to_string(module) << LOG_ENDL;
+
     DWORD dwHandle = 0;
-    DWORD fiSize = GetFileVersionInfoSize(module_name, &dwHandle);
+    DWORD fiSize = GetFileVersionInfoSizeW(module, &dwHandle);
     if (0 == fiSize) {
         throw SysException("Executable missing VERSIONINFO resource");
     }
 
     version_info_.allocate(fiSize);
     if (NULL == version_info_.data() ||
-            ! GetFileVersionInfo(module_name, dwHandle, fiSize, version_info_.data())) {
+            ! GetFileVersionInfoW(module, dwHandle, fiSize, version_info_.data())) {
         throw SysException("GetFileVersionInfo");
     }
 
@@ -164,7 +176,7 @@ Config::GetVerInfoData()
         << HIWORD(fxi->dwFileVersionLS) << "," << LOWORD(fxi->dwFileVersionLS) << LOG_ENDL;
     LOG<LOG_INFO>() << " PRODUCTVERSION "
         << HIWORD(fxi->dwProductVersionMS) << "," << LOWORD(fxi->dwProductVersionMS) << ","
-        << HIWORD(fxi->dwProductVersionLS) << "," <<LOWORD(fxi->dwProductVersionLS) << LOG_ENDL;
+        << HIWORD(fxi->dwProductVersionLS) << "," << LOWORD(fxi->dwProductVersionLS) << LOG_ENDL;
     LOG<LOG_INFO>() << " FILEFLAGSMASK  0x" << std::hex << fxi->dwFileFlagsMask << std::dec << LOG_ENDL;
     LOG<LOG_INFO>() << " FILEFLAGS      0x" << std::hex << fxi->dwFileFlags << file_flags << std::dec << LOG_ENDL;
     LOG<LOG_INFO>() << " FILEOS         0x" << std::hex << fxi->dwFileOS << std::dec << LOG_ENDL;
@@ -776,3 +788,5 @@ void Config::WriteConfigValue(const char *name, const std::string &value)
 #endif  //__WATCOMC__
 
 }  // namespace Updater
+
+//end

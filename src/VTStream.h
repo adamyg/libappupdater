@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: VTStream.h,v 1.3 2023/10/23 12:45:14 cvsuser Exp $
+//  $Id: VTStream.h,v 1.4 2023/10/24 13:56:24 cvsuser Exp $
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
@@ -184,7 +184,7 @@ public:
 
     Stream& background_scaled(const VTColor color, unsigned value = 3)
     {
-        return VTSupport::background_scaled(out_, color, value)
+        return VTSupport::background_scaled(out_, color, value);
     }
 
 private:

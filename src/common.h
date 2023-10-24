@@ -1,4 +1,4 @@
-//  $Id: common.h,v 1.15 2023/10/23 09:58:34 cvsuser Exp $
+//  $Id: common.h,v 1.16 2023/10/24 13:56:24 cvsuser Exp $
 //
 //  AutoUpdater: Common definitions.
 //
@@ -51,6 +51,14 @@
 #include <cstdlib>
 #include <climits>
 #include <new>
+
+#if defined(__GNUC__) /*BOOST_GCC_VERSION equiv*/
+#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
+#endif
+
+#if defined(_MSC_VER) || defined(__WATCOMC__)
+#define PRAGMA_COMMENT_LIB 1
+#endif
 
 #if defined(_MSC_VER)
 #pragma warning(disable:4267)                   // 'argument': conversion from 'size_t' to 'int', possible loss of data.

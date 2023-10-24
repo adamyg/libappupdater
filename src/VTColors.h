@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: VTColors.h,v 1.5 2023/10/23 11:45:11 cvsuser Exp $
+//  $Id: VTColors.h,v 1.6 2023/10/24 13:56:24 cvsuser Exp $
 //
 //  https://developer.mozilla.org/ko/docs/Web/CSS/color_value
 //
@@ -326,7 +326,7 @@ namespace RGBColors {
             { NULL, RGBColors::black }
 #else
             { NULL, Color::black }
-#endif            
+#endif
 #undef XRGBNAME
             };
         return names;

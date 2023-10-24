@@ -1,4 +1,4 @@
-//  $Id: AutoConsole.cpp,v 1.13 2023/10/17 14:09:07 cvsuser Exp $
+//  $Id: AutoConsole.cpp,v 1.14 2023/10/24 13:56:23 cvsuser Exp $
 //
 //  AutoUpdater: console interface.
 //
@@ -46,7 +46,7 @@ public:
     CConsoleUpdater(AutoConsoleUI &owner) : owner_(owner) {
     }
 
-    virtual void operator()(const char *message) {
+    virtual void operator()(const char * /*message*/) {
     }
 
     virtual HWND GetParent() {
@@ -207,7 +207,7 @@ AutoConsoleUI::ErrorMessage(const char *message)
 
 
 void
-AutoConsoleUI::ProgressStart(AutoUpdater &owner, HWND parent, bool indeterminate, const char *msg)
+AutoConsoleUI::ProgressStart(AutoUpdater & /*owner*/, HWND /*parent*/, bool /*indeterminate*/, const char *msg)
 {
     if (0 == progress_) {
         if (TProgressBar *progress = new(std::nothrow) TProgressBar()) {
@@ -256,4 +256,3 @@ AutoConsoleUI::ProgressStop()
 }
 
 //end
-
