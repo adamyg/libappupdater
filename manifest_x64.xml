@@ -15,7 +15,7 @@
 		 type="win32"
 		 name="CompanyName.ProductName.YourApp"
 		 version="1.0.0.0"
-		 processorArchitecture="x86"
+		 processorArchitecture="arm64"
 		 publicKeyToken="0000000000000000"
 	/>
 
@@ -25,24 +25,12 @@
 				 type="win32"
 				 name="Microsoft.Windows.Common-Controls"
 				 version="6.0.0.0"
-				 processorArchitecture="x86"
+				 processorArchitecture="arm64"
 				 publicKeyToken="6595b64144ccf1df"
 				 language="*"
 			/>
 		</dependentAssembly>
 	</dependency>
-
-	<trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
-		<security>
-			<requestedPrivileges>
-				<!-- UAC settings:
-				    - app should run at same integrity level as calling process
-				    - app does not need to manipulate windows belonging to higher-integrity-level processes
-				-->
-				<requestedExecutionLevel level="asInvoker" uiAccess="false" />
-			</requestedPrivileges>
-		</security>
-	</trustInfo>
 
 </assembly>
 

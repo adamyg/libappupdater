@@ -5,6 +5,8 @@ compat/
 # MSVC working
 Debug.vs*/
 Release.vs*/
+Debug/
+Release/
 .vs*/
 *.vcxproj.user
 *.VC.opendb

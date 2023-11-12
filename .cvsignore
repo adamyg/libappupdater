@@ -1,5 +1,7 @@
 Debug.vs*
 Release.vs*
+Debug
+Release
 Makefile
 AppUpdater.aps
 *.vs*.opendb

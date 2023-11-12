@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: VTSupport.h,v 1.8 2023/10/24 13:56:24 cvsuser Exp $
+//  $Id: VTSupport.h,v 1.9 2023/11/12 12:51:29 cvsuser Exp $
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
