@@ -110,7 +110,7 @@
     <ResourceCompile Include="..\src\AutoUpdater.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D2998A79-52C1-4CF1-A166-9AC6C0AA7E3B}</ProjectGuid>
+    <ProjectGuid>{78313210-0B94-4914-87A7-D76EBD85B7F9}</ProjectGuid>
     <RootNamespace>AutoUpdater</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
