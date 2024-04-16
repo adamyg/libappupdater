@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: VTColors.h,v 1.6 2023/10/24 13:56:24 cvsuser Exp $
+//  $Id: VTColors.h,v 1.7 2024/04/16 14:15:34 cvsuser Exp $
 //
 //  https://developer.mozilla.org/ko/docs/Web/CSS/color_value
 //
@@ -166,7 +166,7 @@ namespace RGBColors {
         VTColor rgb;
     };
 
-    const struct RGBName *names()
+    static const struct RGBName *names()
     {
         static struct RGBName names[] = {
 #if defined(__WATCOMC__)
