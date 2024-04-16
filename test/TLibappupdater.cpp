@@ -1,4 +1,4 @@
-//  $Id: TLibappupdater.cpp,v 1.5 2023/10/23 12:45:14 cvsuser Exp $
+//  $Id: TLibappupdater.cpp,v 1.6 2024/04/16 14:17:01 cvsuser Exp $
 //
 //  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
 //
@@ -42,7 +42,6 @@ main()
     return 0;
 }
 
-
 static void
 press(const char *msg = "Press ESC to continue ...")
 {
@@ -55,7 +54,7 @@ press(const char *msg = "Press ESC to continue ...")
 static void
 stream()
 {
-    const char abc[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ|abcdefghijklmnopqrstuvwxyz";
+    static const char abc[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ|abcdefghijklmnopqrstuvwxyz";
     std::ostream &out = std::cout;
     VTStream<std::ostream> strm(std::cout);
 
