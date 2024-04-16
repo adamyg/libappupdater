@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: CSimpleBrowser.h,v 1.10 2023/10/17 12:33:58 cvsuser Exp $
+//  $Id: CSimpleBrowser.h,v 1.11 2024/04/07 15:11:40 cvsuser Exp $
 //
 //  AutoUpdater: Browser widget.
 //
@@ -46,7 +46,7 @@
 #endif
 #include <Windows.h>
 
-#if defined(_MSC_VER) && (_MSC_VER <= 1500)
+#if defined(_MSC_VER) && (_MSC_VER <= 1600)
 #define _Outptr_
 #define _Reserved_ 
 #define _In_reads_opt_(x)
