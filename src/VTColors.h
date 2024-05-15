@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: VTColors.h,v 1.7 2024/04/16 14:15:34 cvsuser Exp $
+//  $Id: VTColors.h,v 1.8 2024/05/15 09:42:19 cvsuser Exp $
 //
 //  https://developer.mozilla.org/ko/docs/Web/CSS/color_value
 //
@@ -172,6 +172,10 @@ namespace RGBColors {
 #if defined(__WATCOMC__)
 #define XRGBNAME__(name__)      { #name__, RGBColors::name__ }
 #else
+#if defined(_MSC_VER) && (_MSC_VER <= 1500)
+#pragma warning(push)
+#pragma warning(disable : 4482)
+#endif
 #define XRGBNAME__(name__)      { #name__, Color::name__ }
 #endif
             XRGBNAME__(black               ),
@@ -325,6 +329,9 @@ namespace RGBColors {
 #if defined(__WATCOMC__)
             { NULL, RGBColors::black }
 #else
+#if defined(_MSC_VER) && (_MSC_VER <= 1500)
+#pragma warning(pop)
+#endif
             { NULL, Color::black }
 #endif
 #undef XRGBNAME

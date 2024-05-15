@@ -1,4 +1,4 @@
-//  $Id: NSLocalizedCollectionImpl.cpp,v 1.12 2023/10/24 13:56:23 cvsuser Exp $
+//  $Id: NSLocalizedCollectionImpl.cpp,v 1.13 2024/05/15 08:28:33 cvsuser Exp $
 //
 //  NSLocalization - Collection implementation
 //
@@ -103,7 +103,7 @@ NSLocalizedCollectionImpl::Logger::error(const char *fmt, ...)
     va_list ap;
 
     va_start(ap, fmt);
-#if defined(_MSC_VER) && (_MSC_VER <= 1500)
+#if defined(_MSC_VER) && (_MSC_VER <= 1600)
     _vsnprintf(buffer, sizeof(buffer)-1, fmt, ap);
 #else
     std::vsnprintf(buffer, sizeof(buffer)-1, fmt, ap);
