@@ -1,9 +1,9 @@
 #pragma once
-//  $Id: VTSupport.h,v 1.9 2023/11/12 12:51:29 cvsuser Exp $
+//  $Id: VTSupport.h,v 1.10 2025/02/21 19:03:23 cvsuser Exp $
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2022 - 2023, Adam Young
+//  Copyright (c) 2022 - 2025, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,7 @@ struct VTColor {
         return *this;
     }
     VTColor scale(unsigned value = 3) const {
-        return VTColor(r / value, g / value, b / value);
+        return VTColor(static_cast<uint8_t>(r / value), static_cast<uint8_t>(g / value), static_cast<uint8_t>(b / value));
     }
     uint8_t r, g, b;
 };

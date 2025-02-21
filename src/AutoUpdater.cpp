@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.29 2023/10/24 13:56:23 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.30 2025/02/21 19:03:23 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //
@@ -39,7 +39,7 @@
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2023, Adam Young
+//  Copyright (c) 2012 - 2025, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

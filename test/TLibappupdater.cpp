@@ -1,8 +1,8 @@
-//  $Id: TLibappupdater.cpp,v 1.6 2024/04/16 14:17:01 cvsuser Exp $
+//  $Id: TLibappupdater.cpp,v 1.7 2025/02/21 19:03:24 cvsuser Exp $
 //
 //  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2022 - 2023 Adam Young
+//  Copyright (c) 2022 - 2025 Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

@@ -1,12 +1,12 @@
 #ifndef AUTOUPDATER_H_INCLUDED
 #define AUTOUPDATER_H_INCLUDED
-//  $Id: AutoUpdater.h,v 1.19 2023/10/17 12:33:57 cvsuser Exp $
+//  $Id: AutoUpdater.h,v 1.20 2025/02/21 19:03:23 cvsuser Exp $
 //
 //  AutoUpdater: application interface.
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2023, Adam Young
+//  Copyright (c) 2012 - 2025, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

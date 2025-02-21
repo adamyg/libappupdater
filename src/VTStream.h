@@ -1,9 +1,9 @@
 #pragma once
-//  $Id: VTStream.h,v 1.4 2023/10/24 13:56:24 cvsuser Exp $
+//  $Id: VTStream.h,v 1.5 2025/02/21 19:03:23 cvsuser Exp $
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2022 - 2023, Adam Young
+//  Copyright (c) 2022 - 2025, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

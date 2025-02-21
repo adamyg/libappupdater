@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: NSFormat.h,v 1.8 2023/10/17 12:33:56 cvsuser Exp $
+//  $Id: NSFormat.h,v 1.9 2025/02/21 19:03:23 cvsuser Exp $
 //
 //  NSLocalization - String
 //
@@ -117,8 +117,8 @@ public:
 	struct Field {
 		const char *start, *fmt, *end;
 		unsigned short flags;
-		short width_arg, width;
-		short precision_arg, precision;
+		int width_arg, width;
+		int precision_arg, precision;
 		int value_arg;
 		ioflags_t ioflags;
 		char spec;
