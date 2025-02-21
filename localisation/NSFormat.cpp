@@ -1,4 +1,4 @@
-/*  $Id: NSFormat.cpp,v 1.7 2023/10/24 13:56:23 cvsuser Exp $
+/*  $Id: NSFormat.cpp,v 1.8 2025/02/21 19:03:23 cvsuser Exp $
  *
  *  NSLocalization - String.
  *
@@ -897,7 +897,7 @@ next:;
 				break;
 			}
 		}
-		f->spec = ch;
+		f->spec = (char)ch;
 		f->flags = flags;
 		f->ioflags = ioflags;
 		f->end = fmt;
@@ -981,7 +981,7 @@ done:	if (maxarg >= (int)argno) {
 #endif
 #ifdef PRINTF_WIDE_CHAR
 		case T_WINT:
-			arg->val.wintarg = va_arg(ap, int /*wint_t*/);
+			arg->val.wintarg = (wint_t)va_arg(ap, int /*wint_t*/);
 			break;
 		case TP_WCHAR:
 			arg->val.pwchararg = va_arg(ap, const wchar_t *);

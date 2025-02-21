@@ -1,10 +1,10 @@
-//  $Id: AutoDownLoad.cpp,v 1.21 2023/10/24 13:56:23 cvsuser Exp $
+//  $Id: AutoDownLoad.cpp,v 1.22 2025/02/21 19:03:23 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2023, Adam Young
+//  Copyright (c) 2012 - 2025, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -215,7 +215,7 @@ Download::cancel()
 //
 
 FileDownloadSink::FileDownloadSink(const char *filename) :
-    filename_(filename?filename:""), filesize_(-1), handle_(INVALID_HANDLE_VALUE) 
+    filename_(filename?filename:""), filesize_((size_t)-1), handle_(INVALID_HANDLE_VALUE) 
 {
 }
 
@@ -550,7 +550,7 @@ DownloadContext::execute()
     // request
 again:
     request_handle =
-        ::InternetOpenUrlA(session_handle, canonical_url, NULL, -1, dwFlags, (DWORD_PTR)this);
+        ::InternetOpenUrlA(session_handle, canonical_url, NULL, (DWORD)-1, dwFlags, (DWORD_PTR)this);
     if (! request_handle) {
         const DWORD ret = GetLastError();
         if (ERROR_IO_PENDING != ret) {

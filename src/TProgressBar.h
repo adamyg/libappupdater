@@ -1,11 +1,11 @@
 #pragma once
-//  $Id: TProgressBar.h,v 1.6 2023/10/17 12:33:58 cvsuser Exp $
+//  $Id: TProgressBar.h,v 1.7 2025/02/21 19:03:23 cvsuser Exp $
 //
 //  TProgressBar
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2023, Adam Young
+//  Copyright (c) 2012 - 2025, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

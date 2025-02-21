@@ -1,11 +1,11 @@
 #pragma once
-//  $Id: CSimpleBrowser.h,v 1.11 2024/04/07 15:11:40 cvsuser Exp $
+//  $Id: CSimpleBrowser.h,v 1.12 2025/02/21 19:03:23 cvsuser Exp $
 //
 //  AutoUpdater: Browser widget.
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2012 - 2023, Adam Young
+//  Copyright (c) 2012 - 2025, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
