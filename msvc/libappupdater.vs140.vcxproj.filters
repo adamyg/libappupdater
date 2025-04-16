@@ -36,9 +36,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\expat\xmlparse.c">
-      <Filter>Source Files\expat</Filter>
-    </ClCompile>
     <ClCompile Include="..\expat\xmlrole.c">
       <Filter>Source Files\expat</Filter>
     </ClCompile>
@@ -110,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="..\localisation\test\NSFormatTests.cpp">
       <Filter>Source Files\localisation\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\expat\xmlparse.c">
+      <Filter>Source Files\expat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

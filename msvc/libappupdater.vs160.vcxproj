@@ -22,9 +22,7 @@
     <ClCompile Include="..\cjson\cJSON.c" />
     <ClCompile Include="..\cjson\cJSON_Utils.c" />
     <ClCompile Include="..\expat\xmlparse.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\libautoupdater.cpp" />
@@ -111,10 +109,10 @@
     <ResourceCompile Include="..\src\AutoUpdater.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D2998A79-52C1-4CF1-A166-9AC6C0AA7E3B}</ProjectGuid>
+    <ProjectGuid>{EBA010B5-F14F-4AED-9E6B-D519BACD1615}</ProjectGuid>
     <RootNamespace>AutoUpdater</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>libappupdater</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -164,9 +162,9 @@
     <_ProjectFileVersion>14.0.25431.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
-    <IntDir>$(Configuration).vs160\$(Platform)\libappupdater\</IntDir>
-    <TargetName>libappupdater.vs160.1.0.1</TargetName>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>libappupdater.vs160.1.0.1</TargetName>
@@ -174,10 +172,10 @@
     <IntDir>$(Configuration).vs160\$(Platform)\libappupdater\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
-    <IntDir>$(Configuration).vs160\$(Platform)\libappupdater\</IntDir>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>libappupdater.vs160.1.0.1</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -188,7 +186,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\src;$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\src;$(ProjectDir)..\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;WIN32;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -248,7 +246,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\src;$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\src;$(ProjectDir)..\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;WIN32;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>

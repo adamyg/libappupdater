@@ -201,7 +201,7 @@ Config::GetStringFileInfo()
 
     const struct TranslationInfo *translations = NULL;
     UINT count = 0, phase, idx = 0;
-    WORD lang;
+    WORD lang = 0;
 
     if (! ::VerQueryValue((void *)GetVerInfoData(), TEXT("\\VarFileInfo\\Translation"), (LPVOID *)&translations, &count)) {
         throw SysException("Executable does not have required VERSIONINFO\\VarFileInfo resource");
