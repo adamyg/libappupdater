@@ -34,6 +34,12 @@
     <Filter Include="Source Files\localisation\test">
       <UniqueIdentifier>{bf59cbf9-438a-4170-9754-c2fc66cbd620}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\cjson">
+      <UniqueIdentifier>{fbd63120-c8cc-4eae-b104-461796b7709f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\cjson">
+      <UniqueIdentifier>{6c568c15-e086-42d9-ad0c-1a3bc3e20abc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\expat\xmlparse.c">
@@ -110,6 +116,15 @@
     </ClCompile>
     <ClCompile Include="..\localisation\test\NSFormatTests.cpp">
       <Filter>Source Files\localisation\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cjson\cJSON.c">
+      <Filter>Source Files\cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cjson\cJSON_Utils.c">
+      <Filter>Source Files\cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\AutoGitHub.cpp">
+      <Filter>Source Files\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +270,15 @@
     </ClInclude>
     <ClInclude Include="..\localisation\NSFormat.h">
       <Filter>Header Files\localisation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cjson\cJSON.h">
+      <Filter>Header Files\cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cjson\cJSON_Utils.h">
+      <Filter>Header Files\cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\AutoGitHub.h">
+      <Filter>Header Files\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

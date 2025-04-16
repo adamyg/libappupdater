@@ -1,4 +1,4 @@
-//  $Id: AutoConsole.cpp,v 1.15 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoConsole.cpp,v 1.16 2025/04/16 11:33:48 cvsuser Exp $
 //
 //  AutoUpdater: console interface.
 //
@@ -114,7 +114,7 @@ AutoConsoleUI::PromptDialog(AutoUpdater &owner)
 int
 AutoConsoleUI::InstallDialog(AutoUpdater &owner)
 {
-    // dialogue
+    // dialog
     if (! owner.Manifest().title.empty())
      std::cout
         << "[" << owner.Manifest().title << "]\n";

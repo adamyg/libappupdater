@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\cjson\cJSON.c" />
+    <ClCompile Include="..\cjson\cJSON_Utils.c" />
     <ClCompile Include="..\expat\xmlparse.c">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -35,6 +37,7 @@
     <ClCompile Include="..\src\AutoDialog.cpp" />
     <ClCompile Include="..\src\AutoDownload.cpp" />
     <ClCompile Include="..\src\AutoError.cpp" />
+    <ClCompile Include="..\src\AutoGitHub.cpp" />
     <ClCompile Include="..\src\AutoLogger.cpp" />
     <ClCompile Include="..\src\AutoManifest.cpp" />
     <ClCompile Include="..\src\AutoUpdater.cpp" />
@@ -57,6 +60,8 @@
     <Image Include="..\art\software-update-available.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\cjson\cJSON.h" />
+    <ClInclude Include="..\cjson\cJSON_Utils.h" />
     <ClInclude Include="..\expat\amigaconfig.h" />
     <ClInclude Include="..\expat\ascii.h" />
     <ClInclude Include="..\expat\asciitab.h" />
@@ -82,6 +87,7 @@
     <ClInclude Include="..\src\AutoDialog.h" />
     <ClInclude Include="..\src\AutoDownload.h" />
     <ClInclude Include="..\src\AutoError.h" />
+    <ClInclude Include="..\src\AutoGitHub.h" />
     <ClInclude Include="..\src\AutoLogger.h" />
     <ClInclude Include="..\src\AutoManifest.h" />
     <ClInclude Include="..\src\AutoThread.h" />

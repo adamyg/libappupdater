@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.30 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.31 2025/04/16 11:33:48 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //
@@ -78,6 +78,7 @@
 #include "AutoLogger.h"
 #include "AutoThread.h"
 #include "AutoDownload.h"
+#include "AutoGitHub.h"
 
 #include <Wincrypt.h>
 #include <Rpc.h>                                // UnidCreate()
@@ -127,7 +128,8 @@ using namespace Updater;
 
 class AutoUpdaterImpl {
 public:
-    AutoUpdaterImpl(IAutoUpdaterUI *dialog) : d_dialog(dialog) {
+    AutoUpdaterImpl(IAutoUpdaterUI *dialog) : 
+        d_dialog(dialog), d_hTopWnd(0) {
     }
 
     ~AutoUpdaterImpl() {
@@ -567,10 +569,30 @@ AutoUpdater::IsAvailable(bool interactive)
     int ret = -1;
     try {                                       // guard progress dialog.
         Updater::AutoManifest &d_manifest = d_impl->d_manifest;
+        std::string manifest_url = feed_url;
+        Updater::GitHub github;
         StringDownloadSink manifest;
         Download inet;
 
-        if (inet.get(feed_url, manifest, DownloadFlags())) {
+        // GitHub redirection
+        if (github.IsEndpoint(feed_url)) {
+            std::string result;
+
+            if (! github.GetLatestRelease(feed_url, inet, DownloadFlags(), result)) {
+                d_impl->SetLastError(result);
+                return -1;
+            }
+
+            if (result.empty()) {
+                d_impl->SetLastError("GitHub manifest not available");
+                return -1;
+            }
+
+            manifest_url = result;
+        }
+
+        // Retrieve manifest
+        if (inet.get(manifest_url, manifest, DownloadFlags())) {
 
             if (! inet.completion()) {          // manifest available.
                 d_impl->SetLastError("Unable to download manifest");
@@ -621,7 +643,7 @@ AutoUpdater::IsAvailable(bool interactive)
     }
 
     if (interactive && ProgressStop()) {
-        ret = -1;                               // user cancelled
+        ret = -1;                               // user canceled
     }
 
     return ret;                                 // channel not available
@@ -845,8 +867,8 @@ AutoUpdater::GetTargetName()
         UUID uuid = {0};
 
         // generate UUID
-        ::UuidCreate(&uuid);
-        ::UuidToStringA(&uuid, &uuidStr);
+        (void) ::UuidCreate(&uuid);
+        (void) ::UuidToStringA(&uuid, &uuidStr);
         tempdir += reinterpret_cast<const char *>(uuidStr);
         ::RpcStringFreeA(&uuidStr);
 

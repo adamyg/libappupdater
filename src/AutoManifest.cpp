@@ -1,4 +1,4 @@
-//  $Id: AutoManifest.cpp,v 1.16 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoManifest.cpp,v 1.17 2025/04/16 11:33:48 cvsuser Exp $
 //
 //  AutoUpdater: Update manifest.
 //
@@ -142,6 +142,7 @@ struct ParserContext {
             releaseNotesLink_level(0),
             version_level(0),
             minimumSystemVersion_level(0),
+            tags_level(0),
             criticalUpdate_level(0),
             installerArguments_level(0),
             published_level(0),
@@ -247,26 +248,26 @@ struct ParserContext {
 typedef DWORD (__stdcall *RtlGetVersion_t)(OSVERSIONINFOW *);
 
 static BOOL RtlGetVersion(OSVERSIONINFOW &version) {
-    static RtlGetVersion_t fnRtlGetVersion = NULL;
+    static RtlGetVersion_t fnRtlGetVersion = (RtlGetVersion_t)-1;
 
-    if (NULL == fnRtlGetVersion) {              // one-shot
+    if ((RtlGetVersion_t)-1 == fnRtlGetVersion) {
+        // one-shot
         HMODULE ntdll = ::GetModuleHandleA("ntdll.dll");
+
+        fnRtlGetVersion = NULL;
         if (ntdll) {
 #if defined(GCC_VERSION) && (GCC_VERSION >= 80000)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-function-type"
 #endif
             fnRtlGetVersion = (RtlGetVersion_t) ::GetProcAddress(ntdll, "RtlGetVersion");
-            if (NULL == fnRtlGetVersion) {
-                fnRtlGetVersion = (RtlGetVersion_t)-1;
-            }
 #if defined(GCC_VERSION) && (GCC_VERSION >= 80000)
 #pragma GCC diagnostic pop
 #endif
         }
     }
 
-    if ((RtlGetVersion_t)-1 != fnRtlGetVersion) {
+    if (fnRtlGetVersion) {
         if (fnRtlGetVersion(&version) == 0 /*STATUS_SUCCESS*/) {
             return true;
         }
@@ -316,6 +317,7 @@ ParserContext::SelectionWeight(const AutoManifest &manifest)
 
 #if defined(_MSC_VER)
 #pragma warning(disable:4996)
+#pragma warning(disable:28159) // IsWindows verses GetVersionEx
 #endif
         if (elements >= 1 && GetVersionExW(&cvi)) {
             if (cvi.dwMajorVersion > 6 ||       // vista+

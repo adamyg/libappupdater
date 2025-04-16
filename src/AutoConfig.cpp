@@ -1,4 +1,4 @@
-//  $Id: AutoConfig.cpp,v 1.21 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoConfig.cpp,v 1.22 2025/04/16 11:33:48 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
@@ -92,18 +92,20 @@ XRegDeleteKeyExA(HKEY hKey, const char *lpSubKey, REGSAM samDesired, DWORD Reser
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-function-type"
 #endif
-        x_RegDeleteKeyExA = (RegDeleteKeyExA_t)GetProcAddress(hAdvAPI32, "RegDeleteKeyExA");
-        if (NULL == x_RegDeleteKeyExA) {        // assign enumlation
-            LOG<LOG_DEBUG>() << "RegDeleteKeyExA enumlation" << LOG_ENDL;
-            x_RegDeleteKeyExA = MyRegDeleteKeyExA;
-            FreeLibrary(hAdvAPI32);
-
-        } else {
-            LOG<LOG_DEBUG>() << "RegDeleteKeyExA available" << LOG_ENDL;
+        if (hAdvAPI32) {
+            x_RegDeleteKeyExA = (RegDeleteKeyExA_t)GetProcAddress(hAdvAPI32, "RegDeleteKeyExA");
+            if (NULL == x_RegDeleteKeyExA) {
+                FreeLibrary(hAdvAPI32);
+            }
         }
 #if defined(GCC_VERSION) && (GCC_VERSION >= 80000)
 #pragma GCC diagnostic pop
 #endif
+
+        if (NULL == x_RegDeleteKeyExA) {    // assign enumeration
+            LOG<LOG_DEBUG>() << "RegDeleteKeyExA not-available" << LOG_ENDL;
+            x_RegDeleteKeyExA = MyRegDeleteKeyExA;
+        }
     }
     return (*x_RegDeleteKeyExA)(hKey, lpSubKey, samDesired, Reserved);
 }
@@ -153,7 +155,7 @@ Config::GetVerInfoData()
 
     version_info_.allocate(fiSize);
     if (NULL == version_info_.data() ||
-            ! GetFileVersionInfoW(module, dwHandle, fiSize, version_info_.data())) {
+            ! GetFileVersionInfoW(module, 0, fiSize, version_info_.data())) {
         throw SysException("GetFileVersionInfo");
     }
 
@@ -540,7 +542,7 @@ Config::GetBuildLabel()
 
             if (dwFileFlags & VS_FF_DEBUG) label += "debug,";
             if (dwFileFlags & VS_FF_PATCHED) label += "patched,";
-            if (dwFileFlags & VS_FF_PRERELEASE) label += "prerelease,";
+            if (dwFileFlags & VS_FF_PRERELEASE) label += "pre-release,";
          // if (dwFileFlags & VS_FF_PRIVATEBUILD) label += "PRIVATEBUILD,";
          // if (dwFileFlags & VS_FF_SPECIALBUILD) label += "SPECIALBUILD,";
             if (label.size() > 2) label.resize(label.size () - 1);

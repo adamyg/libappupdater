@@ -1,4 +1,4 @@
-//  $Id: AutoDownLoad.cpp,v 1.22 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoDownLoad.cpp,v 1.23 2025/04/16 11:33:48 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
@@ -571,7 +571,7 @@ again:
     DWORD status_code = 0, status_code_len = sizeof(status_code);
     if (! HttpQueryInfo(request_handle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, 
             &status_code, &status_code_len, 0)) {
-        InternetError("Reading internet connection");
+        InternetError("Reading Internet connection");
 
     } else if (status_code >= 400) {                // error, decode and report
         DWORD http_msg_len = 0;
@@ -649,14 +649,17 @@ again:
     }
 
     // read content
-    char buffer[8 * 1024];
+#define BUFSIZE     (16 * 1024)
+    char *buffer = static_cast<char *>(malloc(BUFSIZE));
+    if (NULL == buffer)
+        throw AppException("Unable to allocate download buffer");
 
-    (void) memset(buffer, 0, sizeof(buffer));
+    (void) memset(buffer, 0, BUFSIZE);
     if (sink.open()) {
         for (;;) {
             DWORD read = 0;
-            if (! InternetReadFile(request_handle, buffer, sizeof(buffer), &read)) {
-                throw SysException("Reading internet connection");
+            if (! InternetReadFile(request_handle, buffer, BUFSIZE, &read)) {
+                throw SysException("Reading Internet connection");
             }
 
             if (0 == read)
@@ -667,6 +670,7 @@ again:
         }
         sink.close();
     }
+    free(buffer);
 
     return true;
 }

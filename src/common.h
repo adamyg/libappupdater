@@ -1,4 +1,4 @@
-//  $Id: common.h,v 1.17 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: common.h,v 1.18 2025/04/16 11:33:48 cvsuser Exp $
 //
 //  AutoUpdater: Common definitions.
 //
@@ -62,6 +62,8 @@
 
 #if defined(_MSC_VER)
 #pragma warning(disable:4267)                   // 'argument': conversion from 'size_t' to 'int', possible loss of data.
+#pragma warning(disable:6031)                   // Ignore return value.
+#pragma warning(disable:26812)                  // Prefer 'enum class'
 #endif
 
 #if defined(__WATCOMC__)

@@ -1,6 +1,6 @@
 #ifndef AUTOVERSION_H_INCLUDED
 #define AUTOVERSION_H_INCLUDED
-//  $Id: AutoVersion.h,v 1.12 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoVersion.h,v 1.13 2025/04/16 11:33:48 cvsuser Exp $
 //
 //  AutoUpdater: Version comparison.
 //
@@ -151,7 +151,7 @@ namespace Updater {
 //
 class AutoVersion {
 public:
-    AutoVersion():  epoch_(0), upstream_(NULL), revision_(NULL)
+    AutoVersion():  epoch_(0), upstream_(), revision_()
         { }
     AutoVersion(const AutoVersion& other) {
         *this = other;

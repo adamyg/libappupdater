@@ -1,6 +1,6 @@
 #ifndef AUTOMANIFEST_H_INCLUDED
 #define AUTOMANIFEST_H_INCLUDED
-//  $Id: AutoManifest.h,v 1.12 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoManifest.h,v 1.13 2025/04/16 11:33:48 cvsuser Exp $
 //
 //  AutoUpdater: application manifest.
 //
@@ -33,6 +33,10 @@
 namespace Updater {
 class AutoManifest {
 public:
+    AutoManifest() :
+        published(0), weight(0)
+    {}
+
     std::string     BuildLabel;                 // Optional build label, "release", "debug" etc.
     std::string     OSLabel;                    // Operating system target "windows[-x86|-x64]"
 

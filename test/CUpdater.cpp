@@ -61,8 +61,9 @@ CUpdaterApp::Run()
     au.AppVersion("0.0.1");
 
   //au.HostURL("file:///./example/grief.manifest");
-    au.HostURL("https://sourceforge.net/projects/grief/files/grief.manifest/download");
+  //au.HostURL("https://sourceforge.net/projects/grief/files/grief.manifest/download");
   //au.HostURL("https://master.dl.sourceforge.net/project/grief/grief.manifest?viasf=1");
+    au.HostURL("https://api.github.com/repos/adamyg/mcwin32~mcwin32.manifest");
 
     au.Execute(AutoUpdater::ExecuteReinstall, true);
 
