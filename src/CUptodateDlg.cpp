@@ -1,4 +1,4 @@
-//  $Id: CUptodateDlg.cpp,v 1.14 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: CUptodateDlg.cpp,v 1.15 2025/04/16 11:33:48 cvsuser Exp $
 //
 //  AutpUpdater: Up-to-date dialog.
 //
@@ -82,7 +82,7 @@ CUpdateUptoDateDlg::OnCtlColorStatic(WPARAM wParam, LPARAM lParam)
 {
     if (::GetDlgItem(d_hWnd, IDC_UPTODATE_TITLE) == (HWND)lParam) {
         ::SetTextColor((HDC)wParam, RGB(0x56, 0x96, 0xBC));     // Steel Blue.
-        return (LRESULT) ::GetSysColorBrush(COLOR_3DFACE);      // Dialog backgrond.
+        return (LRESULT) ::GetSysColorBrush(COLOR_3DFACE);      // Dialog background.
     }
     return 0;
 }

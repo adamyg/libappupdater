@@ -1,4 +1,4 @@
-//  $Id: TProgressBar.cpp,v 1.16 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: TProgressBar.cpp,v 1.17 2025/04/16 11:33:48 cvsuser Exp $
 //
 //  AutoUpdater: TProgressDialog.
 //
@@ -311,7 +311,7 @@ TProgressBar::UpdateDefault()
             if (! text_msg_.empty())
                 out << text_msg_ << " .. ";
             if (cancel_msg_.empty()) {
-                out << "cancelling";
+                out << "canceling";
             } else {
                 out << cancel_msg_;
             }
@@ -520,7 +520,7 @@ TProgressBar::UpdateVT()
         vt_.normal(out);
         if (cancelable_ && HasUserCancelled()) {
             if (cancel_msg_.empty()) {
-                out << " Cancelling";
+                out << " Canceling";
             } else {
                 out << ' ' << cancel_msg_;
             }

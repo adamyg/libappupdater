@@ -1,6 +1,6 @@
 #ifndef AUTODOWNLOAD_H_INCLUDED
 #define AUTODOWNLOAD_H_INCLUDED
-//  $Id: AutoDownLoad.h,v 1.15 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoDownLoad.h,v 1.16 2025/04/16 11:33:48 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
@@ -80,7 +80,7 @@ public:
     }
 
 private:
-    std::string t_destination;                  // local payload.
+    std::string t_destination;              // local payload.
     std::string *data_;
 };
 

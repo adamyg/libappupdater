@@ -1,6 +1,6 @@
 #ifndef AUTOLOGGER_H_INCLUDED
 #define AUTOLOGGER_H_INCLUDED
-//  $Id: AutoLogger.h,v 1.17 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoLogger.h,v 1.19 2025/04/16 11:59:28 cvsuser Exp $
 //
 //  AutoUpdater: logger.
 //
@@ -90,7 +90,7 @@ public:
     release_instance();
 
     /**
-      * set the logger output basepath.
+      * set the logger output base-path.
       */
     static void
     SetBasePath(const char *baseapth);
@@ -114,7 +114,7 @@ public:
     GetLevel() const;
 
     /**
-      * Enable/diable diagnostics to stdout, in addition to the active log stream.
+      * Enable/disable diagnostics to stdout, in addition to the active log stream.
       */
     void
     SetStdout(bool val);
@@ -145,7 +145,7 @@ private:
     CloseFile();
 
     /**
-      * Current timestamp.
+      * Current time-stamp.
       */
     const char *
     Timestamp(char *buffer, size_t buflen);
@@ -162,11 +162,13 @@ private:
       */
     struct thread_instance {
 #if defined(__WATCOMC__)
-        thread_instance() : text(buffer, sizeof(buffer)-2/*nl+nul*/) {
+        thread_instance() : 
+            text(buffer, sizeof(buffer)-2/*nl+nul*/) {
         }
         std::ostrstream text;
 #else
-        thread_instance() : text(buffer, sizeof(buffer)-2/*nl+nul*/) {
+        thread_instance() :
+            text(buffer, sizeof(buffer)-2/*nl+nul*/), textlevel(LOG_ERROR) {
         }
         boost::interprocess::obufferstream text;
 #endif
@@ -186,7 +188,17 @@ private:
     bool stdout_;
     std::ofstream file_;
 };
-  
+
+struct character_view {
+    character_view(const char *start, const char *end) : start(start), end(end) {}
+    const char *start, *end;
+    
+    inline std::ostream&
+    push(std::ostream &os) const {
+        os.write(this->start, this->end - this->start);
+        return os;
+    }
+};
 
 template<enum LogLevel level>
 std::ostream& LOG() {
@@ -197,20 +209,18 @@ std::ostream& LOG() {
 #define LOG_ENDL '\n'; Logger::get_instance()->Flush()
 #else
 inline std::ostream&
-LOG_ENDL(std::ostream& out) {
-    out << '\n'; Logger::get_instance()->Flush();
-    return out;
+LOG_ENDL(std::ostream& os) {
+    os << '\n'; Logger::get_instance()->Flush();
+    return os;
 }
 #endif
 
 // MFC/DLL Thread local storage
 typedef void (*TlsDestroy_t)(void *);
 
-bool  LoggerTlsSetValue(void *data, void (*destroy)(void *));
+bool LoggerTlsSetValue(void *data, void (*destroy)(void *));
 void *LoggerTlsGetValue(void);
 
 }   // namespace Updater
 
 #endif  //AUTOLOGGER_H_INCLUDED
-
-

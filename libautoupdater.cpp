@@ -1,5 +1,5 @@
 /* -*- mode: c; indent-width: 4; -*- */
-/* $Id: libautoupdater.cpp,v 1.25 2023/11/12 12:51:29 cvsuser Exp $
+/* $Id: libautoupdater.cpp,v 1.28 2025/04/16 12:08:23 cvsuser Exp $
  *
  *  libautoupdater cdecl interface.
  *
@@ -15,7 +15,7 @@
  *      autoupdate_isavailable
  *      autoupdate_execute
  *
- *  Copyright (c) 2012 - 2023 Adam Young
+ *  Copyright (c) 2012 - 2025 Adam Young
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal

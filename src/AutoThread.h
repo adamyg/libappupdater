@@ -1,6 +1,6 @@
 #ifndef AUTOTHREAD_H_INCLUDED
 #define AUTOTHREAD_H_INCLUDED
-//  $Id: AutoThread.h,v 1.10 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoThread.h,v 1.11 2025/04/16 11:33:48 cvsuser Exp $
 //
 //  AutoUpdater: misc definitions and functionality
 //
@@ -54,7 +54,16 @@ public:
 
 public:
     CriticalSection()
-        { ::InitializeCriticalSection(&m_cs); }
+        { 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable:28125) // Try/Catch needed; XP only
+#endif
+            ::InitializeCriticalSection(&m_cs);
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+        }
     ~CriticalSection()
         { ::DeleteCriticalSection(&m_cs); }
 
