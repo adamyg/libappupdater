@@ -1,4 +1,4 @@
-// $Id: TUpdater.cpp,v 1.7 2025/04/21 13:58:28 cvsuser Exp $
+// $Id: TUpdater.cpp,v 1.8 2025/04/21 19:32:12 cvsuser Exp $
 //
 // AutoUpdater -- console test/example application.
 //
