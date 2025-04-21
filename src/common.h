@@ -1,4 +1,4 @@
-//  $Id: common.h,v 1.18 2025/04/16 11:33:48 cvsuser Exp $
+//  $Id: common.h,v 1.19 2025/04/21 13:58:28 cvsuser Exp $
 //
 //  AutoUpdater: Common definitions.
 //
@@ -147,3 +147,4 @@ autosnprintf_s( char * s, size_t n, const char * format, ... )
 #define _countof(array) (sizeof(array) / sizeof(array[0]))
 #endif
 
+//end

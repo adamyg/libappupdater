@@ -1,6 +1,6 @@
-// $Id: TUpdater.cpp,v 1.6 2025/02/21 19:03:24 cvsuser Exp $
+// $Id: TUpdater.cpp,v 1.7 2025/04/21 13:58:28 cvsuser Exp $
 //
-// AutoUpdater -- console test application.
+// AutoUpdater -- console test/example application.
 //
 //  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
 //
@@ -29,13 +29,15 @@
 #include <iostream>
 
 #include "../libautoupdater.h"
+#include "util.h"
 #include "upgetopt.h"
 
 static void                 Usage();
-static const char *         Basename(const char *name);
 
-static const char *         x_progname;
-
+static const char *         progname;
+static const char *         hosturldefault =
+    "https://api.github.com/repos/adamyg/mcwin32~mcwin32.manifest";
+        // "https://sourceforge.net/projects/grief/files/grief.manifest/download";
 
 //  Function: Main
 //      Application entry.
@@ -50,13 +52,14 @@ static const char *         x_progname;
 int
 main(int argc, char *argv[])
 {
-    const char *version = "1.0.2",
-            *hosturl = "https://sourceforge.net/projects/grief/files/grief.manifest/download";
+    const char *version = "1.0.3", *hosturl = hosturldefault;
+    const char *public_pem = NULL;
+    unsigned pem_version = 1; //TODO
     int mode = 2, interactive = 0;
     int ch;
 
-    x_progname = Basename(argv[0]);
-    while (-1 != (ch = Updater::Getopt(argc, argv, "V:H:iL:vh"))) {
+    progname = Updater::Util::Basename(argv[0]);
+    while (-1 != (ch = Updater::Getopt(argc, argv, "V:H:K:k:iL:vh"))) {
         switch (ch) {
         case 'V':   /* application version */
             version = Updater::optarg;
@@ -64,10 +67,16 @@ main(int argc, char *argv[])
         case 'H':   /* host URL */
             hosturl = Updater::optarg;
             break;
+        case 'K':   /* Public key */
+            public_pem = Updater::optarg;
+            break;
+        case 'k':   /* key version; default 1 */
+            pem_version = static_cast<unsigned>(strtoul(Updater::optarg, NULL, 0));
+            break;
         case 'i':   /* interactive */
             ++interactive;
             break;
-        case 'L':   /* logpath */
+        case 'L':   /* log path */
             autoupdate_logger_path(Updater::optarg);
             break;
         case 'v':   /* verbose */
@@ -83,11 +92,11 @@ main(int argc, char *argv[])
     argv += Updater::optind;
     if ((argc -= Updater::optind) < 1) {
         std::cerr << "\n" <<
-            x_progname << ": expected arguments <mode>" << std::endl;
+            progname << ": expected arguments <mode>" << std::endl;
         Usage();
     } else if (argc > 1) {
         std::cerr << "\n" <<
-            x_progname << ": unexpected arguments '" << argv[1] << "' ..." << std::endl;
+            progname << ": unexpected arguments '" << argv[1] << "' ..." << std::endl;
         Usage();
     }
 
@@ -118,16 +127,19 @@ main(int argc, char *argv[])
         return 0;
     } else {
         std::cerr << "\n" <<
-            x_progname << ": unknown mode '" << arg << "'" << std::endl;
+            progname << ": unknown mode '" << arg << "'" << std::endl;
         Usage();
     }
 
+    autoupdate_set_console_mode(1);
     if (mode >= 1) {
+        if (public_pem) {
+            autoupdate_ed25519_pem(public_pem, pem_version);
+        }
         autoupdate_appversion_set(version);
         autoupdate_hosturl_set(hosturl);
     }
 
-    autoupdate_set_console_mode(1);
     return autoupdate_execute(mode, interactive);
 }
 
@@ -146,7 +158,8 @@ Usage()
 {
     std::cerr <<
         "\n"\
-        "Console updater                                            version 1.02\n"\
+        "Console updater\n"\
+        "Version (" << autoupdate_version_string() << ")\n" \
         "\n"\
         "   consoleupdater [options] mode\n"\
         "\n"\
@@ -154,7 +167,7 @@ Usage()
         "   auto -              Periodically check for updates.\n"\
         "   prompt -            Re-prompt user when periodic updates are disabled.\n"\
         "   force -             Unconditionally prompt, even when skipped.\n"\
-        "   reinstall -         Prompt for install, even if uptodate.\n"\
+        "   reinstall -         Prompt for install, even if up-to-date.\n"\
         "   enable -            Enable periodic checks.\n"\
         "   disable -           Disable automatic periodic checks.\n"\
         "   reset -             Reset the updater status.\n"\
@@ -163,23 +176,12 @@ Usage()
         "\n"\
         "Options:\n"\
         "   -V <version>        Version label.\n"\
-        "   -H <host>           Host URL.\n"\
+        "   -H <host>           Host URL, default <" << hosturldefault << ">.\n"\
+        "   -K <public-key>     Public key.\n"\
         "   -i                  Interactive ('auto' only).\n"\
-        "   -v                  Verbose diagnostice.\n"\
+        "   -v                  Verbose diagnostics.\n"\
         "\n" << std::endl;
     exit(99);
-}
-
-
-//  Function: Basename
-//      Retrieve the file basename from the specified file path.
-//
-static const char *
-Basename(const char *filename)
-{
-    const char *name;
-    return (NULL != (name = strrchr(filename, '/')))
-                || (NULL != (name = strrchr(filename, '\\'))) ? name + 1 : filename;
 }
 
 /*end*/

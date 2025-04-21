@@ -1,4 +1,4 @@
-//  $Id: AutoManifest.cpp,v 1.17 2025/04/16 11:33:48 cvsuser Exp $
+//  $Id: AutoManifest.cpp,v 1.18 2025/04/21 13:58:28 cvsuser Exp $
 //
 //  AutoUpdater: Update manifest.
 //
@@ -71,7 +71,7 @@ namespace {
 //          TODO:   <updater:phasedRolloutInterval>xxx</updater:phasedRolloutInterval>
 //
 //                  <updater:criticalUpdate [updater:version="1.2.4"]></updater:criticalUpdate>
-//                                                  ^ optional less than comparision.
+//                                                  ^ optional less than comparison.
 //
 //                  <updater:installerArguments>xxx</installerArguments>
 //
@@ -88,7 +88,8 @@ namespace {
 //                      version=
 //                      shaSignature=
 //                      md5Signature=
-//          TODO:       edSignature=
+//                      edSignature=
+//                      edKeyVersion=
 //                  />
 //              </item>
 //                   :  :
@@ -126,6 +127,7 @@ namespace {
 #define ATTR_SHASIGNATURE       "shaSignature"
 #define ATTR_MD5SIGNATURE       "md5Signature"
 #define ATTR_EDSIGNATURE        "edSignature"
+#define ATTR_EDKEYVERSION       "edKeyVersion"
 
 namespace {
 
@@ -587,7 +589,9 @@ OnStartElement(void *data, const char *name, const char **attrs)
                     } else if (0 == strcmp(var, ATTR_MD5SIGNATURE)) {
                         manifest->attributeMD5Signature = value;
                     } else if (0 == strcmp(var, ATTR_EDSIGNATURE)) {
-                        manifest->attritbuteEDSignature = value;
+                        manifest->attributeEDSignature = value;
+                    } else if (0 == strcmp(var, ATTR_EDKEYVERSION)) {
+                        manifest->attributeEDKeyVersion = value;
                     }
                 }
             }
@@ -727,7 +731,7 @@ OnText(void *data, const char *s, int len)
         } else if (1 == ctx.link_level) {       // <link>
             manifest->link.append(s, len);
 
-        } else if (1 == ctx.description_level) {// <description>
+        } else if (1 == ctx.description_level) { // <description>
             manifest->description.append(s, len);
 
         } else if (1 == ctx.releaseNotesLink_level) { // <updater:releaseNotesLink>
@@ -761,9 +765,9 @@ OnText(void *data, const char *s, int len)
                     char pubDate[32] = {0};
 
 #if defined(__WATCOMC__)
-                    _localtime(&published, &tm);// Sat, 20 Dec 2014 10:00:00
+                    _localtime(&published, &tm); // Sat, 20 Dec 2014 10:00:00
 #else
-                    _localtime64_s(&tm, &published);// Sat, 20 Dec 2014 10:00:00
+                    _localtime64_s(&tm, &published); // Sat, 20 Dec 2014 10:00:00
 #endif
                     strftime(pubDate, sizeof(pubDate), "%a %d %b %Y" /*" %H:%M:%S"*/, &tm);
                     manifest->pubDate = pubDate;
@@ -839,4 +843,3 @@ AutoManifest::IsCriticalUpdate(const std::string &app_version) const
 }
 
 }   // namespace Updater
-

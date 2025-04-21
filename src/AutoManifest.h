@@ -1,6 +1,6 @@
 #ifndef AUTOMANIFEST_H_INCLUDED
 #define AUTOMANIFEST_H_INCLUDED
-//  $Id: AutoManifest.h,v 1.13 2025/04/16 11:33:48 cvsuser Exp $
+//  $Id: AutoManifest.h,v 1.14 2025/04/21 13:58:28 cvsuser Exp $
 //
 //  AutoUpdater: application manifest.
 //
@@ -61,7 +61,8 @@ public:
     std::string     attributeType;              // Image type.
     std::string     attributeSHASignature;      // SHA signature.
     std::string     attributeMD5Signature;      // MD5 signature.
-    std::string     attritbuteEDSignature;      // ED signature (TODO).
+    std::string     attributeEDSignature;       // EdSignature.
+    std::string     attributeEDKeyVersion;      // EdKeyVersion.
 
     mutable unsigned weight;
 

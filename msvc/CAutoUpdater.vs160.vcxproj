@@ -75,7 +75,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
-    <IntDir>$(Configuration).vs160\$(Platform)\AutoUpdater\</IntDir>
+    <IntDir>$(Configuration).vs160\$(Platform)\CAutoUpdater\</IntDir>
     <LinkIncremental>true</LinkIncremental>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
@@ -91,7 +91,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
-    <IntDir>$(Configuration).vs160\$(Platform)\AutoUpdater\</IntDir>
+    <IntDir>$(Configuration).vs160\$(Platform)\CAutoUpdater\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
@@ -242,14 +242,14 @@
     <ClInclude Include="..\src\CUpdateInstallDlg.h" />
     <ClInclude Include="..\src\CUpdatePromptDlg.h" />
     <ClInclude Include="..\src\CUptodateDlg.h" />
-    <ClInclude Include="..\test\CUpdater.h" />
-    <ClInclude Include="..\test\resource.h" />
+    <ClInclude Include="..\util\CUpdater.h" />
+    <ClInclude Include="..\util\resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\test\CUpdater.cpp" />
+    <ClCompile Include="..\util\CUpdater.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\test\CUpdater.rc" />
+    <ResourceCompile Include="..\util\CUpdater.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

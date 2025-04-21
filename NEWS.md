@@ -6,5 +6,10 @@
 
 * github release/latest support
 
+# libappupdater 1.0.3
+
+* Ed25519 support
+
+
 
 

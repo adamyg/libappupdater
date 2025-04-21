@@ -1,4 +1,4 @@
-//  $Id: AutoDownLoad.cpp,v 1.23 2025/04/16 11:33:48 cvsuser Exp $
+//  $Id: AutoDownLoad.cpp,v 1.25 2025/04/21 13:58:28 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
@@ -521,7 +521,7 @@ DownloadContext::execute()
     session_handle =
         InternetOpenA(user_agent.c_str(), INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL,  0);
     if (! session_handle) {
-        InternetError("Opening internet connection");
+        InternetError("Opening Internet connection");
     }
 
     DWORD http2_option = HTTP_PROTOCOL_FLAG_HTTP2;
@@ -649,16 +649,18 @@ again:
     }
 
     // read content
-#define BUFSIZE     (16 * 1024)
-    char *buffer = static_cast<char *>(malloc(BUFSIZE));
-    if (NULL == buffer)
+#define IOBUFFER_SIZE (64 * 1024)
+    char *buffer = static_cast<char *>(malloc(IOBUFFER_SIZE));
+    if (NULL == buffer) {
         throw AppException("Unable to allocate download buffer");
+    }
 
-    (void) memset(buffer, 0, BUFSIZE);
+
+    (void) memset(buffer, 0, IOBUFFER_SIZE);
     if (sink.open()) {
         for (;;) {
             DWORD read = 0;
-            if (! InternetReadFile(request_handle, buffer, BUFSIZE, &read)) {
+            if (! InternetReadFile(request_handle, buffer, IOBUFFER_SIZE, &read)) {
                 throw SysException("Reading Internet connection");
             }
 
@@ -851,4 +853,3 @@ DownloadContext::callback(HINTERNET hInternet, DWORD_PTR dwContext, DWORD dwInte
 }
 
 }   // namespace Updater
-

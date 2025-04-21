@@ -8003,6 +8003,9 @@ unsignedCharToPrintable(unsigned char c) {
     assert(0); /* never gets here */
     return "dead code";
   }
+#if defined(_MSC_VER)
+#pragma warning(disable:4702) // unreachable code
+#endif
   assert(0); /* never gets here */
 }
 

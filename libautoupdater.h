@@ -1,13 +1,13 @@
 #pragma once
 #ifndef LIBAUTOUPDATER_H_INCLUDED
 #define LIBAUTOUPDATER_H_INCLUDED
-/* $Id: libautoupdater.h,v 1.11 2023/10/15 06:37:59 cvsuser Exp $
+/* $Id: libautoupdater.h,v 1.13 2025/04/21 13:58:27 cvsuser Exp $
  *
  *  libappupdatee public binding
  *
  *  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
  *
- *  Copyright (c) 2012 - 2023 Adam Young
+ *  Copyright (c) 2012 - 2025 Adam Young
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -28,26 +28,18 @@
  *  SOFTWARE.
  */
 
-#if !defined(LIBAUTOUPDATER_LINKAGE)
-#if defined(AUTOUPDATER_STATIC)
-#   define LIBAUTOUPDATER_LINKAGE
-#   define LIBAUTOUPDATER_ENTRY
-#elif defined(WIN32) || defined(_WIN32)
-#   if defined(BUILDING_LIBAUTOUPDATER)
-#       define LIBAUTOUPDATER_LINKAGE __declspec(dllexport)
-#  else
-#       define LIBAUTOUPDATER_LINKAGE __declspec(dllimport)
-#  endif
-#   define LIBAUTOUPDATER_ENTRY __cdecl
-#else
-#   define LIBAUTOUPDATER_LINKAGE
-#   define LIBAUTOUPDATER_ENTRY
-#endif
-#endif
+#include "src/AutoLinkage.h"
+#include "src/AutoEd25519.h"
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
+
+LIBAUTOUPDATER_LINKAGE int LIBAUTOUPDATER_ENTRY
+    autoupdate_version(void);
+
+LIBAUTOUPDATER_LINKAGE const char * LIBAUTOUPDATER_ENTRY
+    autoupdate_version_string(void);
 
 LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
     autoupdate_set_console_mode(int val);
@@ -78,6 +70,12 @@ LIBAUTOUPDATER_LINKAGE void LIBAUTOUPDATER_ENTRY
 
 LIBAUTOUPDATER_LINKAGE int  LIBAUTOUPDATER_ENTRY
     autoupdate_isavailable(void);
+
+LIBAUTOUPDATER_LINKAGE int  LIBAUTOUPDATER_ENTRY
+    autoupdate_ed25519_key(const char *public_base64, unsigned version);
+
+LIBAUTOUPDATER_LINKAGE int  LIBAUTOUPDATER_ENTRY
+    autoupdate_ed25519_pem(const char *public_pem, unsigned version);
 
 LIBAUTOUPDATER_LINKAGE int  LIBAUTOUPDATER_ENTRY
     autoupdate_execute(int mode, int interactive);

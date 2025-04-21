@@ -1,6 +1,6 @@
 #ifndef AUTOCONFIG_H_INCLUDED
 #define AUTOCONFIG_H_INCLUDED
-//  $Id: AutoConfig.h,v 1.17 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoConfig.h,v 1.18 2025/04/21 13:58:28 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
@@ -36,6 +36,7 @@
 #endif
 
 #include "AutoLogger.h"
+#include "AutoEd25519.h"
 
 namespace Updater {
 class Config {
@@ -103,6 +104,14 @@ public:
 
     /// Set Windows registry path to store settings in (relative to HKCU/KHLM).
     static void             SetRegistryPath(const char *path);
+
+    // Set a Ed2551 public-key
+    static void             SetPublicKey(const char *base64, unsigned version);
+    static void             SetEd25519Key(const void *key, size_t length, unsigned version);
+
+    static size_t           PublicKeyNumber();
+    static void *           PublicKeyFind(const std::string &keyset, unsigned &type, size_t &length);
+    static bool             PublicKeyFind(const std::string &keyset);
 
     /*
      *  Access to runtime configuration.
@@ -188,6 +197,12 @@ private:
         void *data_;
     };
 
+    // Ed25519 public key
+    struct Ed25519Key {
+        unsigned version;
+        uint8_t public_key[ED25519_PUBLIC_LENGTH];
+    };
+
 private:
     static CriticalSection  critical_section_;
     static int              console_mode_;
@@ -204,6 +219,7 @@ private:
     static std::string      application_name_;
     static std::string      application_version_;
     static std::string      build_label_;
+    static struct Ed25519Key ed25519_keys_[2];
 };
 
 }   // namespace Updater

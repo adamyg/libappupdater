@@ -1,4 +1,4 @@
-//  $Id: NSRes.cpp,v 1.2 2021/08/26 14:31:31 cvsuser Exp $
+//  $Id: NSRes.cpp,v 1.2 2025/04/21 13:58:27 cvsuser Exp $
 //
 //  NSRes - Localization resource converter.
 //
@@ -7,8 +7,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "../test/upgetopt.h"
-#include "NSLocalizedCollectionImpl.h"
+#include "../NSLocalizedCollectionImpl.h"
+#include "../../util/upgetopt.h"
 
 static const char *progname = "NSRes";
 
@@ -76,4 +76,6 @@ Usage()
      exit(99);
 }
 
-#include "NSLocalizedCollectionImpl.cpp"
+#include "../NSLocalizedCollectionImpl.cpp"
+
+//end

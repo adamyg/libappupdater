@@ -1,4 +1,4 @@
-//  $Id: AutoConfig.cpp,v 1.22 2025/04/16 11:33:48 cvsuser Exp $
+//  $Id: AutoConfig.cpp,v 1.24 2025/04/21 13:58:28 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
@@ -36,6 +36,9 @@
 #include "AutoError.h"
 #include "AutoString.h"
 
+#include "../util/Base64.h"
+#include "../util/Hex.h"
+
 #if defined(PRAGMA_COMMENT_LIB)
 #pragma comment(lib, "version.lib")
 #endif
@@ -57,6 +60,7 @@ std::string         Config::company_name_;
 std::string         Config::application_name_;
 std::string         Config::application_version_;
 std::string         Config::build_label_;
+struct Config::Ed25519Key Config::ed25519_keys_[2];
 
 namespace {
 
@@ -388,6 +392,97 @@ Config::SetRegistryPath(const char *path)
     CriticalSection::Guard lock(critical_section_);
     registry_path_.assign(path?path:"");
     LOG<LOG_INFO>() << "Config::SetRegistryPath=" << registry_path_ << LOG_ENDL;
+}
+
+
+//public
+void             
+Config::SetPublicKey(const char *base64, unsigned version)
+{
+    const std::string key = 
+        Updater::Base64::decode_to_string(base64, strlen(base64));
+
+    if (key.length() != ED25519_PUBLIC_LENGTH) {
+        throw SysException("error decoding public-key");
+    }
+
+    SetEd25519Key(key.data(), key.length(), version);
+}
+
+
+void
+Config::SetEd25519Key(const void *key, size_t length, unsigned version)
+{
+    if (0 == version) {
+        throw SysException("Ed25519: version incorrect");
+    }
+
+    if (length != ED25519_PUBLIC_LENGTH) {
+        throw SysException("Ed25519: key length incorrect");
+    }
+
+    CriticalSection::Guard lock(critical_section_);
+
+    assert(sizeof(ed25519_keys_[0].public_key) == ED25519_PUBLIC_LENGTH);
+    for (unsigned k = 0; k < _countof(ed25519_keys_); ++k) {
+        if (ed25519_keys_[k].version == version || // update or new
+                ed25519_keys_[k].version == 0) {
+
+            ed25519_keys_[k].version = version;
+            memcpy(ed25519_keys_[k].public_key, key, ED25519_PUBLIC_LENGTH);
+
+            LOG<LOG_INFO>() << "Config::SetEd25519Key=" <<
+                version << ',' << Updater::Hex::to_string(ed25519_keys_[k].public_key, ED25519_PUBLIC_LENGTH) 
+                << " [" << k << "]" << LOG_ENDL;
+            return;
+        }
+    }
+
+    throw SysException("Ed25519: key table full");
+}
+
+
+//private
+size_t
+Config::PublicKeyNumber()
+{
+    size_t count = 0;
+    for (unsigned k = 0; k < _countof(ed25519_keys_); ++k) {
+        if (ed25519_keys_[k].version) {
+            ++count; // active key
+        }
+    }
+    return count;
+}
+
+
+//private
+void *
+Config::PublicKeyFind(const std::string& keyversion, unsigned &type, size_t &length)
+{
+    unsigned version;
+
+    if (2 == sscanf(keyversion.c_str(), "%u.%u", &type, &version)) { // <type>.<version>
+        if (type == 1) { // ed25519
+            for (unsigned k = 0; k < _countof(ed25519_keys_); ++k) {
+                if (ed25519_keys_[k].version == version) {
+                    length = ED25519_PUBLIC_LENGTH;
+                    return ed25519_keys_[k].public_key;
+                }
+            }
+        }
+    }
+    length = 0;
+    return NULL;
+}
+
+
+bool
+Config::PublicKeyFind(const std::string& keyversion)
+{
+    unsigned type = 0;
+    size_t length = 0;
+    return (NULL != Config::PublicKeyFind(keyversion, type, length));
 }
 
 

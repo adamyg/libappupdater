@@ -11,31 +11,13 @@
 			<sparkle:releaseNotesLink_test>https://master.dl.sourceforge.net/project/grief/README.txt?viasf=1</sparkle:releaseNotesLink_test>
 			<description><![CDATA[
 <style media="screen" type="text/css">
-body {
-	font: 80%/1.5em Verdana, Tahoma, arial, Sans-serif;
-	background: #ECECEA;
-	color: #333;
-}
-h1 {
-	font: Bold 150% Verdana, 'Trebuchet MS', Sans-serif;
-	color: #558C89;
-	text-align: center;
-	border-bottom: 1px solid #000000;
-}
-h2 {
-	font: Bold 120% Verdana, 'Trebuchet MS', Sans-serif;
-	color: #74AFAD;
-	border-width: 0px;
-}
-p {
-	margin: 0;
-	padding: 10px 0 0 0;
-}
-ul {
-	list-style-type: circle;
-	padding: 0px;
-	margin: 0px;
-}
+<style media="screen" type="text/css">
+body { font: 80%/1.5em Verdana, Tahoma, arial, Sans-serif; background: #ECECEA; color: #333; }
+h1   { font: Bold 150% Verdana, 'Trebuchet MS', Sans-serif; color: #558C89; text-align: center; border-bottom: 1px solid #000000; }
+h2   { font: Bold 120% Verdana, 'Trebuchet MS', Sans-serif; color: #74AFAD; border-width: 0px; }
+p    { margin: 0; padding: 10px 0 0 0; }
+ul.a { list-style-type: circle; padding: 0px; margin: 0px; }
+ul.b { list-style-type: square; padding: 0px; margin: 0px; }
 </style>
 <html><body>
 	<h1>Change Log</h1>

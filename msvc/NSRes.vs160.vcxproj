@@ -231,14 +231,14 @@
     <ClInclude Include="..\localisation\NSLocalizedCollection.h" />
     <ClInclude Include="..\localisation\NSLocalizedCollectionImpl.h" />
     <ClInclude Include="..\localisation\NSLocalizedString.h" />
-    <ClInclude Include="..\test\upgetopt.h" />
+    <ClInclude Include="..\util\upgetopt.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\test\CUpdater.rc" />
+    <ResourceCompile Include="..\util\CUpdater.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\localisation\NSRes.cpp" />
-    <ClCompile Include="..\test\upgetopt.cpp" />
+    <ClCompile Include="..\localisation\util\NSRes.cpp" />
+    <ClCompile Include="..\util\upgetopt.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

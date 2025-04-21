@@ -1,4 +1,4 @@
-//  $Id: AutoError.cpp,v 1.14 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoError.cpp,v 1.15 2025/04/21 13:58:28 cvsuser Exp $
 //
 //  AutoUpdater: exception interface.
 //
@@ -28,6 +28,7 @@
 #include "common.h"
 
 #include <string>
+#include <assert.h>
 
 #include "AutoError.h"
 
@@ -48,12 +49,13 @@ SysErrorMessage(const char *message, DWORD err)
         msg = message, msg += ":\n\n";
     }
     if (::FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-                0, err, 0, (LPSTR)&buf, 0, NULL)) {
-        msg += buf;
+                            0, err, 0, (LPSTR)&buf, 0, NULL)) {
+       msg += buf;
         LocalFree(buf);
     }
     return msg;
 }
+
 }   // anonymous namespace
 
 
