@@ -1,6 +1,7 @@
 # General
 CVS/
 compat/
+*.pem
 
 # MSVC working
 Debug.vs*/

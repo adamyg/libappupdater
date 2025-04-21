@@ -1,4 +1,4 @@
-//  $Id: signmanifest.h,v 1.1 2025/04/21 13:59:08 cvsuser Exp $
+//  $Id: signmanifest.h,v 1.2 2025/04/21 19:02:11 cvsuser Exp $
 // 
 //  AutoUpdater: manifest generation tool.
 //
@@ -32,7 +32,8 @@ extern "C" {
 struct SignKeyPair;
 
 void SignManifest(const char *filename, const char *version, const char *hosturl);
-void SignManifestEd(const char *filename, const char *version, const char *hosturl, const struct SignKeyPair *key);
+void SignManifestEd(const char *filename, const char *version, const char *hosturl, 
+            const struct SignKeyPair *keypair, unsigned keyversion);
 
 #if defined(__cplusplus)
 }

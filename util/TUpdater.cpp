@@ -54,12 +54,12 @@ main(int argc, char *argv[])
 {
     const char *version = "1.0.3", *hosturl = hosturldefault;
     const char *public_pem = NULL;
-    unsigned pem_version = 1; //TODO
+    unsigned key_version = 1;
     int mode = 2, interactive = 0;
     int ch;
 
     progname = Updater::Util::Basename(argv[0]);
-    while (-1 != (ch = Updater::Getopt(argc, argv, "V:H:K:k:iL:vh"))) {
+    while (-1 != (ch = Updater::Getopt(argc, argv, "V:H:K:x:iL:vh"))) {
         switch (ch) {
         case 'V':   /* application version */
             version = Updater::optarg;
@@ -70,8 +70,8 @@ main(int argc, char *argv[])
         case 'K':   /* Public key */
             public_pem = Updater::optarg;
             break;
-        case 'k':   /* key version; default 1 */
-            pem_version = static_cast<unsigned>(strtoul(Updater::optarg, NULL, 0));
+        case 'x':   /* key version; default 1 */
+            key_version = static_cast<unsigned>(strtoul(Updater::optarg, NULL, 0));
             break;
         case 'i':   /* interactive */
             ++interactive;
@@ -134,7 +134,7 @@ main(int argc, char *argv[])
     autoupdate_set_console_mode(1);
     if (mode >= 1) {
         if (public_pem) {
-            autoupdate_ed25519_pem(public_pem, pem_version);
+            autoupdate_ed25519_pem(public_pem, key_version);
         }
         autoupdate_appversion_set(version);
         autoupdate_hosturl_set(hosturl);

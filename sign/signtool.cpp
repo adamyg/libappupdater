@@ -1,4 +1,4 @@
-// $Id: signtool.cpp,v 1.1 2025/04/21 13:59:08 cvsuser Exp $
+// $Id: signtool.cpp,v 1.2 2025/04/21 19:02:11 cvsuser Exp $
 //
 //  signtool - manifest generation tool example.
 //
@@ -33,8 +33,6 @@ main(int argc, char *argv[])
     struct SignToolArgs args = {0};
 
     args.appname = "signtool";
-    args.hosturl = "https://api.github.com/repos/user/package~package.manifest",
-    args.version = "0.0.1";
 
     return SignToolShim(argc, argv, &args);
 }

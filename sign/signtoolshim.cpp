@@ -1,4 +1,4 @@
-// $Id: signtoolshim.cpp,v 1.1 2025/04/21 13:59:08 cvsuser Exp $ 
+// $Id: signtoolshim.cpp,v 1.2 2025/04/21 19:02:11 cvsuser Exp $ 
 //
 //  SignToolShim - manifest generation tool.
 //
@@ -60,13 +60,15 @@ static const char *ExeVersion(const char *executable, char *version, size_t vers
 int
 SignToolShim(int argc, char *argv[], const struct SignToolArgs *args)
 {
-    const char *options = (args->hosturlalt ? "H:K:V:E:h" : "H:A:K:V:E:h");
+    const char *options = (args->hosturlalt ? "H:K:x:V:E:h" : "H:A:K:x:V:E:h");
     const char *private_pem = NULL;
     const char *version = args->version,
         *hosturl = args->hosturl;
     const char *exename = NULL;
+    unsigned key_version = 1;
     int ch;
 
+    // arguments
     progname = (args->appname ? args->appname : Updater::Util::Basename(argv[0]));
     while (-1 != (ch = Updater::Getopt(argc, argv, options))) {
         switch (ch) {
@@ -78,6 +80,9 @@ SignToolShim(int argc, char *argv[], const struct SignToolArgs *args)
             break;
         case 'K':   // private key
             private_pem = Updater::optarg;
+            break;
+        case 'x':   // key version; default 1
+            key_version = static_cast<unsigned>(strtoul(Updater::optarg, NULL, 0));
             break;
         case 'V':   // application version
             version = Updater::optarg;
@@ -110,6 +115,13 @@ SignToolShim(int argc, char *argv[], const struct SignToolArgs *args)
         Usage(*args);
     }
 
+    if (!hosturl && !*hosturl) {
+        std::cerr << "\n" <<
+            progname << ": -H <host-url> expected." << std::endl;
+        Usage(*args);
+    }
+
+    // application inputs
     char exeversion[64] = {0};
     const char *inputname = argv[0], *outputname = argv[1];
     size_t inputlen;
@@ -122,18 +134,30 @@ SignToolShim(int argc, char *argv[], const struct SignToolArgs *args)
         Usage(*args);
     }
 
-    if (outputname && 0 == strcmp(inputname, outputname)) {
+    if (outputname && 0 == strcmp(inputname, outputname)) { // optional
         std::cerr << "\n" <<
             progname << ": <input> and <output> names must be different." << std::endl;
         Usage(*args);
     }
 
+    // derive version
     if (exename) { // optional executable name.
         if (NULL != ExeVersion(exename, exeversion, sizeof(exeversion))) {
             version = exeversion;
         }
     }
+    if (!version || !*version) { // otherwise query installer.
+        if (NULL != ExeVersion(inputname, exeversion, sizeof(exeversion))) {
+            version = exeversion;
+        }
+    }
+    if (!version || !*version) {
+        std::cerr << "\n" <<
+            progname << ": -V <version> required, no exe version information available." << std::endl;
+        Usage(*args);
+    }
 
+    // generate manifest
     if (NULL != private_pem) {
         if (0 != _access(private_pem, 0)) {
             std::cout << "Private key <" << private_pem << "> not found.\n";
@@ -143,7 +167,7 @@ SignToolShim(int argc, char *argv[], const struct SignToolArgs *args)
         struct SignKeyPair keypair = {0};
 
         if (0 == ed25519_load_pem(private_pem, NULL, &keypair)) {
-            SignManifestEd(inputname, version, hosturl, &keypair);
+            SignManifestEd(inputname, version, hosturl, &keypair, key_version);
         } else {
             std::cerr << "\n" <<
                 progname << ": error reading key files." << std::endl;
@@ -173,14 +197,16 @@ Usage(const struct SignToolArgs &args)
         "\n";
 
     std::cerr <<
-        "   -H <host>               Explicit source URL, default <" << args.hosturl << ">.\n";
+        "   -H <host-url>           Explicit source URL" \
+            ", default <" << (args.hosturl ? args.hosturl : "none") << ">.\n";
+
     if (args.hosturlalt)
-      std::cerr <<
+        std::cerr <<
         "   -A                      alternative source URL <" << args.hosturlalt << ">.\n";
 
     std::cerr <<
         "   -K <private-key>        Private key image, generates a ed25519 signature.\n"\
-        "   -s <version>            KeyVersion.\n"\
+        "   -x <version>            KeyVersion.\n"\
         "\n"\
         "Arguments:\n"\
         "   input                   Name of the input file.\n"\

@@ -1,4 +1,4 @@
-//  $Id: signmanifest.cpp,v 1.1 2025/04/21 13:59:08 cvsuser Exp $
+//  $Id: signmanifest.cpp,v 1.2 2025/04/21 19:02:11 cvsuser Exp $
 //
 //  AutoUpdater: Manifest generation tool.
 //
@@ -12,6 +12,8 @@
 
 #include <cstdio>
 #include <cstdlib>
+
+#include <limits.h>
 #include <time.h>
 #include <assert.h>
 
@@ -75,8 +77,7 @@ namespace {
         if ((leading = p - str) >= buflen) {
             strncpy(buffer, str, buflen);
 
-        }
-        else {
+        } else {
             strncpy(buffer, str, leading);
 #if defined(__WATCOMC__)
             std::snprintf(buffer + leading, buflen - leading, "%s%s", rep, p + strlen(orig));
@@ -102,11 +103,18 @@ namespace {
                 throw std::runtime_error(SysError("Unable to open source image."));
             }
 
+            LARGE_INTEGER t_fileSize;
             BYTE *t_fileBuffer = NULL;
 
-            if (0 == (fileSize = GetFileSize(hFile, NULL))) {
+            if (! GetFileSizeEx(hFile, &t_fileSize) || t_fileSize.QuadPart == 0) {
                 throw std::runtime_error(SysError("Empty source image."));
             }
+
+            if (t_fileSize.QuadPart >= INT_MAX) {
+                throw std::runtime_error(SysError("Source image exceeds 2GB."));
+            }
+
+            fileSize = t_fileSize.LowPart;
 
             if (NULL == (t_fileBuffer = static_cast<BYTE*>(malloc(fileSize)))) {
                 throw std::runtime_error(SysError("Memory allocation error."));
@@ -161,7 +169,7 @@ inline std::ostream& operator<<(std::ostream &stream, const std::string &s) {
 void
 SignManifest(const char *filename, const char *version, const char *url)
 {
-    SignManifestEd(filename, version, url, NULL);
+    SignManifestEd(filename, version, url, NULL, 0);
 }
 
 
@@ -172,15 +180,16 @@ SignManifest(const char *filename, const char *version, const char *url)
 //      filename - Installer image.
 //      version - Version label.
 //      url - URL to manifest.
-//      key - Key-pair.
+//      keypair - Key-pair.
+//      keyversion - KeyVersion.
 //
 //  Returns:
 //      nothing
 //
 
 void
-SignManifestEd(
-    const char *filename, const char *version, const char *url, const struct SignKeyPair *key)
+SignManifestEd(const char *filename, const char *version, const char *url, 
+        const struct SignKeyPair *keypair, unsigned keyversion)
 {
     try {
         const char *basename = Updater::Util::Basename(filename);
@@ -190,7 +199,7 @@ SignManifestEd(
 
         const std::string sha = Hash(file, CALG_SHA);
         const std::string md5 = Hash(file, CALG_MD5);
-        const std::string dsa = (key ? Sign(file, key) : "");
+        const std::string dsa = (keypair ? Sign(file, keypair) : "");
 
 #if defined(__MINGW64_VERSION_MAJOR)
         const __time64_t now = _time64(NULL);
@@ -225,18 +234,20 @@ SignManifestEd(
                 << "\t\tmd5Signature=\"" << md5 << "\"\n"
                 << "\t\tshaSignature=\"" << sha << "\"\n"
                 << "\t\tedSignature=\"" << dsa << "\"\n"
-                << "\t\tedKeyVersion=\"1." << 1 /*TODO*/ << "\"\n"
+                << "\t\tedKeyVersion=\"1." << keyversion << "\"\n"
                 << "\t\ttype=\"application/octet-stream\" />\n"
             << "\n";
 
     } catch (std::exception &e) {
         std::string msg;
+
         msg += "An error occurred during signature operations\n\n";
         msg += e.what();
         MessageBoxA(NULL, msg.c_str(), "Signature", MB_ICONWARNING | MB_OK);
 
     } catch (...) {
         const char *msg = "An unknown error occurred during updater operations\n";
+
         MessageBoxA(NULL, msg, "Signature", MB_ICONERROR | MB_OK);
     }
 }
@@ -299,7 +310,7 @@ Sign(const File& file, const struct SignKeyPair *key)
     uint8_t signature[ED25519_SIGNATURE_LENGTH] = {0};
     ed25519_sign(signature, file.fileBuffer, file.fileSize, key->public_key, key->private_key);
 
-#if !defined(NDEBUG)
+#if !defined(NDEBUG) // verify unit-test
     assert(1 == ed25519_verify(signature, file.fileBuffer, file.fileSize, key->public_key));
     {
         size_t size = file.fileSize;
