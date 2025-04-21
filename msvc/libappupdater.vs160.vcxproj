@@ -185,10 +185,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
     <IntDir>$(Configuration).vs160\$(Platform)\libappupdater\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>libappupdater.vs160.1.0.3</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetName>libappupdater.vs160.1.0.1</TargetName>
+    <TargetName>libappupdater.vs160.1.0.3</TargetName>
     <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
     <IntDir>$(Configuration).vs160\$(Platform)\libappupdater\</IntDir>
   </PropertyGroup>
@@ -196,11 +196,11 @@
     <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
     <IntDir>$(Configuration).vs160\$(Platform)\libappupdater\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>libappupdater.vs160.1.0.3</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>libappupdater.vs160.1.0.1</TargetName>
+    <TargetName>libappupdater.vs160.1.0.3</TargetName>
     <IntDir>$(Configuration).vs160\$(Platform)\libappupdater\</IntDir>
     <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
   </PropertyGroup>
