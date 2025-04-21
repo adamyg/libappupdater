@@ -54,10 +54,10 @@
     <ClInclude Include="..\src\CUpdatePromptDlg.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\test\CUpdater.h">
+    <ClInclude Include="..\util\CUpdater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\test\resource.h">
+    <ClInclude Include="..\util\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\AutoDialog.h">
@@ -68,12 +68,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\test\CUpdater.cpp">
+    <ClCompile Include="..\util\CUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\test\CUpdater.rc">
+    <ResourceCompile Include="..\util\CUpdater.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

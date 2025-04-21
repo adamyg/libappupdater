@@ -19,10 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\cjson\cJSON.c" />
+    <ClCompile Include="..\cjson\cJSON_Utils.c" />
+    <ClCompile Include="..\ed25519\src\add_scalar.c" />
+    <ClCompile Include="..\ed25519\src\fe.c" />
+    <ClCompile Include="..\ed25519\src\ge.c" />
+    <ClCompile Include="..\ed25519\src\keypair.c" />
+    <ClCompile Include="..\ed25519\src\key_exchange.c" />
+    <ClCompile Include="..\ed25519\src\sc.c" />
+    <ClCompile Include="..\ed25519\src\seed.c" />
+    <ClCompile Include="..\ed25519\src\sha512.c" />
+    <ClCompile Include="..\ed25519\src\sign.c" />
+    <ClCompile Include="..\ed25519\src\verify.c" />
     <ClCompile Include="..\expat\xmlparse.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\libautoupdater.cpp" />
@@ -36,7 +46,9 @@
     <ClCompile Include="..\src\AutoConsole.cpp" />
     <ClCompile Include="..\src\AutoDialog.cpp" />
     <ClCompile Include="..\src\AutoDownload.cpp" />
+    <ClCompile Include="..\src\AutoEd25519.cpp" />
     <ClCompile Include="..\src\AutoError.cpp" />
+    <ClCompile Include="..\src\AutoGitHub.cpp" />
     <ClCompile Include="..\src\AutoLogger.cpp" />
     <ClCompile Include="..\src\AutoManifest.cpp" />
     <ClCompile Include="..\src\AutoUpdater.cpp" />
@@ -59,6 +71,15 @@
     <Image Include="..\art\software-update-available.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\cjson\cJSON.h" />
+    <ClInclude Include="..\cjson\cJSON_Utils.h" />
+    <ClInclude Include="..\ed25519\src\ed25519.h" />
+    <ClInclude Include="..\ed25519\src\fe.h" />
+    <ClInclude Include="..\ed25519\src\fixedint.h" />
+    <ClInclude Include="..\ed25519\src\ge.h" />
+    <ClInclude Include="..\ed25519\src\precomp_data.h" />
+    <ClInclude Include="..\ed25519\src\sc.h" />
+    <ClInclude Include="..\ed25519\src\sha512.h" />
     <ClInclude Include="..\expat\amigaconfig.h" />
     <ClInclude Include="..\expat\ascii.h" />
     <ClInclude Include="..\expat\asciitab.h" />
@@ -83,11 +104,14 @@
     <ClInclude Include="..\src\AutoConsole.h" />
     <ClInclude Include="..\src\AutoDialog.h" />
     <ClInclude Include="..\src\AutoDownload.h" />
+    <ClInclude Include="..\src\AutoEd25519.h" />
     <ClInclude Include="..\src\AutoError.h" />
+    <ClInclude Include="..\src\AutoGitHub.h" />
+    <ClInclude Include="..\src\AutoLinkage.h" />
     <ClInclude Include="..\src\AutoLogger.h" />
     <ClInclude Include="..\src\AutoManifest.h" />
-    <ClInclude Include="..\src\AutoString.h" />
     <ClInclude Include="..\src\AutoThread.h" />
+    <ClInclude Include="..\src\AutoString.h" />
     <ClInclude Include="..\src\AutoUpdater.h" />
     <ClInclude Include="..\src\AutoVersion.h" />
     <ClInclude Include="..\src\BufferStream.hpp" />
@@ -98,48 +122,44 @@
     <ClInclude Include="..\src\CUpdatePromptDlg.h" />
     <ClInclude Include="..\src\CUptodateDlg.h" />
     <ClInclude Include="..\src\IAutoUpdaterUI.h" />
-    <ClInclude Include="..\src\ProgressStyle.h" />
     <ClInclude Include="..\src\Resource.h" />
     <ClInclude Include="..\src\TProgressBar.h" />
-    <ClInclude Include="..\src\VTColors.h" />
-    <ClInclude Include="..\src\VTStream.h" />
-    <ClInclude Include="..\src\VTSupport.h" />
+    <ClInclude Include="..\util\Base64.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\localisation\NSLocalized.rc" />
     <ResourceCompile Include="..\src\AutoUpdater.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{78313210-0B94-4914-87A7-D76EBD85B7F9}</ProjectGuid>
+    <ProjectGuid>{EBA010B5-F14F-4AED-9E6B-D519BACD1615}</ProjectGuid>
     <RootNamespace>AutoUpdater</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>libappupdater</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
@@ -165,10 +185,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Configuration).vs140\$(Platform)\</OutDir>
     <IntDir>$(Configuration).vs140\$(Platform)\libappupdater\</IntDir>
-    <TargetName>libappupdater.vs140.1.0.1</TargetName>
+    <TargetName>libappupdater.vs140.1.0.3</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetName>libappupdater.vs140.1.0.1</TargetName>
+    <TargetName>libappupdater.vs140.1.0.3</TargetName>
     <OutDir>$(SolutionDir)$(Configuration).vs140\$(Platform)\</OutDir>
     <IntDir>$(Configuration).vs140\$(Platform)\libappupdater\</IntDir>
   </PropertyGroup>
@@ -176,25 +196,25 @@
     <OutDir>$(SolutionDir)$(Configuration).vs140\$(Platform)\</OutDir>
     <IntDir>$(Configuration).vs140\$(Platform)\libappupdater\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>libappupdater.vs140.1.0.1</TargetName>
+    <TargetName>libappupdater.vs140.1.0.3</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>libappupdater.vs140.1.0.1</TargetName>
+    <TargetName>libappupdater.vs140.1.0.3</TargetName>
     <IntDir>$(Configuration).vs140\$(Platform)\libappupdater\</IntDir>
     <OutDir>$(SolutionDir)$(Configuration).vs140\$(Platform)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)\..\src;$(ProjectDir)\..\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;WIN32;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\src;$(ProjectDir)..\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;ED25519_BUILD_DLL;WIN32;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader />
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalOptions>/wd4100 /wd4127 /wd4701 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -216,14 +236,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)\..\src;$(ProjectDir)\..\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;WIN32;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\src;$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;ED25519_BUILD_DLL;WIN32;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/wd4100 /wd4127 /wd4701 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -235,7 +256,6 @@
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>mfc140ud.lib;mfcs140ud.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(OutDir)libappupdater.lib</ImportLibrary>
     </Link>
     <ProjectReference>
@@ -247,13 +267,14 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(ProjectDir)\..\src;$(ProjectDir)\..\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;WIN32;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\src;$(ProjectDir)..\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;ED25519_BUILD_DLL;WIN32;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/wd4100 /wd4127 /wd4701 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -268,21 +289,21 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(ProjectDir)\..\src;$(ProjectDir)\..\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;WIN32;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\src;$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;ED25519_BUILD_DLL;WIN32;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/wd4100 /wd4127 /wd4701 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <AdditionalDependencies>mfc140u.lib;mfcs140u.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(OutDir)libappupdater.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>

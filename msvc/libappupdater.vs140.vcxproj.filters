@@ -26,16 +26,37 @@
       <UniqueIdentifier>{22c5ad38-683c-4a82-9f8b-9bb58267213c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\localisation">
-      <UniqueIdentifier>{0fbba1d4-457d-4c8e-b165-e55f2d8a6234}</UniqueIdentifier>
+      <UniqueIdentifier>{38a878ed-7e74-4854-8781-8db434d14df1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\localisation">
-      <UniqueIdentifier>{274f6161-4730-47ad-897a-a6ca0fc377ec}</UniqueIdentifier>
+      <UniqueIdentifier>{decd7815-4440-4018-85b1-bd18aedb5834}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\localisation\test">
-      <UniqueIdentifier>{d30d5324-ad41-4dbc-a2fa-54f960a43d23}</UniqueIdentifier>
+      <UniqueIdentifier>{bf59cbf9-438a-4170-9754-c2fc66cbd620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\cjson">
+      <UniqueIdentifier>{fbd63120-c8cc-4eae-b104-461796b7709f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\cjson">
+      <UniqueIdentifier>{6c568c15-e086-42d9-ad0c-1a3bc3e20abc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ed25519">
+      <UniqueIdentifier>{433615b9-2e20-4cd3-b46c-a86e676987b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ed25519">
+      <UniqueIdentifier>{0e9d69c7-54fa-4377-8d90-a18382f7c75f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{78074deb-72f2-4cb7-90c6-cd1e2149c7e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{52640e8c-d716-45d6-a972-c86b62c8c7eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\expat\xmlparse.c">
+      <Filter>Source Files\expat</Filter>
+    </ClCompile>
     <ClCompile Include="..\expat\xmlrole.c">
       <Filter>Source Files\expat</Filter>
     </ClCompile>
@@ -78,6 +99,9 @@
     <ClCompile Include="..\src\CUptodateDlg.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
+    <ClCompile Include="..\libautoupdater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\CProgressDialog.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
@@ -87,13 +111,7 @@
     <ClCompile Include="..\src\TProgressBar.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\libautoupdater.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\localisation\NSLocalizedCollection.cpp">
-      <Filter>Source Files\localisation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\localisation\NSLocalizedString.cpp">
       <Filter>Source Files\localisation</Filter>
     </ClCompile>
     <ClCompile Include="..\localisation\NSLocalizedCollectionImpl.cpp">
@@ -102,14 +120,56 @@
     <ClCompile Include="..\localisation\NSLocalizedDefault.cpp">
       <Filter>Source Files\localisation</Filter>
     </ClCompile>
+    <ClCompile Include="..\localisation\NSLocalizedString.cpp">
+      <Filter>Source Files\localisation</Filter>
+    </ClCompile>
     <ClCompile Include="..\localisation\NSFormat.cpp">
       <Filter>Source Files\localisation</Filter>
     </ClCompile>
     <ClCompile Include="..\localisation\test\NSFormatTests.cpp">
       <Filter>Source Files\localisation\test</Filter>
     </ClCompile>
-    <ClCompile Include="..\expat\xmlparse.c">
-      <Filter>Source Files\expat</Filter>
+    <ClCompile Include="..\cjson\cJSON.c">
+      <Filter>Source Files\cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cjson\cJSON_Utils.c">
+      <Filter>Source Files\cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\AutoGitHub.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\add_scalar.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\ge.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\key_exchange.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\keypair.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\sc.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\seed.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\sha512.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\sign.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\verify.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\fe.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\AutoEd25519.cpp">
+      <Filter>Source Files\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +256,9 @@
     <ClInclude Include="..\src\AutoUpdater.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\AutoThread.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\AutoManifest.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
@@ -241,40 +304,61 @@
     <ClInclude Include="..\src\common.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\AutoThread.h">
-      <Filter>Header Files\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\localisation\NSLocalizedString.h">
-      <Filter>Header Files\localisation</Filter>
-    </ClInclude>
     <ClInclude Include="..\localisation\NSLocalizedCollection.h">
       <Filter>Header Files\localisation</Filter>
     </ClInclude>
     <ClInclude Include="..\localisation\NSLocalizedCollectionImpl.h">
       <Filter>Header Files\localisation</Filter>
     </ClInclude>
+    <ClInclude Include="..\localisation\NSLocalizedString.h">
+      <Filter>Header Files\localisation</Filter>
+    </ClInclude>
     <ClInclude Include="..\localisation\NSFormat.h">
       <Filter>Header Files\localisation</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\VTSupport.h">
+    <ClInclude Include="..\cjson\cJSON.h">
+      <Filter>Header Files\cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cjson\cJSON_Utils.h">
+      <Filter>Header Files\cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\AutoGitHub.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ProgressStyle.h">
+    <ClInclude Include="..\ed25519\src\ed25519.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\fixedint.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\precomp_data.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\sc.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\sha512.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\ge.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\fe.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\AutoLinkage.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\VTColors.h">
-      <Filter>Header Files\core</Filter>
+    <ClInclude Include="..\util\Base64.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\VTStream.h">
+    <ClInclude Include="..\src\AutoEd25519.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\AutoUpdater.rc">
       <Filter>Resource Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="..\localisation\NSLocalized.rc">
-      <Filter>Source Files\localisation</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>

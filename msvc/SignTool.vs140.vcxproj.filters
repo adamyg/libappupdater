@@ -13,22 +13,25 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-9B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="Header Files\localisation">
-      <UniqueIdentifier>{afb26ab0-1f24-459f-8103-fd7c55a89581}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\util\upgetopt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\localisation\NSLocalizedCollection.h">
-      <Filter>Header Files\localisation</Filter>
+    <ClInclude Include="..\libautoupdater.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\localisation\NSLocalizedCollectionImpl.h">
-      <Filter>Header Files\localisation</Filter>
+    <ClInclude Include="..\sign\signmanifest.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\localisation\NSLocalizedString.h">
-      <Filter>Header Files\localisation</Filter>
+    <ClInclude Include="..\util\Base64.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\Util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sign\signtoolshim.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -40,7 +43,13 @@
     <ClCompile Include="..\util\upgetopt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\localisation\NSRes.cpp">
+    <ClCompile Include="..\sign\signmanifest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sign\signtool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sign\signtoolshim.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
