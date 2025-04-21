@@ -237,7 +237,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)\src;$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;WIN32;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;ED25519_BUILD_DLL;WIN32;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -290,7 +290,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(SolutionDir)\src;$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;WIN32;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;ED25519_BUILD_DLL;WIN32;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>

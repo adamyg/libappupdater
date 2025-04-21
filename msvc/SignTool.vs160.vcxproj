@@ -87,7 +87,7 @@
     <CodeAnalysisRules />
     <CodeAnalysisRuleAssemblies />
     <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
-    <IntDir>$(Configuration).vs160\$(Platform)\KeyGen\</IntDir>
+    <IntDir>$(Configuration).vs160\$(Platform)\SigTool\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
@@ -102,7 +102,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
     <CodeAnalysisRuleAssemblies />
-    <IntDir>$(Configuration).vs160\$(Platform)\KeyGen\</IntDir>
+    <IntDir>$(Configuration).vs160\$(Platform)\SignTool\</IntDir>
     <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
