@@ -2,15 +2,19 @@
 
 # libappupdater
 
-<p align="center">Windows application updater library, similar to Sparkle and WinSparke. The library checks for updates from a remote server or file-system, which inturn notifies the user of your apps' update and prompts an optional installation. This process can be executed periodically within your application with limited user interaction.</p>
+<p align="center">Windows application updater library, similar to Sparkle and WinSparkle. The library checks for updates from a remote server or file-system, which inturn notifies the user of your apps' update and prompts an optional installation. This process can be executed periodically within your application with limited user interaction.</p>
 
 <p align="center">It is a win32 native stand-alone library without any non-system external dependencies, permitting both GUI and console interaction.<p>
 <p align="center">Due to minimal external dependencies supports MSVC 2008+ and OpenWatcom and run on Windows XP or greater.
 Other toolchains should be possible with minimal effort.</p>
 
+### Graphic Interface
+
 ![Prompt Dialog](art/Prompt_Example.png)
 
 ![Install Dialog](art/Install_Example.png)
+
+### Console Interface
 
 ![Console Interface](art/Console_Example.png)
 
@@ -28,7 +32,7 @@ To prepare signing with EdDSA signatures, run _keygen_ (from the package distrib
 keygen -K application_private.pem -k application_public.pem
 ```
 
-These files should be stored securely in a non public location.
+These files should be stored securely in a non public location. If the private-key is lost, you wont be able to recover the key and shall be unable to issue new releases under the same key. A new key-pair and associated key-version shall need to generated.
 
 It shall also display the public key encoded as a base64-encoded string, which is required to embed into your updater applications. The key files shall be needed when generating an application signature block.
 
@@ -47,12 +51,12 @@ Rerunning _keygen_ shall only load any local pem images and redisplay the public
 To sign an installer, the _SignTool_ application is run, for example
 
 ```
-signtool -K application_private.pem -H https://github.com/user/repo~application.manifest \
-    application-installer-0.0.1.exe
+signtool -K application_private.pem -x 1 -v 0.0.1 \
+   -H https://github.com/user/repo~application.manifest application-installer-0.0.1.exe
 ```
 
 The resulting signature block is exported that can then by cut & pasted into the application manifest,
-which generally includes change information related to the installer release.
+which you can value add to include a change notice related to the installer release.
 
 ```
 <title></title>
@@ -61,15 +65,15 @@ which generally includes change information related to the installer release.
 <published>1745138422</published>
 <pubDate>Sun, 20 Apr 2025 16:40:22 +0000</pubDate>
 <enclosure url="https://github.com/user/repo~application.manifest"
-      os="windows"
-      name="application-installer-0.0.1.exe"
-      version="0.0.1"
-      length="4651716"
-      md5Signature="d2a2be2f3175c01b586eee68030bd61e"
-      shaSignature="a805501b9913b6efcf2981ab468b0007e687cde3"
-      edSignature="Liza1uN/dECOIk+Hffp6wMqoZ9IxPGGwF2Vn61L2/LzxkGoTRMnJd5zg+A2E7Sl0gCTN/3R3SPp52Lbvn5qGCA=="
-      edKeyVersion="1.1"
-      type="application/octet-stream" />
+   os="windows"
+   name="application-installer-0.0.1.exe"
+   version="0.0.1"
+   length="4651716"
+   md5Signature="d2a2be2f3175c01b586eee68030bd61e"
+   shaSignature="a805501b9913b6efcf2981ab468b0007e687cde3"
+   edSignature="Liza1uN/dECOIk+Hffp6wMqoZ9IxPGGwF2Vn61L2/LzxkGoTRMnJd5zg+A2E7Sl0gCTN/3R3SPp52Lbvn5qGCA=="
+   edKeyVersion="1.1"
+   type="application/octet-stream" />
 ```
 
 Example application.manifest.
