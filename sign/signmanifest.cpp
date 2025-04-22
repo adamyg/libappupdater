@@ -1,4 +1,4 @@
-// $Id: signmanifest.cpp,v 1.3 2025/04/22 08:08:52 cvsuser Exp $
+// $Id: signmanifest.cpp,v 1.4 2025/04/22 17:55:08 cvsuser Exp $
 //
 //  AutoUpdater: Manifest generation tool.
 //
@@ -333,6 +333,8 @@ Sign(const File& file, const struct SignKeyPair *key)
     ed25519_sign(signature, file.fileBuffer, file.fileSize, key->public_key, key->private_key);
 
 #if !defined(NDEBUG) // verify unit-test
+
+    // success
     assert(1 == ed25519_verify(signature, file.fileBuffer, file.fileSize, key->public_key));
     {
         size_t size = file.fileSize;
@@ -348,6 +350,16 @@ Sign(const File& file, const struct SignKeyPair *key)
         }
         assert(1 == ed25519_verify_final(context));
     }
+    
+    // failure
+    {
+        uint8_t t_signature[sizeof(signature)] = { 0 };
+        memcpy(t_signature, signature, sizeof(signature));
+        t_signature[1] |= 1;
+        assert(1 != ed25519_verify(t_signature, file.fileBuffer, file.fileSize, key->public_key));
+    }
+    assert(1 != ed25519_verify(signature, file.fileBuffer, file.fileSize - 1, key->public_key));
+
 #endif //NDEBUG
 
     return Updater::Base64::encode_to_string(signature, sizeof(signature));
