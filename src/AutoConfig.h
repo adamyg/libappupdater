@@ -223,7 +223,7 @@ private:
     static std::string      application_name_;
     static std::string      application_version_;
     static std::string      build_label_;
-    static unsigned         Config::public_keys_;
+    static unsigned         public_keys_;
     static struct Ed25519Key ed25519_keys_[3]; // 3 versions
 };
 
