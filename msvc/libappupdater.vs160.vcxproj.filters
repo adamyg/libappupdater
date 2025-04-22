@@ -40,6 +40,18 @@
     <Filter Include="Header Files\cjson">
       <UniqueIdentifier>{6c568c15-e086-42d9-ad0c-1a3bc3e20abc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ed25519">
+      <UniqueIdentifier>{433615b9-2e20-4cd3-b46c-a86e676987b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ed25519">
+      <UniqueIdentifier>{0e9d69c7-54fa-4377-8d90-a18382f7c75f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{78074deb-72f2-4cb7-90c6-cd1e2149c7e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{52640e8c-d716-45d6-a972-c86b62c8c7eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\expat\xmlparse.c">
@@ -124,6 +136,39 @@
       <Filter>Source Files\cjson</Filter>
     </ClCompile>
     <ClCompile Include="..\src\AutoGitHub.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\add_scalar.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\ge.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\key_exchange.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\keypair.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\sc.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\seed.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\sha512.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\sign.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\verify.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ed25519\src\fe.c">
+      <Filter>Source Files\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\AutoEd25519.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -278,6 +323,36 @@
       <Filter>Header Files\cjson</Filter>
     </ClInclude>
     <ClInclude Include="..\src\AutoGitHub.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\ed25519.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\fixedint.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\precomp_data.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\sc.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\sha512.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\ge.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ed25519\src\fe.h">
+      <Filter>Header Files\ed25519</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\AutoLinkage.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\Base64.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\AutoEd25519.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
   </ItemGroup>

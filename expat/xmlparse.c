@@ -7315,7 +7315,7 @@ accountingReportDiff(XML_Parser rootParser,
 
   fprintf(stderr,
           " (+" EXPAT_FMT_PTRDIFF_T("6") " bytes %s|%d, xmlparse.c:%d) %*s\"",
-          (int)bytesMore, (account == XML_ACCOUNT_DIRECT) ? "DIR" : "EXP",
+          (ptrdiff_t)bytesMore, (account == XML_ACCOUNT_DIRECT) ? "DIR" : "EXP",
           levelsAwayFromRootParser, source_line, 10, "");
 
   { /*WATCOMC*/
@@ -8003,6 +8003,9 @@ unsignedCharToPrintable(unsigned char c) {
     assert(0); /* never gets here */
     return "dead code";
   }
+#if defined(_MSC_VER)
+#pragma warning(disable:4702) // unreachable code
+#endif
   assert(0); /* never gets here */
 }
 

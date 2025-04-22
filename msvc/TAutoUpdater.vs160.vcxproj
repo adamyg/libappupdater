@@ -114,7 +114,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -228,30 +228,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\AutoConfig.h" />
-    <ClInclude Include="..\src\AutoConsole.h" />
-    <ClInclude Include="..\src\AutoDialog.h" />
-    <ClInclude Include="..\src\AutoError.h" />
-    <ClInclude Include="..\src\AutoLogger.h" />
-    <ClInclude Include="..\src\AutoManifest.h" />
-    <ClInclude Include="..\src\AutoThread.h" />
-    <ClInclude Include="..\src\AutoUpdater.h" />
-    <ClInclude Include="..\src\AutoDownload.h" />
-    <ClInclude Include="..\src\AutoVersion.h" />
-    <ClInclude Include="..\src\CReadOnlyEdit.h" />
-    <ClInclude Include="..\src\CSimpleBrowser.h" />
-    <ClInclude Include="..\src\CUpdateInstallDlg.h" />
-    <ClInclude Include="..\src\CUpdatePromptDlg.h" />
-    <ClInclude Include="..\src\CUptodateDlg.h" />
-    <ClInclude Include="..\test\resource.h" />
-    <ClInclude Include="..\test\upgetopt.h" />
+    <ClInclude Include="..\libautoupdater.h" />
+    <ClInclude Include="..\util\resource.h" />
+    <ClInclude Include="..\util\upgetopt.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\test\CUpdater.rc" />
+    <ResourceCompile Include="..\util\CUpdater.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\test\TUpdater.cpp" />
-    <ClCompile Include="..\test\upgetopt.cpp" />
+    <ClCompile Include="..\util\TUpdater.cpp" />
+    <ClCompile Include="..\util\upgetopt.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

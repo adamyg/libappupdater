@@ -1,4 +1,4 @@
-//  $Id: CProgressDialog.cpp,v 1.19 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: CProgressDialog.cpp,v 1.20 2025/04/21 13:58:28 cvsuser Exp $
 //
 //  AutoUpdater: Progress dialog.
 //
@@ -399,7 +399,7 @@ dialog_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_DLG_UPDATE: {
-            CriticalSection::Guard(self->Lock());
+            CriticalSection::Guard guard(self->Lock());
             self->Update();
         }
         return TRUE;
@@ -416,7 +416,7 @@ dialog_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_CLOSE:
     case WM_COMMAND:
         if (msg == WM_CLOSE || wParam == IDCANCEL) {
-            CriticalSection::Guard(self->Lock());
+            CriticalSection::Guard guard(self->Lock());
 
             self->Cancelled();
             SetMarquee(hWnd, 0);

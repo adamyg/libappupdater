@@ -21,6 +21,16 @@
   <ItemGroup>
     <ClCompile Include="..\cjson\cJSON.c" />
     <ClCompile Include="..\cjson\cJSON_Utils.c" />
+    <ClCompile Include="..\ed25519\src\add_scalar.c" />
+    <ClCompile Include="..\ed25519\src\fe.c" />
+    <ClCompile Include="..\ed25519\src\ge.c" />
+    <ClCompile Include="..\ed25519\src\keypair.c" />
+    <ClCompile Include="..\ed25519\src\key_exchange.c" />
+    <ClCompile Include="..\ed25519\src\sc.c" />
+    <ClCompile Include="..\ed25519\src\seed.c" />
+    <ClCompile Include="..\ed25519\src\sha512.c" />
+    <ClCompile Include="..\ed25519\src\sign.c" />
+    <ClCompile Include="..\ed25519\src\verify.c" />
     <ClCompile Include="..\expat\xmlparse.c">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">-DXML_STATIC;-DCOMPILED_FROM_DSP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -36,6 +46,7 @@
     <ClCompile Include="..\src\AutoConsole.cpp" />
     <ClCompile Include="..\src\AutoDialog.cpp" />
     <ClCompile Include="..\src\AutoDownload.cpp" />
+    <ClCompile Include="..\src\AutoEd25519.cpp" />
     <ClCompile Include="..\src\AutoError.cpp" />
     <ClCompile Include="..\src\AutoGitHub.cpp" />
     <ClCompile Include="..\src\AutoLogger.cpp" />
@@ -62,6 +73,13 @@
   <ItemGroup>
     <ClInclude Include="..\cjson\cJSON.h" />
     <ClInclude Include="..\cjson\cJSON_Utils.h" />
+    <ClInclude Include="..\ed25519\src\ed25519.h" />
+    <ClInclude Include="..\ed25519\src\fe.h" />
+    <ClInclude Include="..\ed25519\src\fixedint.h" />
+    <ClInclude Include="..\ed25519\src\ge.h" />
+    <ClInclude Include="..\ed25519\src\precomp_data.h" />
+    <ClInclude Include="..\ed25519\src\sc.h" />
+    <ClInclude Include="..\ed25519\src\sha512.h" />
     <ClInclude Include="..\expat\amigaconfig.h" />
     <ClInclude Include="..\expat\ascii.h" />
     <ClInclude Include="..\expat\asciitab.h" />
@@ -86,8 +104,10 @@
     <ClInclude Include="..\src\AutoConsole.h" />
     <ClInclude Include="..\src\AutoDialog.h" />
     <ClInclude Include="..\src\AutoDownload.h" />
+    <ClInclude Include="..\src\AutoEd25519.h" />
     <ClInclude Include="..\src\AutoError.h" />
     <ClInclude Include="..\src\AutoGitHub.h" />
+    <ClInclude Include="..\src\AutoLinkage.h" />
     <ClInclude Include="..\src\AutoLogger.h" />
     <ClInclude Include="..\src\AutoManifest.h" />
     <ClInclude Include="..\src\AutoThread.h" />
@@ -104,6 +124,7 @@
     <ClInclude Include="..\src\IAutoUpdaterUI.h" />
     <ClInclude Include="..\src\Resource.h" />
     <ClInclude Include="..\src\TProgressBar.h" />
+    <ClInclude Include="..\util\Base64.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\AutoUpdater.rc" />
@@ -162,24 +183,24 @@
     <_ProjectFileVersion>14.0.25431.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir>$(Configuration)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
+    <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
+    <IntDir>$(Configuration).vs160\$(Platform)\libappupdater\</IntDir>
+    <TargetName>libappupdater.vs160.1.0.3</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetName>libappupdater.vs160.1.0.1</TargetName>
+    <TargetName>libappupdater.vs160.1.0.3</TargetName>
     <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
     <IntDir>$(Configuration).vs160\$(Platform)\libappupdater\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir>$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
+    <IntDir>$(Configuration).vs160\$(Platform)\libappupdater\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>libappupdater.vs160.1.0.3</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>libappupdater.vs160.1.0.1</TargetName>
+    <TargetName>libappupdater.vs160.1.0.3</TargetName>
     <IntDir>$(Configuration).vs160\$(Platform)\libappupdater\</IntDir>
     <OutDir>$(SolutionDir)$(Configuration).vs160\$(Platform)\</OutDir>
   </PropertyGroup>
@@ -187,7 +208,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(ProjectDir)..\src;$(ProjectDir)..\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;WIN32;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;ED25519_BUILD_DLL;WIN32;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader />
@@ -216,7 +237,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)\src;$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;WIN32;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;ED25519_BUILD_DLL;WIN32;_DEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -247,7 +268,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(ProjectDir)..\src;$(ProjectDir)..\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;WIN32;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;ED25519_BUILD_DLL;WIN32;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader />
@@ -269,7 +290,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(SolutionDir)\src;$(SolutionDir)\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;WIN32;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BUILDING_LIBAUTOUPDATER;ED25519_BUILD_DLL;WIN32;NDEBUG;XML_STATIC;COMPILED_FROM_DSP;_CRT_SECURE_NO_DEPRECATE;_UNICODE;UNICODE;_AFXDLL</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>

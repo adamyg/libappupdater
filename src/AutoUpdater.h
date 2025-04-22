@@ -1,6 +1,6 @@
 #ifndef AUTOUPDATER_H_INCLUDED
 #define AUTOUPDATER_H_INCLUDED
-//  $Id: AutoUpdater.h,v 1.20 2025/02/21 19:03:23 cvsuser Exp $
+//  $Id: AutoUpdater.h,v 1.21 2025/04/21 13:58:28 cvsuser Exp $
 //
 //  AutoUpdater: application interface.
 //
@@ -35,22 +35,7 @@
 #include "IAutoUpdaterUI.h"
 #include "AutoManifest.h"
 
-#if !defined(LIBAUTOUPDATER_LINKAGE)
-#if defined(AUTOUPDATER_STATIC)
-#   define LIBAUTOUPDATER_LINKAGE
-#   define LIBAUTOUPDATER_ENTRY
-#elif defined(WIN32) || defined(_WIN32)
-#   if defined(BUILDING_LIBAUTOUPDATER)
-#       define LIBAUTOUPDATER_LINKAGE __declspec(dllexport)
-#  else
-#       define LIBAUTOUPDATER_LINKAGE __declspec(dllimport)
-#  endif
-#   define LIBAUTOUPDATER_ENTRY __cdecl
-#else
-#   define LIBAUTOUPDATER_LINKAGE
-#   define LIBAUTOUPDATER_ENTRY
-#endif
-#endif
+#include  "AutoLinkage.h"
 
 class IAutoUpdaterUI;
 class CUpdateInstallDlg;                        // dialog implementation
@@ -86,8 +71,9 @@ public:
     const char *        AppVersion() const;
     void                HostURL(const char *hosturl);
     const char *        HostURL() const;
+    void                PublicKey(const char *key, unsigned version);
 
-    // Execute autoupdater
+    // Update execution mode
     enum ExecuteMode {
         ExecuteDump = -2,                       // Dump the updater status.
         ExecuteReset = -1,                      // Reset updater status.

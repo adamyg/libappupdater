@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.31 2025/04/16 11:33:48 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.34 2025/04/22 05:30:36 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //
@@ -79,6 +79,11 @@
 #include "AutoThread.h"
 #include "AutoDownload.h"
 #include "AutoGitHub.h"
+
+#include "../ed25519/src/ed25519.h"
+#include "../util/Format.h"
+#include "../util/Base64.h"
+#include "../util/Hex.h"
 
 #include <Wincrypt.h>
 #include <Rpc.h>                                // UnidCreate()
@@ -299,6 +304,13 @@ AutoUpdater::HostURL(const char *hosturl)
 }
 
 
+void
+AutoUpdater::PublicKey(const char *base64, unsigned version)
+{
+    if (base64) Config::SetPublicKey(base64, version);
+}
+
+
 const char *
 AutoUpdater::HostURL() const
 {
@@ -447,7 +459,7 @@ AutoUpdater::Status(const enum ExecuteMode mode)
 
             (void) Config::ReadConfigValue(KEY_AUTOINTERVAL, autointerval);
             const time_t expires =              // default, 2-days
-                    ((autointerval > 0 && autointerval <= 60 ? autointerval : 2) * 60 * 60 * 24);
+                    ((time_t)((autointerval > 0 && autointerval <= 60 ? autointerval : 2)) * 60 * 60 * 24);
 
             time_t autolast = 0;
             if (Config::ReadConfigValue(KEY_AUTOLAST, autolast) && autolast) {
@@ -547,7 +559,7 @@ AutoUpdater::Dump()
 
 //
 //  Determine whether an update is available ...
-//      1=yes,0=no,-1=cancelled/error
+//      1=yes,0=no,-1=canceled/error
 //
 int
 AutoUpdater::IsAvailable(bool interactive)
@@ -557,9 +569,12 @@ AutoUpdater::IsAvailable(bool interactive)
     // Retrieve and load manifest, plus optional description
     const std::string app_version = Config::GetAppVersion();
     const std::string feed_url = Config::GetFeedURL();
+
     if (feed_url.empty()) {
         throw AppException("Host URL not configured.");
     }
+
+    Config::HasEdDSAPub();                      // prime public_key details
 
     LOG<LOG_INFO>() << "Manifest source <" << feed_url << ">" << LOG_ENDL;
     if (interactive) {
@@ -567,11 +582,12 @@ AutoUpdater::IsAvailable(bool interactive)
     }
 
     int ret = -1;
+
     try {                                       // guard progress dialog.
         Updater::AutoManifest &d_manifest = d_impl->d_manifest;
-        std::string manifest_url = feed_url;
         Updater::GitHub github;
         StringDownloadSink manifest;
+        std::string manifest_url;
         Download inet;
 
         // GitHub redirection
@@ -580,19 +596,21 @@ AutoUpdater::IsAvailable(bool interactive)
 
             if (! github.GetLatestRelease(feed_url, inet, DownloadFlags(), result)) {
                 d_impl->SetLastError(result);
-                return -1;
-            }
 
-            if (result.empty()) {
+            } else if (result.empty()) {
                 d_impl->SetLastError("GitHub manifest not available");
-                return -1;
+
+            } else {
+                manifest_url = result;
             }
 
-            manifest_url = result;
+        } else {
+            manifest_url = feed_url;
         }
 
         // Retrieve manifest
-        if (inet.get(manifest_url, manifest, DownloadFlags())) {
+        if (! manifest_url.empty() &&
+                inet.get(manifest_url, manifest, DownloadFlags())) {
 
             if (! inet.completion()) {          // manifest available.
                 d_impl->SetLastError("Unable to download manifest");
@@ -604,28 +622,48 @@ AutoUpdater::IsAvailable(bool interactive)
 
             } else if (! ProgressCancelled()) {
                 //
-                //  Check if our version is out of date.
+                //  Signature required
                 //
-                LOG<LOG_INFO>() << "current version=" << app_version
-                    << ", manifest=" << d_manifest.attributeVersion << LOG_ENDL;
+                bool suitable = true;
 
-                if (AutoVersion::Compare(app_version, d_manifest.attributeVersion) >= 0) {
-                    LOG<LOG_INFO>() << "same or newer version" << LOG_ENDL;
-                    ret = 0;                    // same or newer version is already installed.
+                if (Config::PublicKeyNumber()) {
+                    if (d_manifest.attributeEDSignature.empty()) {
+                        d_impl->SetLastError("Manifest missing edSignature, contact maintainer.");
+                        suitable = false;
 
-                } else {                        // load description, if available.
-                    LOG<LOG_INFO>() << "update available" << LOG_ENDL;
-                    ret = 1;
-
-                    if (! d_manifest.releaseNotesLink.empty()) {
-                        StringDownloadSink content(&d_manifest.releaseNotesContent);
-                        if (! inet.get(d_manifest.releaseNotesLink, content) ||
-                                ! inet.completion()) {
-                            d_impl->SetLastError("Unable to download release notes");
-                            ret = -1;
-                        }
+                    } else if (! Config::PublicKeyFind(d_manifest.attributeEDKeyVersion)) {
+                        d_impl->SetLastError(Updater::format("Manifest: unknown edKeyVersion <%s>, contact maintainer.",
+                                    d_manifest.attributeEDKeyVersion.c_str()));
+                        suitable = false;
                     }
                 }
+
+                //
+                //  Check if our version is out of date.
+                //
+                if (suitable) {
+                    LOG<LOG_INFO>() << "current version=" << app_version
+                        << ", manifest=" << d_manifest.attributeVersion << LOG_ENDL;
+
+                    if (AutoVersion::Compare(app_version, d_manifest.attributeVersion) >= 0) {
+                        LOG<LOG_INFO>() << "same or newer version" << LOG_ENDL;
+                        ret = 0;                // same or newer version is already installed.
+
+                    } else {                    // load description, if available.
+                        LOG<LOG_INFO>() << "update available" << LOG_ENDL;
+                        ret = 1;
+
+                        if (! d_manifest.releaseNotesLink.empty()) {
+                            StringDownloadSink content(&d_manifest.releaseNotesContent);
+
+                            if (! inet.get(d_manifest.releaseNotesLink, content) ||
+                                    ! inet.completion()) {
+                                d_impl->SetLastError("Unable to download release notes");
+                                ret = -1;
+                            }
+                        }
+                    }
+                }               
             }
         }
 
@@ -667,8 +705,8 @@ AutoUpdater::IsSkipped()
 
                 (void) Config::ReadConfigValue(KEY_SKIPINTERVAL, skipinterval);
                 const time_t expires =          // default, 14 days
-                        ((skipinterval > 0 && skipinterval <= 180 ? skipinterval : 14)
-                            * (60 * 60 * 24) /*day*/);
+                        ((time_t)((skipinterval > 0 && skipinterval <= 180 ? skipinterval : 14))
+                                * (60 * 60 * 24) /*day*/);
 
                 if (skipinterval >= 0) {
                     const time_t expiretime = skiptime + expires,
@@ -735,6 +773,7 @@ AutoUpdater::InstallNow(IInstallNow &updater, bool interactive)
     bool verified = false;
     if (getfile && !wasCancelled) {             // verify image.
 
+        Config::HasEdDSAPub();
         if (interactive) {
             updater("Verifying installer image ...");
             ProgressStart(updater.GetParent(), true, "Verifying installer ...");
@@ -799,7 +838,7 @@ AutoUpdater::InstallNow(IInstallNow &updater, bool interactive)
     } else if (! getfile) {
         if (wasCancelled) {
             if (interactive) {
-                updater("Install cancelled.");
+                updater("Install canceled.");
             }
 
         } else {
@@ -813,7 +852,7 @@ AutoUpdater::InstallNow(IInstallNow &updater, bool interactive)
     } else {
         if (wasCancelled) {
             if (interactive) {
-                updater("Install cancelled.");
+                updater("Install canceled.");
             }
         }
     }
@@ -901,19 +940,49 @@ bool
 AutoUpdater::Verify(const std::string &filename)
 {
     const Updater::AutoManifest &d_manifest = d_impl->d_manifest;
-    BYTE ioBuffer[8 * 1024];                    // io buffer
+    uint8_t ed25519_signature[ED25519_SIGNATURE_LENGTH] = {0};
+    const void *ed25519_public_key = NULL;
     HCRYPTPROV hProv = 0;
     HCRYPTHASH hHash = 0;
-    BOOL ioResult = FALSE;
-    DWORD ioSize = 0;
     DWORD fileSize;
     HANDLE hFile;
 
     LOG<LOG_TRACE>() << "Verify: target image <" << filename << ">" << LOG_ENDL;
 
+    // Signature
+    if (Config::PublicKeyNumber()) {
+        unsigned key_type = 0;
+        size_t key_length = 0;
+
+        ed25519_public_key = 
+                Config::PublicKeyFind(d_manifest.attributeEDKeyVersion, key_type, key_length);
+        if (ed25519_public_key == NULL || key_type != 0x01 /*ed25519*/) {
+            throw AppException(Updater::format("Verify: unknown key-version <%s>", 
+                        d_manifest.attributeEDKeyVersion.c_str()));
+        }
+
+        if (key_length != ED25519_PUBLIC_LENGTH) {
+            throw AppException(Updater::format("Verify: invalid public key length, key-version <%s>",
+                    d_manifest.attributeEDKeyVersion.c_str()));
+        }
+
+        const std::string &edSignature = d_manifest.attributeEDSignature;
+        if (edSignature.empty()) {
+            throw AppException(Updater::format("Verify: edSignature missing for key-version <%s>",
+                        d_manifest.attributeEDKeyVersion.c_str()));
+        }
+
+        const size_t signature_length =
+                Updater::Base64::decode(edSignature.c_str(), edSignature.size(), ed25519_signature, sizeof(ed25519_signature));
+        if (signature_length != ED25519_SIGNATURE_LENGTH) {
+            throw AppException(Updater::format("Verify: invalid signature length, key-version <%s>",
+                        d_manifest.attributeEDKeyVersion.c_str()));
+        }
+    }
+
     // Open source
     if (INVALID_HANDLE_VALUE == (hFile = CreateFileA(filename.c_str(),
-                GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN, NULL))) {
+                    GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN, NULL))) {
         throw SysException("Unable to open temporary file.");
     }
 
@@ -932,12 +1001,12 @@ AutoUpdater::Verify(const std::string &filename)
         return false;
     }
 
-    // Get handle to the crypto provider
+    // Crypt provider handle
     const int hashType =
         (d_manifest.attributeSHASignature.length() ? CALG_SHA : CALG_MD5);
 
-    if (!CryptAcquireContext(&hProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-            !CryptCreateHash(hProv, hashType, 0, 0, &hHash)) {
+    if (! CryptAcquireContext(&hProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
+            ! CryptCreateHash(hProv, hashType, 0, 0, &hHash)) {
         DWORD dwStatus = GetLastError();
         if (hProv) CryptReleaseContext(hProv, 0);
         CloseHandle(hFile);
@@ -945,44 +1014,85 @@ AutoUpdater::Verify(const std::string &filename)
     }
 
     // Calculate hash
-    while ((ioResult = ::ReadFile(hFile, ioBuffer, sizeof(ioBuffer), &ioSize, NULL)) != FALSE) {
-        if (0 == ioSize) {
-            break;                              // EOF
+    int ed22519_verification = 1;               // ed22519 verify result.
+    std::string hash;                           // MD5/SHA derived hash.
+
+    {
+#define IOBUFFER_SIZE (64 * 1024)
+        void *ed22519_context = NULL;
+        const char *dwMessage = NULL;
+        DWORD dwStatus = 0;
+        BYTE *ioBuffer;
+
+        if (NULL == (ioBuffer = static_cast<BYTE *>(malloc(IOBUFFER_SIZE)))) {
+            throw SysException(ERROR_NOT_ENOUGH_MEMORY, "Memory allocation.");
         }
-        if (! CryptHashData(hHash, ioBuffer, ioSize, 0)) {
-            DWORD dwStatus = GetLastError();
-            CryptReleaseContext(hProv, 0);
-            CryptDestroyHash(hHash);
-            CloseHandle(hFile);
-            throw SysException(dwStatus, "CryptHashData failed.");
+
+        if (ed25519_public_key != NULL) {       // ed22519 signature
+            ed22519_context = ed25519_verify_init(ed25519_signature, static_cast<const uint8_t *>(ed25519_public_key));
+            ed22519_verification = -1;
         }
-    }
-    CloseHandle(hFile);
-    if (! ioResult) {
-        DWORD dwStatus = GetLastError();
-        CryptReleaseContext(hProv, 0);
+
+        while (1) {
+            DWORD ioSize = 0;
+
+            if (! ::ReadFile(hFile, ioBuffer, IOBUFFER_SIZE, &ioSize, NULL)) {
+                dwMessage = "Unable to read working file.";
+                dwStatus = GetLastError();
+                break;
+            }
+
+            if (ioSize == 0) {
+                break;
+            }
+
+            if (! CryptHashData(hHash, ioBuffer, ioSize, 0)) {
+                dwMessage = "CryptHashData failed.";
+                dwStatus = GetLastError();
+                break;
+            }
+
+            ed25519_verify_update(ed22519_context, ioBuffer, ioSize);
+        }
+
+        CloseHandle(hFile);
+        free(ioBuffer);
+
+        if (NULL == dwMessage) {
+            BYTE hashBuffer[20] = {0};          // 16=MD5,20=SHA
+            DWORD hashSize = sizeof(hashBuffer);
+
+            if (CryptGetHashParam(hHash, HP_HASHVAL, hashBuffer, &hashSize, 0)) {
+                hash = Updater::Hex::to_string(hashBuffer, hashSize);
+            }
+        }
+
         CryptDestroyHash(hHash);
-        throw SysException(dwStatus, "Unable to read temporary file.");
-    }
+        CryptReleaseContext(hProv, 0);
 
-    const char hashDigits[] = "0123456789abcdef";
-    BYTE hashBuffer[20] = {0};                  // 16=MD5,20=SHA
-    DWORD hashSize = sizeof(hashBuffer);
-    std::string hash;
+        if (ed22519_context) {                  // ed22519 signature
+            ed22519_verification = ed25519_verify_final(ed22519_context);
+            ed22519_context = NULL;
+        }
 
-    if (CryptGetHashParam(hHash, HP_HASHVAL, hashBuffer, &hashSize, 0)) {
-        for (DWORD i = 0; i < hashSize; ++i) {
-            hash += hashDigits[hashBuffer[i] >> 4];
-            hash += hashDigits[hashBuffer[i] & 0xf];
+        if (dwMessage) {
+            throw SysException(dwStatus, dwMessage);
         }
     }
 
+    // Hash/sign comparisons
     LOG<LOG_TRACE>() << "Verify: target-hash=<" << hash << ">" << LOG_ENDL;
-    CryptDestroyHash(hHash);
-    CryptReleaseContext(hProv, 0);
 
     if ((hashType == CALG_SHA && hash == d_manifest.attributeSHASignature) ||
             (hashType == CALG_MD5 && hash == d_manifest.attributeMD5Signature)) {
+
+        if (ed25519_public_key) {
+            if (ed22519_verification != 1) {
+                LOG<LOG_WARN>() << "ed25519-verify failed" << LOG_ENDL;
+                return false;
+            }
+            LOG<LOG_TRACE>() << "Verify: target-signature=<ed25519-verified>" << LOG_ENDL;
+        }
         return true;
     }
 

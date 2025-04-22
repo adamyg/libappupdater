@@ -1,11 +1,11 @@
 #pragma once
-//  $Id: ProgressStyle.h,v 1.2 2023/10/17 12:47:53 cvsuser Exp $
+//  $Id: ProgressStyle.h,v 1.3 2025/04/21 13:58:28 cvsuser Exp $
 //
 //  ProgressStyle
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2023, Adam Young
+//  Copyright (c) 2023 - 2025, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

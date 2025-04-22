@@ -1,6 +1,8 @@
-//  $Id: CUpdater.cpp,v 1.13 2025/02/21 19:03:24 cvsuser Exp $
+// $Id: signtool.cpp,v 1.4 2025/04/22 17:24:04 cvsuser Exp $
 //
-//  AutoUpdater -- dialog test application.
+//  AutoUpdater: Manifest generation tool.
+//
+//  signtool - tool example.
 //
 //  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
 //
@@ -25,47 +27,16 @@
 //  SOFTWARE.
 //
 
-#include "Stdafx.h"
+#include "signtoolshim.h"
 
-#include "CUpdater.h"
-#include "../src/AutoUpdater.h"
-
-// CUpdaterApp
-BEGIN_MESSAGE_MAP(CUpdaterApp, CWinApp)
-    ON_COMMAND(ID_HELP, CWinApp::OnHelp)
-END_MESSAGE_MAP()
-
-// One and only CUpdaterApp object
-CUpdaterApp updater_application;
-
-// construction
-CUpdaterApp::CUpdaterApp()
-{
-}
-
-// initialization
-BOOL
-CUpdaterApp::InitInstance()
-{
-    return TRUE;
-}
-
-// execution
 int
-CUpdaterApp::Run()
+main(int argc, char *argv[])
 {
-    AutoUpdater au;
+    struct SignToolArgs args = {0};
 
-    au.EnableDialog();
-    au.AppName("AutoUpdate Test Framework");
-    au.AppVersion("0.0.1");
+    args.progname = "signtool";
 
-  //au.HostURL("file:///./example/grief.manifest");
-  //au.HostURL("https://sourceforge.net/projects/grief/files/grief.manifest/download");
-  //au.HostURL("https://master.dl.sourceforge.net/project/grief/grief.manifest?viasf=1");
-    au.HostURL("https://api.github.com/repos/adamyg/mcwin32~mcwin32.manifest");
-
-    au.Execute(AutoUpdater::ExecuteReinstall, true);
-
-    return TRUE;
+    return SignToolShim(argc, argv, &args);
 }
+
+//end

@@ -7,4 +7,7 @@ AppUpdater.aps
 *.vs*.opendb
 *.vs*.db
 *.vs*.user
+.github
+.git
+.vs
 sav

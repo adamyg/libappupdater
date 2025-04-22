@@ -1,5 +1,5 @@
 /* -*- mode: c; indent-width: 4; -*- */
-/* $Id: libautoupdater.cpp,v 1.28 2025/04/16 12:08:23 cvsuser Exp $
+/* $Id: libautoupdater.cpp,v 1.30 2025/04/21 13:58:27 cvsuser Exp $
  *
  *  libautoupdater cdecl interface.
  *
@@ -63,6 +63,7 @@
 #include "AutoThread.h"
 #include "AutoDownload.h"
 
+#include "util/Base64.h"
 #include "localisation/NSLocalizedString.h"
 
 #if defined(PRAGMA_COMMENT_LIB)
@@ -233,7 +234,14 @@ extern "C" {
 LIBAUTOUPDATER_LINKAGE int LIBAUTOUPDATER_ENTRY
 autoupdate_version(void)
 {
-    return 0x1001;                              /* version 1.0.1 */
+    return 0x1003; /* version 1.0.3 */
+}
+
+
+LIBAUTOUPDATER_LINKAGE const char * LIBAUTOUPDATER_ENTRY
+autoupdate_version_string(void)
+{
+    return "1.0.3";
 }
 
 
@@ -396,6 +404,48 @@ autoupdate_isavailable(void)
     }
     Logger::release_instance();
 
+    return ret;
+}
+
+
+LIBAUTOUPDATER_LINKAGE int  LIBAUTOUPDATER_ENTRY
+autoupdate_ed25519_key(const char *public_base64, unsigned version)
+{
+    const char *label = "autoupdate_ed25519_key: ";
+    int ret = -1;
+
+    try {
+        Config::SetPublicKey(public_base64, version);
+
+    } catch (const std::exception& e) {
+        LOG<LOG_ERROR>() << label << e.what() << LOG_ENDL;
+    } catch (...) {
+        LOG<LOG_ERROR>() << label << "Unknown exception" << LOG_ENDL;
+    }
+    return ret;
+}
+
+
+LIBAUTOUPDATER_LINKAGE int  LIBAUTOUPDATER_ENTRY
+autoupdate_ed25519_pem(const char *public_pem, unsigned version)
+{
+    const char* label = "autoupdate_ed25519_pem: ";
+    int ret = -1;
+
+    try {
+        struct SignKeyPair keypair;
+
+        if (0 != ed25519_load_pem(NULL, public_pem, &keypair)) {
+            throw SysException("error reading public-key file");
+        }
+
+        Config::SetEd25519Key(keypair.public_key, sizeof(keypair.public_key), version);
+
+    } catch (const std::exception& e) {
+        LOG<LOG_ERROR>() << label << e.what() << LOG_ENDL;
+    } catch (...) {
+        LOG<LOG_ERROR>() << label << "Unknown exception" << LOG_ENDL;
+    }
     return ret;
 }
 

@@ -1,4 +1,4 @@
-//  $Id: AutoConfig.cpp,v 1.22 2025/04/16 11:33:48 cvsuser Exp $
+//  $Id: AutoConfig.cpp,v 1.25 2025/04/22 05:30:36 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
@@ -36,6 +36,9 @@
 #include "AutoError.h"
 #include "AutoString.h"
 
+#include "../util/Base64.h"
+#include "../util/Hex.h"
+
 #if defined(PRAGMA_COMMENT_LIB)
 #pragma comment(lib, "version.lib")
 #endif
@@ -57,6 +60,8 @@ std::string         Config::company_name_;
 std::string         Config::application_name_;
 std::string         Config::application_version_;
 std::string         Config::build_label_;
+unsigned            Config::public_keys_;
+struct Config::Ed25519Key Config::ed25519_keys_[3];
 
 namespace {
 
@@ -204,7 +209,7 @@ Config::GetStringFileInfo()
     WORD lang = 0;
 
     if (! ::VerQueryValue((void *)GetVerInfoData(), TEXT("\\VarFileInfo\\Translation"), (LPVOID *)&translations, &count)) {
-        throw SysException("Executable does not have required VERSIONINFO\\VarFileInfo resource");
+        throw SysException("Executable does not have the required VERSIONINFO\\VarFileInfo resource");
     }
 
     count /= sizeof(struct TranslationInfo);
@@ -256,7 +261,7 @@ Config::GetVerInfoField(const char *field, bool required)
 
     if (! ::VerQueryValueA((void *)GetVerInfoData(), (LPSTR)(key.c_str()), (void **)&value, &len)) {
         if (required) {
-            throw SysException("Executable does not have required key in StringFileInfo");
+            throw SysException("Executable does not have the required key in StringFileInfo");
         }
         value = "";
     }
@@ -291,7 +296,7 @@ Config::GetPrivateValue(const char *name, const char *type, bool required)
     }
 
     if (required) {
-        std::string message("Executable does not have required resource ");
+        std::string message("Executable does not have the required resource ");
             message += name, message += "\\", message += type;
         throw SysException(message);
     }
@@ -392,6 +397,94 @@ Config::SetRegistryPath(const char *path)
 
 
 //public
+void             
+Config::SetPublicKey(const char *base64, unsigned version)
+{
+    const std::string key = 
+        Updater::Base64::decode_to_string(base64, strlen(base64));
+
+    if (key.length() != ED25519_PUBLIC_LENGTH) {
+        throw SysException("error decoding public-key");
+    }
+
+    SetEd25519Key(key.data(), key.length(), version);
+}
+
+
+void
+Config::SetEd25519Key(const void *key, size_t length, unsigned version)
+{
+    if (0 == version) {
+        throw SysException("Ed25519: version incorrect");
+    }
+
+    if (length != ED25519_PUBLIC_LENGTH) {
+        throw SysException("Ed25519: key length incorrect");
+    }
+
+    CriticalSection::Guard lock(critical_section_);
+
+    assert(sizeof(ed25519_keys_[0].public_key) == ED25519_PUBLIC_LENGTH);
+    for (unsigned k = 0; k < _countof(ed25519_keys_); ++k) {
+        if (ed25519_keys_[k].version == version || // update or new
+                ed25519_keys_[k].version == 0) {
+
+            if (0 == ed25519_keys_[k].version) {
+                ++public_keys_; // active count
+            }
+            ed25519_keys_[k].version = version;
+            memcpy(ed25519_keys_[k].public_key, key, ED25519_PUBLIC_LENGTH);
+
+            LOG<LOG_INFO>() << "Config::SetEd25519Key=" <<
+                version << ',' << Updater::Hex::to_string(ed25519_keys_[k].public_key, ED25519_PUBLIC_LENGTH) 
+                << " [" << k << "]" << LOG_ENDL;
+            return;
+        }
+    }
+
+    throw SysException("Ed25519: key table full");
+}
+
+
+//private
+size_t
+Config::PublicKeyNumber()
+{
+    return public_keys_;
+}
+
+
+//private
+void *
+Config::PublicKeyFind(const std::string& keyversion, unsigned &type, size_t &length)
+{
+    unsigned version;
+
+    if (2 == sscanf(keyversion.c_str(), "%u.%u", &type, &version)) { // <type>.<version>
+        if (type == 1) { // ed25519
+            for (unsigned k = 0; k < _countof(ed25519_keys_); ++k) {
+                if (ed25519_keys_[k].version == version) {
+                    length = ED25519_PUBLIC_LENGTH;
+                    return ed25519_keys_[k].public_key;
+                }
+            }
+        }
+    }
+    length = 0;
+    return NULL;
+}
+
+
+bool
+Config::PublicKeyFind(const std::string& keyversion)
+{
+    unsigned type = 0;
+    size_t length = 0;
+    return (NULL != Config::PublicKeyFind(keyversion, type, length));
+}
+
+
+//public
 int
 Config::GetConsoleMode()
 {
@@ -405,7 +498,7 @@ Config::GetFeedURL()
 {
     CriticalSection::Guard lock(critical_section_);
     if (host_URL_.empty()) {
-        if (0 == (queried_status_ & QUERY_HOSTURL)) {  // non-optional resource
+        if (0 == (queried_status_ & QUERY_HOSTURL)) { // non-optional resource
             //
             //  UPDATER
             //      FeedURL         Update manifest feed URL.
@@ -552,6 +645,31 @@ Config::GetBuildLabel()
         }
     }
     return build_label_;
+}
+
+
+//public.
+const bool 
+Config::HasEdDSAPub()
+{
+    CriticalSection::Guard lock(critical_section_);
+    if (public_keys_ == 0) {
+        if (0 == (queried_status_ & QUERY_EDDSAPUB)) {
+            //
+            //  UPDATER
+            //      EdDSAPubKey     Public-key, encoded as a base64.
+            //      EdDSAKeyVer     Key-version, positive numeric.
+            //
+            const std::string public_key = GetPrivateValue("UPDATER", "EdDSAPubKey", false);
+            if (! public_key.empty()) {
+                const std::string key_version = GetPrivateValue("UPDATER", "EdDSAKeyVer", true);
+                unsigned version = static_cast<unsigned>(strtoul(key_version.c_str(), NULL, 0));
+                SetPublicKey(public_key.c_str(), version);
+            }
+            queried_status_ |= QUERY_EDDSAPUB;
+        }
+    }
+    return (public_keys_ != 0);
 }
 
 

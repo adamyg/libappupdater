@@ -1,6 +1,6 @@
 #ifndef AUTOLOGGER_H_INCLUDED
 #define AUTOLOGGER_H_INCLUDED
-//  $Id: AutoLogger.h,v 1.19 2025/04/16 11:59:28 cvsuser Exp $
+//  $Id: AutoLogger.h,v 1.20 2025/04/18 19:39:51 cvsuser Exp $
 //
 //  AutoUpdater: logger.
 //

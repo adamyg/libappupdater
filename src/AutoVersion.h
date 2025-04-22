@@ -1,6 +1,6 @@
 #ifndef AUTOVERSION_H_INCLUDED
 #define AUTOVERSION_H_INCLUDED
-//  $Id: AutoVersion.h,v 1.13 2025/04/16 11:33:48 cvsuser Exp $
+//  $Id: AutoVersion.h,v 1.14 2025/04/21 13:58:28 cvsuser Exp $
 //
 //  AutoUpdater: Version comparison.
 //
@@ -32,7 +32,7 @@
 
 namespace Updater {
 
-//  Dedian stype version comparsion, examples:
+//  Dedian style version comparison, examples:
 //
 //      o 2.10 comes after 2.9
 //      o 2.11-beta comes after 2.11-alpha
@@ -149,6 +149,7 @@ namespace Updater {
 //      strings of letters which the package management system cannot interpret (such
 //      as ALPHA or pre-), or with silly orderings.
 //
+
 class AutoVersion {
 public:
     AutoVersion():  epoch_(0), upstream_(), revision_()

@@ -24,8 +24,8 @@
 //  SOFTWARE.
 //
 
-#define AUTORELEASE_VERSION         1,0,0,1
-#define AUTORELEASE_FILEVERSION     "1.0.0.1"
+#define AUTORELEASE_VERSION         1,0,3,0
+#define AUTORELEASE_FILEVERSION     "1.0.3.0"
 
 #if defined(_MSC_VER)
 #if   (_MSC_VER >= 1930)                        /* (Visual Studio 2022 / MSVC++ 17.x) */
