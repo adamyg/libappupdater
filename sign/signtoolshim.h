@@ -1,6 +1,6 @@
 #ifndef SIGNTOOLSHIM_H_INCLUDED
 #define SIGNTOOLSHIM_H_INCLUDED
-//  $Id: signtoolshim.h,v 1.3 2025/04/22 08:08:52 cvsuser Exp $
+//  $Id: signtoolshim.h,v 1.4 2025/04/22 17:24:04 cvsuser Exp $
 //
 //  AutoUpdater: sign-tool
 //
@@ -32,11 +32,13 @@ extern "C" {
 #endif
 
 struct SignToolArgs {
-    const char *appname;
-    const char *apptitle;
-    const char *version;
-    const char *hosturl;
-    const char *hosturlalt;
+    const char *progname;       // sign-tool program name; default argv.
+    const char *progtitle;      // program usage title line.
+
+    const char *version;        // application version; x.x.x.x
+
+    const char *hosturl;        // manifest URL.
+    const char *hosturlalt;     // alternative manifest URL.
 };
 
 extern int SignToolShim(int argc, char *argv[], const struct SignToolArgs *args);

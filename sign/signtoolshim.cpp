@@ -1,4 +1,4 @@
-// $Id: signtoolshim.cpp,v 1.4 2025/04/22 08:08:52 cvsuser Exp $
+// $Id: signtoolshim.cpp,v 1.5 2025/04/22 17:24:04 cvsuser Exp $
 //
 //  AutoUpdater: Manifest generation tool.
 //
@@ -69,7 +69,7 @@ SignToolShim(int argc, char *argv[], const struct SignToolArgs *args)
     int ch;
 
     // arguments
-    progname = (args->appname ? args->appname : Updater::Util::Basename(argv[0]));
+    progname = (args->progname ? args->progname : Updater::Util::Basename(argv[0]));
     while (-1 != (ch = Updater::Getopt(argc, argv, options))) {
         switch (ch) {
         case 'H':   // host URL template
@@ -193,14 +193,14 @@ SignToolShim(int argc, char *argv[], const struct SignToolArgs *args)
 static void
 Usage(const struct SignToolArgs &args)
 {
-    const char *apptitle =
-        (args.apptitle && *args.apptitle ? args.apptitle : "AutoUpdater manifest generator");
+    const char *progtitle =
+        (args.progtitle && *args.progtitle ? args.progtitle : "AutoUpdater manifest generator");
 
     std::cout.flush();
     std::cerr <<
         "\n"\
-        << apptitle << ".\n"\
-        "Engine Version (" << autoupdate_version_string() << ")\n" \
+        << progtitle << ".\n"\
+        "Engine Version (" << autoupdate_version_string() << ")\n"\
         "\n"\
         "   " << progname << " [options] <input> [<output>]\n"\
         "\n"\
@@ -210,7 +210,7 @@ Usage(const struct SignToolArgs &args)
         "\n";
 
     std::cerr <<
-        "   -H <host-url>           Explicit source URL" \
+        "   -H <host-url>           Explicit source URL"\
             ", default <" << (args.hosturl ? args.hosturl : "none") << ">.\n";
 
     if (args.hosturlalt)
@@ -218,7 +218,7 @@ Usage(const struct SignToolArgs &args)
         "   -A                      alternative source URL <" << args.hosturlalt << ">.\n";
 
     std::cerr <<
-        "   -K <private-key>        Private key image, generates a ed25519 signature.\n"\
+        "   -K <private-key>        Private key image, generates a Ed25519 signature.\n"\
         "   -x <version>            KeyVersion, default <1>.\n"\
         "\n"\
         "Arguments:\n"\

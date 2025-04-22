@@ -164,16 +164,19 @@ Working examples are provided as test applications. For following demonstrates o
 #include "libappupdater/update/updatetoolshim.h"   // UpdaterToolShim()
 
 #include "version.h"                               // VERSION_TAG, build-system version.
-#include "private_key.h"                           // PUBLIC_KEY and KEY_VERSION, see: keygen
+#include "public_key.h"                            // PUBLIC_KEY and KEY_VERSION, see: keygen
 
 int
 main(int argc, char *argv[])
 {
    struct UpdateToolArgs args = {0};
 
-   args.title = "MyApplication updater";
+   args.progtitle = "MyApplication updater";
+
+   args.appname = "MyApplication";
    args.version = VERSION_TAG;
    args.hosturl = "https://github.com/user/repo~application.manifest";
+  
    args.publickey = PUBLIC_KEY;
    args.keyversion = KEY_VERSION;     
   
@@ -187,7 +190,7 @@ main(int argc, char *argv[])
 #include "libappupdater/src/AutoUpdater.h"         // AutoUpdater
 
 #include "version.h"                               // VERSION_TAG, build-system version.
-#include "private_key.h"                           // PUBLIC_KEY and KEY_VERSION, see: keygen
+#include "public_key.h"                            // PUBLIC_KEY and KEY_VERSION, see: keygen
 
 int
 Application::CheckForUpdates()
@@ -200,8 +203,10 @@ Application::CheckForUpdates()
    //    see AutoConfig.h for further details.
    //
    au.EnableDialog();
-   au.AppName("Application Name");
+
+   au.AppName("MyApplication");
    au.AppVersion(VERSION_TAG);
+
    au.HostURL("https://github.com/user/repo~application.manifest");
    au.PublicKey(PUBLIC_KEY, KEY_VERSION);
 

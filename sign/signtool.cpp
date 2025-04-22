@@ -1,4 +1,4 @@
-// $Id: signtool.cpp,v 1.3 2025/04/22 08:08:52 cvsuser Exp $
+// $Id: signtool.cpp,v 1.4 2025/04/22 17:24:04 cvsuser Exp $
 //
 //  AutoUpdater: Manifest generation tool.
 //
@@ -34,7 +34,7 @@ main(int argc, char *argv[])
 {
     struct SignToolArgs args = {0};
 
-    args.appname = "signtool";
+    args.progname = "signtool";
 
     return SignToolShim(argc, argv, &args);
 }

@@ -1,4 +1,4 @@
-// $Id: updatetool.cpp,v 1.3 2025/04/22 08:18:36 cvsuser Exp $
+// $Id: updatetool.cpp,v 1.4 2025/04/22 17:23:55 cvsuser Exp $
 //
 //  AutoUpdater: update-tool - example
 //
@@ -43,9 +43,9 @@ main(int argc, char *argv[])
 {
     struct UpdateToolArgs args = {0};
 
-    args.appname = "updatetool";
+    args.progname = "updatetool";
 
-    args.productname = "libautoupdate";
+    args.appname = "libautoupdate";
 //  ags.version = "0.0.0.0";
  
 //  args.hosturl = hosturl1;

@@ -1,4 +1,4 @@
-//  $Id: updatetoolshim.cpp,v 1.4 2025/04/22 08:18:36 cvsuser Exp $
+//  $Id: updatetoolshim.cpp,v 1.5 2025/04/22 17:23:55 cvsuser Exp $
 //
 //  Midnight Commander AutoUpdater command line.
 //
@@ -47,7 +47,7 @@ UpdateToolShim(int argc, char* argv[], const struct UpdateToolArgs *args)
     int ch;
 
     // arguments
-    progname = (args->appname ? args->appname : Updater::Util::Basename(argv[0]));
+    progname = (args->progname ? args->progname : Updater::Util::Basename(argv[0]));
     while (-1 != (ch = Updater::Getopt(argc, argv, options))) {
         switch (ch) {
         case 'V':   // application version
@@ -141,9 +141,9 @@ UpdateToolShim(int argc, char* argv[], const struct UpdateToolArgs *args)
     } else if (0 == STRICMP("dump", arg)) {
         mode = -2;
     } else if (0 == STRICMP("config", arg)) {
-        if (args->apptitle)
+        if (args->progtitle)
           std::cout
-            << args->apptitle << "\n";
+            << args->progtitle << "\n";
         std::cout
             << "Built:   " << __DATE__ << "\n"
             << "Version: " << version << "\n"
@@ -164,7 +164,7 @@ UpdateToolShim(int argc, char* argv[], const struct UpdateToolArgs *args)
         if (public_key) {
             autoupdate_ed25519_key(public_key, key_version); // public key
         }
-        autoupdate_appname_set(args->productname ? args->productname : progname); 
+        autoupdate_appname_set(args->appname ? args->appname : progname); 
             // note: name should align with installer
     }
 
@@ -178,14 +178,14 @@ UpdateToolShim(int argc, char* argv[], const struct UpdateToolArgs *args)
 static void
 Usage(const struct UpdateToolArgs& args)
 {
-    const char *apptitle =
-        (args.apptitle && *args.apptitle ? args.apptitle : "AutoUpdater application check");
+    const char *progtitle =
+        (args.progtitle && *args.progtitle ? args.progtitle : "AutoUpdater application check");
 
     std::cout.flush();
     std::cerr <<
         "\n"\
-        << apptitle << ".\n"\
-        "Version (" << autoupdate_version_string() << ")\n" \
+        << progtitle << ".\n"\
+        "Version (" << autoupdate_version_string() << ")\n"\
         "\n"\
         "   " << progname << " [options] mode\n"\
         "\n"\
@@ -205,8 +205,8 @@ Usage(const struct UpdateToolArgs& args)
         "   -V <version>            Version label, form <x.x[.x[.x.]]>.\n";
 
     std::cerr <<
-        "   -H <host-url>           Explicit source URL" \
-        ", default <" << (args.hosturl ? args.hosturl : "none") << ">.\n";
+        "   -H <host-url>           Explicit source URL"\
+                ", default <" << (args.hosturl ? args.hosturl : "none") << ">.\n";
 
     if (NULL != args.hosturlalt)
       std::cerr <<
@@ -214,7 +214,7 @@ Usage(const struct UpdateToolArgs& args)
 
     if (NULL == args.publickey || 0 == args.keyversion)
       std::cerr <<
-        "   -K <private-key>        Private key image, generates a ed25519 signature.\n"\
+        "   -K <private-key>        Private key image, generates a Ed25519 signature.\n"\
         "   -x <version>            KeyVersion, default <1>.\n"\
         "\n";
 

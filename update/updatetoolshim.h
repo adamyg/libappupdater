@@ -1,6 +1,6 @@
 #ifndef UPDATETOOLSHIM_H_INCLUDED
 #define UPDATETOOLSHIM_H_INCLUDED
-// $Id: updatetoolshim.h,v 1.3 2025/04/22 08:18:36 cvsuser Exp $
+// $Id: updatetoolshim.h,v 1.4 2025/04/22 17:23:55 cvsuser Exp $
 //
 //  AutoUpdater: update-tool
 //
@@ -32,14 +32,17 @@ extern "C" {
 #endif
 
 struct UpdateToolArgs {
-    const char *appname;
-    const char *apptitle;
-    const char *productname;
-    const char *version;
-    const char *hosturl;
-    const char *hosturlalt;
-    const char *publickey;
-    unsigned keyversion;
+    const char *progname;       // update-tool program name; default argv.
+    const char *progtitle;      // program usage title line.
+
+    const char *appname;        // application name; registry key.
+    const char *version;        // application version; x.x.x.x
+
+    const char *hosturl;        // manifest URL.
+    const char *hosturlalt;     // alternative manifest URL.
+
+    const char *publickey;      // Ed2559 public key.
+    unsigned keyversion;        // key version
 };
 
 extern int UpdateToolShim(int argc, char *argv[], const struct UpdateToolArgs *args);
