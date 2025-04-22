@@ -1,12 +1,10 @@
-#ifndef SIGNTOOLSHIM_H_INCLUDED
-#define SIGNTOOLSHIM_H_INCLUDED
-//  $Id: signtoolshim.h,v 1.3 2025/04/22 08:08:52 cvsuser Exp $
+// $Id: updatetool.cpp,v 1.3 2025/04/22 08:18:36 cvsuser Exp $
 //
-//  AutoUpdater: sign-tool
+//  AutoUpdater: update-tool - example
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2024 - 2025, Adam Young
+//  Copyright (c) 2012 - 2025, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,24 +25,35 @@
 //  SOFTWARE.
 //
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
+#include "updatetoolshim.h"
 
-struct SignToolArgs {
-    const char *appname;
-    const char *apptitle;
-    const char *version;
-    const char *hosturl;
-    const char *hosturlalt;
-};
+//  Function: Main
+//      Application entry.
+//
+//  Returns:
+//      0  - No check performed.
+//      1  - Up-to-date.
+//      2  - Installed.
+//      3  - Update available.
+//      99 - Usage
+//
 
-extern int SignToolShim(int argc, char *argv[], const struct SignToolArgs *args);
+int
+main(int argc, char *argv[])
+{
+    struct UpdateToolArgs args = {0};
 
-#if defined(__cplusplus)
+    args.appname = "updatetool";
+
+    args.productname = "libautoupdate";
+//  ags.version = "0.0.0.0";
+ 
+//  args.hosturl = hosturl1;
+//  args.hosturlalt = hosturl2;
+//  args.privatekey = private_key_base64;
+//  args.keyversion = key_version;
+
+    return UpdateToolShim(argc, argv, &args);
 }
-#endif
-
-#endif //SIGNTOOLSHIM_H_INCLUDED
 
 //end

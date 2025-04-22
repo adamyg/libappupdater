@@ -1,4 +1,4 @@
-//  $Id: AutoConfig.cpp,v 1.24 2025/04/21 13:58:28 cvsuser Exp $
+//  $Id: AutoConfig.cpp,v 1.25 2025/04/22 05:30:36 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
@@ -60,7 +60,8 @@ std::string         Config::company_name_;
 std::string         Config::application_name_;
 std::string         Config::application_version_;
 std::string         Config::build_label_;
-struct Config::Ed25519Key Config::ed25519_keys_[2];
+unsigned            Config::public_keys_;
+struct Config::Ed25519Key Config::ed25519_keys_[3];
 
 namespace {
 
@@ -208,7 +209,7 @@ Config::GetStringFileInfo()
     WORD lang = 0;
 
     if (! ::VerQueryValue((void *)GetVerInfoData(), TEXT("\\VarFileInfo\\Translation"), (LPVOID *)&translations, &count)) {
-        throw SysException("Executable does not have required VERSIONINFO\\VarFileInfo resource");
+        throw SysException("Executable does not have the required VERSIONINFO\\VarFileInfo resource");
     }
 
     count /= sizeof(struct TranslationInfo);
@@ -260,7 +261,7 @@ Config::GetVerInfoField(const char *field, bool required)
 
     if (! ::VerQueryValueA((void *)GetVerInfoData(), (LPSTR)(key.c_str()), (void **)&value, &len)) {
         if (required) {
-            throw SysException("Executable does not have required key in StringFileInfo");
+            throw SysException("Executable does not have the required key in StringFileInfo");
         }
         value = "";
     }
@@ -295,7 +296,7 @@ Config::GetPrivateValue(const char *name, const char *type, bool required)
     }
 
     if (required) {
-        std::string message("Executable does not have required resource ");
+        std::string message("Executable does not have the required resource ");
             message += name, message += "\\", message += type;
         throw SysException(message);
     }
@@ -428,6 +429,9 @@ Config::SetEd25519Key(const void *key, size_t length, unsigned version)
         if (ed25519_keys_[k].version == version || // update or new
                 ed25519_keys_[k].version == 0) {
 
+            if (0 == ed25519_keys_[k].version) {
+                ++public_keys_; // active count
+            }
             ed25519_keys_[k].version = version;
             memcpy(ed25519_keys_[k].public_key, key, ED25519_PUBLIC_LENGTH);
 
@@ -446,13 +450,7 @@ Config::SetEd25519Key(const void *key, size_t length, unsigned version)
 size_t
 Config::PublicKeyNumber()
 {
-    size_t count = 0;
-    for (unsigned k = 0; k < _countof(ed25519_keys_); ++k) {
-        if (ed25519_keys_[k].version) {
-            ++count; // active key
-        }
-    }
-    return count;
+    return public_keys_;
 }
 
 
@@ -500,7 +498,7 @@ Config::GetFeedURL()
 {
     CriticalSection::Guard lock(critical_section_);
     if (host_URL_.empty()) {
-        if (0 == (queried_status_ & QUERY_HOSTURL)) {  // non-optional resource
+        if (0 == (queried_status_ & QUERY_HOSTURL)) { // non-optional resource
             //
             //  UPDATER
             //      FeedURL         Update manifest feed URL.
@@ -647,6 +645,31 @@ Config::GetBuildLabel()
         }
     }
     return build_label_;
+}
+
+
+//public.
+const bool 
+Config::HasEdDSAPub()
+{
+    CriticalSection::Guard lock(critical_section_);
+    if (public_keys_ == 0) {
+        if (0 == (queried_status_ & QUERY_EDDSAPUB)) {
+            //
+            //  UPDATER
+            //      EdDSAPubKey     Public-key, encoded as a base64.
+            //      EdDSAKeyVer     Key-version, positive numeric.
+            //
+            const std::string public_key = GetPrivateValue("UPDATER", "EdDSAPubKey", false);
+            if (! public_key.empty()) {
+                const std::string key_version = GetPrivateValue("UPDATER", "EdDSAKeyVer", true);
+                unsigned version = static_cast<unsigned>(strtoul(key_version.c_str(), NULL, 0));
+                SetPublicKey(public_key.c_str(), version);
+            }
+            queried_status_ |= QUERY_EDDSAPUB;
+        }
+    }
+    return (public_keys_ != 0);
 }
 
 

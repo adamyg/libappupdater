@@ -1,6 +1,6 @@
 #ifndef AUTOCONFIG_H_INCLUDED
 #define AUTOCONFIG_H_INCLUDED
-//  $Id: AutoConfig.h,v 1.18 2025/04/21 13:58:28 cvsuser Exp $
+//  $Id: AutoConfig.h,v 1.19 2025/04/22 05:30:36 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
@@ -41,13 +41,14 @@
 namespace Updater {
 class Config {
     enum {
-        QUERY_HOSTURL       = (1 << 0),
-        QUERY_CHANNEL       = (1 << 1),
-        QUERY_OSLABEL       = (1 << 2),
-        QUERY_PRODUCTNAME   = (1 << 3),
-        QUERY_PRODUCTVERSION = (1 << 4),
-        QUERY_COMPANYNAME   = (1 << 5),
-        QUERY_BUILDLABEL    = (1 << 6)
+        QUERY_HOSTURL           = (1 << 0),
+        QUERY_CHANNEL           = (1 << 1),
+        QUERY_OSLABEL           = (1 << 2),
+        QUERY_PRODUCTNAME       = (1 << 3),
+        QUERY_PRODUCTVERSION    = (1 << 4),
+        QUERY_COMPANYNAME       = (1 << 5),
+        QUERY_BUILDLABEL        = (1 << 6),
+        QUERY_EDDSAPUB          = (1 << 7)
     };
 
 public:
@@ -74,6 +75,9 @@ public:
 
     /// Retrieve build label.
     static const std::string& GetBuildLabel();
+
+    /// Determine whether a edDSA public-key is available.
+    static const bool       HasEdDSAPub();
 
     /// Retrieve registry path, derived from the application details
     static const std::string& GetRegistryPath();
@@ -219,7 +223,8 @@ private:
     static std::string      application_name_;
     static std::string      application_version_;
     static std::string      build_label_;
-    static struct Ed25519Key ed25519_keys_[2];
+    static unsigned         Config::public_keys_;
+    static struct Ed25519Key ed25519_keys_[3]; // 3 versions
 };
 
 }   // namespace Updater

@@ -58,7 +58,7 @@ signtool -K application_private.pem -x 1 -v 0.0.1 \
 The resulting signature block is exported that can then by cut & pasted into the application manifest,
 which you can value add to include a change notice related to the installer release.
 
-```
+```xml
 <title></title>
 <link></link>
 <description></description>
@@ -76,9 +76,31 @@ which you can value add to include a change notice related to the installer rele
    type="application/octet-stream" />
 ```
 
-Example application.manifest.
+### sign application integration
 
+To simplifying application integration a customised version of _signtool_ can be built.
+Using the provided application shim, default arguments can be provided stream-lining software management.
+
+```C++
+//
+// signtool specialisation
+//
+#include "libappupdater/sign/signtoolshim.h"       // SignToolShim()
+
+int
+main(int argc, char *argv[])
+{
+   struct SignToolArgs args = {0};
+
+   args.hosturl = "https://github.com/user/repo~application.manifest";
+   
+   return SignToolShim(argc, argv, &args);
+}
 ```
+
+## Example application.manifest
+
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>
    <channel name="release">
@@ -127,6 +149,66 @@ ul.b { list-style-type: square; padding: 0px; margin: 0px; }
 </manifest>
 ```
 
+### Updater application integration
+
+Application integration can be achieved using several methods.
+
+   - As a stand-alone updater application; or
+   - embedded within the target application.
+
+Working examples are provided as test applications. For following demonstrates one method
+
+#### Standalone integration:
+
+```C++
+#include "libappupdater/update/updatetoolshim.h"   // UpdaterToolShim()
+
+#include "version.h"                               // VERSION_TAG, build-system version.
+#include "private_key.h"                           // PUBLIC_KEY and KEY_VERSION, see: keygen
+
+int
+main(int argc, char *argv[])
+{
+   struct UpdateToolArgs args = {0};
+
+   args.title = "MyApplication updater";
+   args.version = VERSION_TAG;
+   args.hosturl = "https://github.com/user/repo~application.manifest";
+   args.publickey = PUBLIC_KEY;
+   args.keyversion = KEY_VERSION;     
+  
+   return UpdateToolShim(argc, argv, &args);
+}
+```
+
+#### Embedded integration:
+
+```C++
+#include "libappupdater/src/AutoUpdater.h"         // AutoUpdater
+
+#include "version.h"                               // VERSION_TAG, build-system version.
+#include "private_key.h"                           // PUBLIC_KEY and KEY_VERSION, see: keygen
+
+int
+Application::CheckForUpdates()
+{
+   AutoUpdater au;
+
+   // Note parameters stated either by:
+   //    o Explicit run-time arguments; or
+   //    o Application resource elements, alone-side VERSIONINFO information; 
+   //    see AutoConfig.h for further details.
+   //
+   au.EnableDialog();
+   au.AppName("Application Name");
+   au.AppVersion(VERSION_TAG);
+   au.HostURL("https://github.com/user/repo~application.manifest");
+   au.PublicKey(PUBLIC_KEY, KEY_VERSION);
+
+   au.Execute(AutoUpdater::ExecuteAuto, true);
+}
+```
+
 ## License
 
       MIT License
@@ -151,4 +233,3 @@ ul.b { list-style-type: square; padding: 0px; margin: 0px; }
       LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
       OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
       SOFTWARE.
-

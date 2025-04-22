@@ -1,4 +1,4 @@
-// $Id: TUpdater.cpp,v 1.8 2025/04/21 19:32:12 cvsuser Exp $
+// $Id: TUpdater.cpp,v 1.9 2025/04/22 06:19:43 cvsuser Exp $
 //
 // AutoUpdater -- console test/example application.
 //
@@ -37,7 +37,6 @@ static void                 Usage();
 static const char *         progname;
 static const char *         hosturldefault =
     "https://api.github.com/repos/adamyg/mcwin32~mcwin32.manifest";
-        // "https://sourceforge.net/projects/grief/files/grief.manifest/download";
 
 //  Function: Main
 //      Application entry.

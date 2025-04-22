@@ -30,6 +30,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SignTool", "msvc\SignTool.v
 		{EBA010B5-F14F-4AED-9E6B-D519BACD1615} = {EBA010B5-F14F-4AED-9E6B-D519BACD1615}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UpdateTool", "msvc\UpdateTool.vs160.vcxproj", "{A1BE9C67-1B56-41BC-A518-76C03C53FC42}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EBA010B5-F14F-4AED-9E6B-D519BACD1615} = {EBA010B5-F14F-4AED-9E6B-D519BACD1615}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -86,6 +91,14 @@ Global
 		{A1BE9C67-1B56-41BC-A518-76C03C53FCF2}.Release|Win32.Build.0 = Release|Win32
 		{A1BE9C67-1B56-41BC-A518-76C03C53FCF2}.Release|x64.ActiveCfg = Release|x64
 		{A1BE9C67-1B56-41BC-A518-76C03C53FCF2}.Release|x64.Build.0 = Release|x64
+		{A1BE9C67-1B56-41BC-A518-76C03C53FC42}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A1BE9C67-1B56-41BC-A518-76C03C53FC42}.Debug|Win32.Build.0 = Debug|Win32
+		{A1BE9C67-1B56-41BC-A518-76C03C53FC42}.Debug|x64.ActiveCfg = Debug|x64
+		{A1BE9C67-1B56-41BC-A518-76C03C53FC42}.Debug|x64.Build.0 = Debug|x64
+		{A1BE9C67-1B56-41BC-A518-76C03C53FC42}.Release|Win32.ActiveCfg = Release|Win32
+		{A1BE9C67-1B56-41BC-A518-76C03C53FC42}.Release|Win32.Build.0 = Release|Win32
+		{A1BE9C67-1B56-41BC-A518-76C03C53FC42}.Release|x64.ActiveCfg = Release|x64
+		{A1BE9C67-1B56-41BC-A518-76C03C53FC42}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

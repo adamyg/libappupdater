@@ -1,9 +1,11 @@
-// $Id: signtool.cpp,v 1.2 2025/04/21 19:02:11 cvsuser Exp $
+// $Id: signtool.cpp,v 1.3 2025/04/22 08:08:52 cvsuser Exp $
 //
-//  signtool - manifest generation tool example.
+//  AutoUpdater: Manifest generation tool.
+//
+//  signtool - tool example.
 //
 //  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
-// 
+//
 //  Copyright (c) 2012 - 2025 Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy

@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.33 2025/04/21 14:01:35 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.34 2025/04/22 05:30:36 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //
@@ -569,9 +569,12 @@ AutoUpdater::IsAvailable(bool interactive)
     // Retrieve and load manifest, plus optional description
     const std::string app_version = Config::GetAppVersion();
     const std::string feed_url = Config::GetFeedURL();
+
     if (feed_url.empty()) {
         throw AppException("Host URL not configured.");
     }
+
+    Config::HasEdDSAPub();                      // prime public_key details
 
     LOG<LOG_INFO>() << "Manifest source <" << feed_url << ">" << LOG_ENDL;
     if (interactive) {
@@ -770,6 +773,7 @@ AutoUpdater::InstallNow(IInstallNow &updater, bool interactive)
     bool verified = false;
     if (getfile && !wasCancelled) {             // verify image.
 
+        Config::HasEdDSAPub();
         if (interactive) {
             updater("Verifying installer image ...");
             ProgressStart(updater.GetParent(), true, "Verifying installer ...");

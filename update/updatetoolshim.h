@@ -1,8 +1,8 @@
-#ifndef SIGNTOOLSHIM_H_INCLUDED
-#define SIGNTOOLSHIM_H_INCLUDED
-//  $Id: signtoolshim.h,v 1.3 2025/04/22 08:08:52 cvsuser Exp $
+#ifndef UPDATETOOLSHIM_H_INCLUDED
+#define UPDATETOOLSHIM_H_INCLUDED
+// $Id: updatetoolshim.h,v 1.3 2025/04/22 08:18:36 cvsuser Exp $
 //
-//  AutoUpdater: sign-tool
+//  AutoUpdater: update-tool
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
@@ -31,20 +31,23 @@
 extern "C" {
 #endif
 
-struct SignToolArgs {
+struct UpdateToolArgs {
     const char *appname;
     const char *apptitle;
+    const char *productname;
     const char *version;
     const char *hosturl;
     const char *hosturlalt;
+    const char *publickey;
+    unsigned keyversion;
 };
 
-extern int SignToolShim(int argc, char *argv[], const struct SignToolArgs *args);
+extern int UpdateToolShim(int argc, char *argv[], const struct UpdateToolArgs *args);
 
 #if defined(__cplusplus)
 }
 #endif
 
-#endif //SIGNTOOLSHIM_H_INCLUDED
+#endif //UPDATETOOLSHIM_H_INCLUDED
 
 //end

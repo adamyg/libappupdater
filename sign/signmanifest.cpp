@@ -1,6 +1,28 @@
-//  $Id: signmanifest.cpp,v 1.2 2025/04/21 19:02:11 cvsuser Exp $
+// $Id: signmanifest.cpp,v 1.3 2025/04/22 08:08:52 cvsuser Exp $
 //
 //  AutoUpdater: Manifest generation tool.
+//
+//  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
+//
+//  Copyright (c) 2012 - 2025 Adam Young
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
 //
 
 #if !defined(_CRT_SECURE_NO_WARNINGS)
@@ -154,7 +176,7 @@ inline std::ostream& operator<<(std::ostream &stream, const std::string &s) {
 #endif //__WATCOMC__
 
 
-//  Function: Manifest 
+//  Function: Manifest
 //      Generate the manifest signature for the specified installer image.
 //
 //  Parameters:
@@ -188,7 +210,7 @@ SignManifest(const char *filename, const char *version, const char *url)
 //
 
 void
-SignManifestEd(const char *filename, const char *version, const char *url, 
+SignManifestEd(const char *filename, const char *version, const char *url,
         const struct SignKeyPair *keypair, unsigned keyversion)
 {
     try {
@@ -304,7 +326,7 @@ Hash(const File &file, int type)
 }
 
 
-static std::string 
+static std::string
 Sign(const File& file, const struct SignKeyPair *key)
 {
     uint8_t signature[ED25519_SIGNATURE_LENGTH] = {0};

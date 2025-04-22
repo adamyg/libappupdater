@@ -1,6 +1,6 @@
-// $Id: signtoolshim.cpp,v 1.2 2025/04/21 19:02:11 cvsuser Exp $ 
+// $Id: signtoolshim.cpp,v 1.4 2025/04/22 08:08:52 cvsuser Exp $
 //
-//  SignToolShim - manifest generation tool.
+//  AutoUpdater: Manifest generation tool.
 //
 //  This file is part of libautoupdater (https://github.com/adamyg/libappupdater)
 //
@@ -60,7 +60,7 @@ static const char *ExeVersion(const char *executable, char *version, size_t vers
 int
 SignToolShim(int argc, char *argv[], const struct SignToolArgs *args)
 {
-    const char *options = (args->hosturlalt ? "H:K:x:V:E:h" : "H:A:K:x:V:E:h");
+    const char *options = (args->hosturlalt ? "H:AK:x:V:E:h" : "H:K:x:V:E:h");
     const char *private_pem = NULL;
     const char *version = args->version,
         *hosturl = args->hosturl;
@@ -115,7 +115,7 @@ SignToolShim(int argc, char *argv[], const struct SignToolArgs *args)
         Usage(*args);
     }
 
-    if (!hosturl && !*hosturl) {
+    if (!hosturl || !*hosturl) {
         std::cerr << "\n" <<
             progname << ": -H <host-url> expected." << std::endl;
         Usage(*args);
@@ -157,6 +157,12 @@ SignToolShim(int argc, char *argv[], const struct SignToolArgs *args)
         Usage(*args);
     }
 
+    if (private_pem && 0 == key_version) {
+        std::cerr << "\n" <<
+            progname << ": -x <version> required, private key without version." << std::endl;
+        Usage(*args);
+    }
+
     // generate manifest
     if (NULL != private_pem) {
         if (0 != _access(private_pem, 0)) {
@@ -181,18 +187,25 @@ SignToolShim(int argc, char *argv[], const struct SignToolArgs *args)
 }
 
 
+//  Function: Usage
+//      Command line usage and exit.
+//
 static void
 Usage(const struct SignToolArgs &args)
 {
+    const char *apptitle =
+        (args.apptitle && *args.apptitle ? args.apptitle : "AutoUpdater manifest generator");
+
+    std::cout.flush();
     std::cerr <<
         "\n"\
-        "AutoUpdater manifest generator\n"\
-        "Version(" << autoupdate_version_string() << ")\n" \
+        << apptitle << ".\n"\
+        "Engine Version (" << autoupdate_version_string() << ")\n" \
         "\n"\
-        "   " << progname << " [options] <input>[<output>]\n"\
+        "   " << progname << " [options] <input> [<output>]\n"\
         "\n"\
         "Options:\n"\
-        "   -V <version>            Version label.\n"\
+        "   -V <version>            Version label, form <x.x[.x[.x.]]>.\n"\
         "   or -E <installer>       otherwise installer path.\n"\
         "\n";
 
@@ -206,7 +219,7 @@ Usage(const struct SignToolArgs &args)
 
     std::cerr <<
         "   -K <private-key>        Private key image, generates a ed25519 signature.\n"\
-        "   -x <version>            KeyVersion.\n"\
+        "   -x <version>            KeyVersion, default <1>.\n"\
         "\n"\
         "Arguments:\n"\
         "   input                   Name of the input file.\n"\

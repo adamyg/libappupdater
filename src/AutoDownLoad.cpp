@@ -1,4 +1,4 @@
-//  $Id: AutoDownLoad.cpp,v 1.25 2025/04/21 13:58:28 cvsuser Exp $
+//  $Id: AutoDownLoad.cpp,v 1.26 2025/04/22 05:30:36 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
@@ -654,7 +654,6 @@ again:
     if (NULL == buffer) {
         throw AppException("Unable to allocate download buffer");
     }
-
 
     (void) memset(buffer, 0, IOBUFFER_SIZE);
     if (sink.open()) {

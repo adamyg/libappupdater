@@ -1,4 +1,4 @@
-//  $Id: CUpdater.cpp,v 1.15 2025/04/21 13:58:28 cvsuser Exp $
+//  $Id: CUpdater.cpp,v 1.16 2025/04/22 06:19:43 cvsuser Exp $
 //
 //  AutoUpdater -- dialog test application.
 //
@@ -57,15 +57,15 @@ CUpdaterApp::Run()
     AutoUpdater au;
 
     au.EnableDialog();
-    au.AppName("AutoUpdate Test Framework");
-    au.AppVersion("0.0.1");
+    au.AppName("Application Test Framework");
+    au.AppVersion("1.0.3");
 
-  //au.HostURL("file:///./example/grief.manifest");
+  //au.HostURL("file:///../example/grief.manifest");
   //au.HostURL("https://sourceforge.net/projects/grief/files/grief.manifest/download");
   //au.HostURL("https://master.dl.sourceforge.net/project/grief/grief.manifest?viasf=1");
 
     au.HostURL("https://api.github.com/repos/adamyg/mcwin32~mcwin32.manifest");
-    au.PublicKey("LFfEDc8YvAw1VaYTrMYs0O+KROQl13y6qeJoZdwmeE8=", 1);
+    au.PublicKey("h6H7R5mHUYkfgs4+P46ZzoG8ItzII0ViwiZEsml1XFE=", 1);
 
     au.Execute(AutoUpdater::ExecuteReinstall, true);
 
