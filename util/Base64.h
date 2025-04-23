@@ -1,6 +1,6 @@
 #ifndef BASE64_H_INCLUDED
 #define BASE64_H_INCLUDED
-//  $Id: Base64.h,v 1.1 2025/04/21 13:58:28 cvsuser Exp $
+//  $Id: Base64.h,v 1.2 2025/04/23 11:17:25 cvsuser Exp $
 //
 //  AutoUpdater: base64 utils
 //
@@ -40,7 +40,7 @@ public:
     static size_t
     encode_dstlength(size_t length)
     {
-        return (length * 4 / 3 + 4) + 1; /* 3-byte blocks to 4-byte */
+        return (length * 4 / 3 + 4) + 1; /* 3-byte blocks to 4-byte, plus nul */
     }
 
     static int
@@ -91,7 +91,8 @@ public:
     {
         std::string result;
         result.resize(encode_dstlength(length));
-        encode(src, length, const_cast<char *>(result.data()), result.size());
+        int ret = encode(src, length, const_cast<char *>(result.data()), result.size());
+        result.resize(ret <= 0 ? 0 : (size_t)(ret - /*nul*/1));
         return result;
     }
 

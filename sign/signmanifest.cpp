@@ -1,4 +1,4 @@
-// $Id: signmanifest.cpp,v 1.4 2025/04/22 17:55:08 cvsuser Exp $
+// $Id: signmanifest.cpp,v 1.5 2025/04/23 11:17:53 cvsuser Exp $
 //
 //  AutoUpdater: Manifest generation tool.
 //
@@ -238,8 +238,8 @@ SignManifestEd(const char *filename, const char *version, const char *url,
 #endif
         strftime(pubDate, sizeof(pubDate), "%a, %d %b %Y %H:%M:%S +0000", &pubtime);
 
-        char url[1024] = {0};
-        ReplaceString(url, "%%", basename, url, sizeof(url));
+        char t_url[1024] = {0};
+        ReplaceString(url, "%%", basename, t_url, sizeof(t_url));
 
         std::cout
             << "\n"
@@ -248,7 +248,7 @@ SignManifestEd(const char *filename, const char *version, const char *url,
             << "\t<description></description>\n"
             << "\t<published>" << now << "</published>\n"
             << "\t<pubDate>" << pubDate << "</pubDate>\n"
-            << "\t<enclosure url=\"" << url << "\"\n"
+            << "\t<enclosure url=\"" << t_url << "\"\n"
                 << "\t\tos=\"windows\"\n"
                 << "\t\tname=\"" << basename << "\"\n"
                 << "\t\tversion=\"" << version << "\"\n"
@@ -353,9 +353,9 @@ Sign(const File& file, const struct SignKeyPair *key)
     
     // failure
     {
-        uint8_t t_signature[sizeof(signature)] = { 0 };
+        uint8_t t_signature[sizeof(signature)] = {0};
         memcpy(t_signature, signature, sizeof(signature));
-        t_signature[1] |= 1;
+        t_signature[1] ^= 1;
         assert(1 != ed25519_verify(t_signature, file.fileBuffer, file.fileSize, key->public_key));
     }
     assert(1 != ed25519_verify(signature, file.fileBuffer, file.fileSize - 1, key->public_key));
