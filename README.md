@@ -18,6 +18,8 @@ Other toolchains should be possible with minimal effort.</p>
 
 ![Console Interface](art/Console_Example.png)
 
+![Console Interface](art/Console_Example2.png)
+
 ## EdDSA (ed25519) signatures
 
 As the updater is downloading an installer from a remote location, security must be considered.
@@ -147,6 +149,28 @@ ul.b { list-style-type: square; padding: 0px; margin: 0px; }
       </item>
    </channel>        
 </manifest>
+```
+
+## Integration
+
+### Building
+
+To build from source directly, you'll need to compile from a git checkout.
+
+```
+   git clone https://github.com/adamyg/libappupdater
+   $ cd libappupdater
+```
+
+Note: Generally _libappupdater_ would be a submodule within the application repo.
+   
+To compile the library, just open within Visual Studio one of bundled AutoUpdater.xxx.sln solutions (atching your corresponding compiler version) and build it. Alternatively run __msbuild__ against the same solution.
+
+```
+   msbuild AutoUpdater.vs160.sln /property:Configuration=Release
+   msbuild AutoUpdater.vs160.sln /property:Configuration=Debug
+   msbuild AutoUpdater.vs160.sln /property:Configuration=Release  /p:Platform=x64
+   msbuild AutoUpdater.vs160.sln /property:Configuration=Debug    /p:Platform=x64
 ```
 
 ### Updater application integration
