@@ -1,6 +1,6 @@
 #ifndef AUTOCONFIG_H_INCLUDED
 #define AUTOCONFIG_H_INCLUDED
-//  $Id: AutoConfig.h,v 1.20 2025/04/22 17:25:25 cvsuser Exp $
+//  $Id: AutoConfig.h,v 1.21 2025/04/23 11:16:40 cvsuser Exp $
 //
 //  AutoUpdater: configuration management.
 //
