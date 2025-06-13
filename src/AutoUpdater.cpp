@@ -77,7 +77,7 @@
 #include "AutoError.h"
 #include "AutoLogger.h"
 #include "AutoThread.h"
-#include "AutoDownload.h"
+#include "AutoDownLoad.h"
 #include "AutoGitHub.h"
 
 #include "../ed25519/src/ed25519.h"

@@ -138,6 +138,14 @@ public_key_read(FILE *strm, struct SignKeyPair *keypair)
 static bool
 private_key_read(FILE *strm, struct SignKeyPair *keypair)
 {
+    // base64 == 32
+    //  ed25519_create_keypair(key.public_key, key.private_key, base64_data);
+    // base64 == 64
+    //  key.private_key + key.public_key
+    // otherwise extended format
+    //  Review: https://datatracker.ietf.org/doc/html/rfc7468
+    //  consider: https://datatracker.ietf.org/doc/html/rfc5915
+    //  
     return read_pem(strm, PRIVATE_KEY, keypair->private_key, sizeof(*keypair));
 }
 

@@ -44,7 +44,7 @@
 
 #include "../libautoupdater.h"
 #include "../util/upgetopt.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 
 #pragma comment(lib, "Version.lib")
 
