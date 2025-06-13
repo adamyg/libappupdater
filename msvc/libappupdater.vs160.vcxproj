@@ -84,12 +84,14 @@
     <ClInclude Include="..\expat\ascii.h" />
     <ClInclude Include="..\expat\asciitab.h" />
     <ClInclude Include="..\expat\expat.h" />
+    <ClInclude Include="..\expat\expat_config.h" />
     <ClInclude Include="..\expat\expat_external.h" />
     <ClInclude Include="..\expat\iasciitab.h" />
     <ClInclude Include="..\expat\internal.h" />
     <ClInclude Include="..\expat\latin1tab.h" />
     <ClInclude Include="..\expat\macconfig.h" />
     <ClInclude Include="..\expat\nametab.h" />
+    <ClInclude Include="..\expat\siphash.h" />
     <ClInclude Include="..\expat\utf8tab.h" />
     <ClInclude Include="..\expat\winconfig.h" />
     <ClInclude Include="..\expat\xmlrole.h" />

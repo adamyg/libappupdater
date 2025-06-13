@@ -355,6 +355,12 @@
     <ClInclude Include="..\src\AutoEd25519.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="..\expat\expat_config.h">
+      <Filter>Header Files\expat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\expat\siphash.h">
+      <Filter>Header Files\expat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\AutoUpdater.rc">
