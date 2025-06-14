@@ -46,7 +46,7 @@ main(int argc, char *argv[])
     args.progname = "updatetool";
 
     args.appname = "libautoupdate";
-//  ags.version = "0.0.0.0";
+//  args.version = "0.0.0.0";
  
 //  args.hosturl = hosturl1;
 //  args.hosturlalt = hosturl2;

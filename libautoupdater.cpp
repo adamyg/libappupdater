@@ -61,7 +61,7 @@
 #include "AutoError.h"
 #include "AutoLogger.h"
 #include "AutoThread.h"
-#include "AutoDownload.h"
+#include "AutoDownLoad.h"
 
 #include "util/Base64.h"
 #include "localisation/NSLocalizedString.h"
@@ -214,8 +214,9 @@ __declspec(dllexport) void __stdcall            // UNICODE
 ShellExecuteW(HWND /*hwnd*/, HINSTANCE /*hinst*/, LPWSTR /*lpszCmdLine*/, int /*nCmdShow*/)
 {
 #if defined(_MSC_VER)
-    // #pragma comment(linker, "/EXPORT:"__FUNCTION__"="__FUNCTION__) // undecorated name
+#if defined(__FUNCDNAME__)
 #pragma comment(linker, "/EXPORT:ShellExecuteW=" __FUNCDNAME__) // decorated function name
+#endif
 #endif
 
     AutoDialogUI dialog;

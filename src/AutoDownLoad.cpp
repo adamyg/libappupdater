@@ -33,7 +33,7 @@
 
 #include "AutoString.h"
 #include "AutoConfig.h"
-#include "AutoDownload.h"
+#include "AutoDownLoad.h"
 #include "AutoError.h"
 
 #include <wininet.h>

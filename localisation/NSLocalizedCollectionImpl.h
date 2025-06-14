@@ -5,7 +5,7 @@
 //
 //  This file is part of libappupdater (https://github.com/adamyg/libappupdater)
 //
-//  Copyright (c) 2021 - 2023, Adam Young
+//  Copyright (c) 2021 - 2025, Adam Young
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -60,7 +60,18 @@ public:
 
         std::fstream output_;
     };
-
+    
+    // https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/MO-Files.html
+    struct mo_header {
+        uint32_t magic_number;                  // byte-order (0x950412de or 0xde120495)
+        uint32_t file_format_version;           // file format revision
+        uint32_t number_of_strings;             // N: number of strings
+        uint32_t original_offset;               // O: original text table offset
+        uint32_t translated_offset;             // T: translated text table offset
+        uint32_t hash_size;                     // S: size of hashing table
+        uint32_t hash_offset;                   // H: offset of hashing table
+    };
+    
     class Filename : public NSLocalizedCollection::ILogger {
     public:
         Filename(const char *filename);
@@ -105,6 +116,7 @@ private:
     bool load_strings(Logger &logger, const char *name, const char *type, void *module = 0);
     bool load_strings(Logger &logger, const std::string &buffer, const char *name);
     bool load_strings(Logger &logger, const char *it, const char *end, const char *name);
+    bool load_mo(Logger &logger, const char *it, const char *end, const char *name);
     bool load_po(Logger &logger, const char *it, const char *end, const char *name);
 
 private:
@@ -120,3 +132,6 @@ private:
     typedef std::map<std::string, std::string> Collection_t;
     std::map<std::string, std::string> strings_;
 };
+
+//end
+

@@ -36,7 +36,7 @@
 #include <iomanip>
 #include <cassert>
 
-#include "../cjson/CJSON.h"
+#include "../cjson/cJSON.h"
 
 namespace Updater {
 
