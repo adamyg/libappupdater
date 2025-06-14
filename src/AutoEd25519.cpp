@@ -1,4 +1,4 @@
-//  $Id: AutoEd25519.cpp,v 1.2 2025/04/21 13:58:28 cvsuser Exp $/
+//  $Id: AutoEd25519.cpp,v 1.3 2025/06/14 20:14:17 cvsuser Exp $/
 // 
 //  AutoUpdater: ed25519 support functions.
 //

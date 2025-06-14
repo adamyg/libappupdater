@@ -1,5 +1,5 @@
 /* -*- mode: c; indent-width: 4; -*- */
-/* $Id: libautoupdater.cpp,v 1.30 2025/04/21 13:58:27 cvsuser Exp $
+/* $Id: libautoupdater.cpp,v 1.31 2025/06/14 20:14:16 cvsuser Exp $
  *
  *  libautoupdater cdecl interface.
  *

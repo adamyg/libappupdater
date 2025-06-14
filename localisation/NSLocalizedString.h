@@ -1,7 +1,7 @@
 #pragma once
 #ifndef NSLocalizedString_h_included
 #define NSLocalizedString_h_included
-/*  $Id: NSLocalizedString.h,v 1.5 2023/10/17 12:33:56 cvsuser Exp $
+/*  $Id: NSLocalizedString.h,v 1.6 2025/06/14 20:14:17 cvsuser Exp $
  *
  *  NSLocalization - Interface.
  *

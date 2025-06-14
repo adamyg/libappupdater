@@ -1,5 +1,5 @@
 #pragma once
-//  $Id: NSLocalizedCollectionImpl.h,v 1.7 2023/10/17 12:33:56 cvsuser Exp $
+//  $Id: NSLocalizedCollectionImpl.h,v 1.8 2025/06/14 20:14:17 cvsuser Exp $
 //
 //  NSLocalization - Collection implementation
 //
@@ -25,6 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+#include <cstdint>
 #include <string>
 #include <map>
 
@@ -60,7 +61,7 @@ public:
 
         std::fstream output_;
     };
-    
+
     // https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/MO-Files.html
     struct mo_header {
         uint32_t magic_number;                  // byte-order (0x950412de or 0xde120495)
@@ -71,7 +72,7 @@ public:
         uint32_t hash_size;                     // S: size of hashing table
         uint32_t hash_offset;                   // H: offset of hashing table
     };
-    
+
     class Filename : public NSLocalizedCollection::ILogger {
     public:
         Filename(const char *filename);

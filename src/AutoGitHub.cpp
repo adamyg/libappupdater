@@ -1,4 +1,4 @@
-//  $Id: AutoGitHub.cpp,v 1.2 2025/04/18 19:39:51 cvsuser Exp $
+//  $Id: AutoGitHub.cpp,v 1.3 2025/06/14 20:14:17 cvsuser Exp $
 //
 //  AutoUpdater: Update manifest.
 //

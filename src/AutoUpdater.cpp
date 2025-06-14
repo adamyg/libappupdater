@@ -1,4 +1,4 @@
-//  $Id: AutoUpdater.cpp,v 1.34 2025/04/22 05:30:36 cvsuser Exp $
+//  $Id: AutoUpdater.cpp,v 1.35 2025/06/14 20:14:17 cvsuser Exp $
 //
 //  AutoUpdater: Application interface.
 //

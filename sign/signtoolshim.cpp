@@ -1,4 +1,4 @@
-// $Id: signtoolshim.cpp,v 1.5 2025/04/22 17:24:04 cvsuser Exp $
+// $Id: signtoolshim.cpp,v 1.6 2025/06/14 20:14:17 cvsuser Exp $
 //
 //  AutoUpdater: Manifest generation tool.
 //
