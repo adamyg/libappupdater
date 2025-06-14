@@ -1,4 +1,4 @@
-// $Id: updatetool.cpp,v 1.4 2025/04/22 17:23:55 cvsuser Exp $
+// $Id: updatetool.cpp,v 1.5 2025/06/14 20:14:17 cvsuser Exp $
 //
 //  AutoUpdater: update-tool - example
 //

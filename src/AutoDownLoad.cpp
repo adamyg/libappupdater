@@ -1,4 +1,4 @@
-//  $Id: AutoDownLoad.cpp,v 1.26 2025/04/22 05:30:36 cvsuser Exp $
+//  $Id: AutoDownLoad.cpp,v 1.27 2025/06/14 20:14:17 cvsuser Exp $
 //
 //  AutoUpdater: download/inet functionality.
 //
