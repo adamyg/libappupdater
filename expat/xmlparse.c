@@ -896,6 +896,36 @@ writeRandomBytes_arc4random(void *target, size_t count) {
 
 #ifdef _WIN32
 
+/* Missing, local implementation */
+#if defined(__WATCOMC__)
+typedef BOOLEAN (WINAPI *RtlGenRandom_t)(void *, ULONG);
+
+static BOOLEAN WINAPI
+local_RtlGenRandom(void *buffer, ULONG len)
+{
+    unsigned char *data = (unsigned char *)buffer;
+    while (len-- ) {
+        *data++ = (unsigned char) rand();
+    }
+    return TRUE;
+}
+
+static BOOLEAN
+rand_s(unsigned int *val)
+{
+    static RtlGenRandom_t func = NULL;
+    if (NULL == func) { // RtlGenRandom(), XP+
+        // RtlGenRandom(), a.k.a. SystemFunction036.
+        // http://msdn.microsoft.com/en-us/library/windows/desktop/aa387694.aspx
+        func = (RtlGenRandom_t) GetProcAddress(LoadLibraryW(L"advapi32.dll"), "SystemFunction036");
+        if (NULL == func) {
+            func = local_RtlGenRandom;
+        }
+    }
+    return func(val, sizeof(val));
+}
+#endif //__WATCOMC__
+
 /* Provide declaration of rand_s() for MinGW-32 (not 64, which has it),
    as it didn't declare it in its header prior to version 5.3.0 of its
    runtime package (mingwrt, containing stdlib.h).  The upstream fix
